@@ -121,13 +121,18 @@ function FaqPage() {
                 description="Pick a common question above or type your own."
               />
             ) : (
-              messages.map((message) => (
-                <Message key={message.id} from={message.role}>
-                  <MessageContent>
-                    <MessageResponse message={message} />
-                  </MessageContent>
-                </Message>
-              ))
+              messages.map((message) => {
+                const text = message.parts
+                  .map((part) => (part.type === "text" ? part.text : ""))
+                  .join("");
+                return (
+                  <Message key={message.id} from={message.role}>
+                    <MessageContent>
+                      <MessageResponse>{text}</MessageResponse>
+                    </MessageContent>
+                  </Message>
+                );
+              })
             )}
             <div ref={bottomRef} />
           </ConversationContent>
