@@ -11,10 +11,13 @@ import { ArrowLeft, Download, FileText, Loader2, RefreshCcw } from "lucide-react
 export type FieldDef = {
   name: string;
   label: string;
-  type: "text" | "textarea";
+  type: "text" | "textarea" | "select";
   placeholder?: string;
   required?: boolean;
   rows?: number;
+  help?: string;
+  options?: string[];
+  showIf?: (data: Record<string, string>) => boolean;
 };
 
 export type LetterWizardProps = {
@@ -23,6 +26,7 @@ export type LetterWizardProps = {
   image: string;
   imageAlt: string;
   fields: FieldDef[];
+  buildPreview: (data: Record<string, string>) => string;
   onGenerate: (data: Record<string, string>) => Promise<void>;
 };
 
