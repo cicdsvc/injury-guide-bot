@@ -36,7 +36,7 @@ export const Route = createFileRoute("/letter/demand")({
 const description = (
   <>
     <p>
-      A Letter of Demand is used when the other party has not paid what they agreed to pay under a signed Settlement Agreement. It formally demands the outstanding sum within a set deadline before you take enforcement action. This builder follows the template in Annex A of the guide.
+      A Letter of Demand is used when the other party has not paid what they agreed to pay under a signed Settlement Agreement. It formally demands the outstanding sum within a set deadline before you take enforcement action.
     </p>
     <p>
       Disclaimer: This template is provided for general guidance only and does not constitute legal advice. Always adapt it to your specific circumstances and seek professional advice if needed.
