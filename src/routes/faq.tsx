@@ -112,7 +112,11 @@ function FaqPage() {
                 <button
                   key={question}
                   type="button"
-                  onClick={() => sendMessage({ text: question })}
+                  onClick={() =>
+                    question === CHECKLIST_QUESTION
+                      ? setShowChecklist(true)
+                      : sendMessage({ text: question })
+                  }
                   className="rounded-full border border-border/60 bg-secondary px-3 py-1.5 text-sm text-secondary-foreground transition-colors hover:bg-secondary/80"
                 >
                   {question}
@@ -121,6 +125,11 @@ function FaqPage() {
             </div>
           </Card>
         )}
+
+        {showChecklist && (
+          <ClaimChecklist onClose={() => setShowChecklist(false)} />
+        )}
+
 
         <Conversation className="mt-6 flex-1 rounded-xl border border-border/60 bg-card">
           <ConversationContent>
