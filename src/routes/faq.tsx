@@ -46,7 +46,12 @@ export const Route = createFileRoute("/faq")({
   component: FaqPage,
 });
 
+const CHECKLIST_QUESTION =
+  "Show me the Personal Injuries Claim Process checklist";
+
 const commonQuestions = [
+  "What is a Personal Injury?",
+  CHECKLIST_QUESTION,
   "What is a Letter of Claim?",
   "How long do I have to make a personal injury claim?",
   "What damages can I claim for?",
@@ -60,6 +65,8 @@ function FaqPage() {
     id: "faq",
     transport: chatTransport,
   });
+  const [showChecklist, setShowChecklist] = useState(false);
+
 
   const bottomRef = useRef<HTMLDivElement>(null);
 
