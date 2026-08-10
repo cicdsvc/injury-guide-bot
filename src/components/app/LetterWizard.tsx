@@ -36,12 +36,15 @@ export function LetterWizard({
   image,
   imageAlt,
   fields,
+  buildPreview,
   onGenerate,
 }: LetterWizardProps) {
   const [step, setStep] = useState<"intro" | "form" | "preview" | "done">("intro");
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const visibleFields = fields.filter((f) => !f.showIf || f.showIf(formData));
 
   const updateField = (name: string, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -125,7 +128,7 @@ export function LetterWizard({
               </p>
 
               <div className="grid gap-5">
-                {fields.map((field) => (
+                {visibleFields.map((field) => (
                   <div key={field.name} className="space-y-2">
                     <Label htmlFor={field.name}>
                       {field.label}
@@ -133,6 +136,9 @@ export function LetterWizard({
                         <span className="ml-1 text-destructive">*</span>
                       )}
                     </Label>
+                    {field.help && (
+                      <p className="text-xs text-muted-foreground">{field.help}</p>
+                    )}
                     {field.type === "textarea" ? (
                       <Textarea
                         id={field.name}
@@ -141,6 +147,19 @@ export function LetterWizard({
                         value={formData[field.name] ?? ""}
                         onChange={(e) => updateField(field.name, e.target.value)}
                       />
+                    ) : field.type === "select" ? (
+                      <select
+                        id={field.name}
+                        className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm"
+                        value={formData[field.name] ?? field.options?.[0] ?? ""}
+                        onChange={(e) => updateField(field.name, e.target.value)}
+                      >
+                        {(field.options ?? []).map((o) => (
+                          <option key={o} value={o}>
+                            {o}
+                          </option>
+                        ))}
+                      </select>
                     ) : (
                       <Input
                         id={field.name}
@@ -181,7 +200,9 @@ export function LetterWizard({
               </div>
 
               <div className="max-h-[60vh] overflow-y-auto rounded-lg border border-border/60 bg-background p-6 text-sm">
-                <LetterPreview fields={fields} data={formData} />
+                <pre className="whitespace-pre-wrap font-serif text-[13px] leading-relaxed">
+                  {buildPreview(formData)}
+                </pre>
               </div>
 
               {error && (
@@ -241,27 +262,5 @@ export function LetterWizard({
         )}
       </div>
     </main>
-  );
-}
-
-function LetterPreview({
-  fields,
-  data,
-}: {
-  fields: FieldDef[];
-  data: Record<string, string>;
-}) {
-  return (
-    <div className="space-y-4 whitespace-pre-wrap">
-      {fields.map((field) => (
-        <div key={field.name}>
-          <p className="font-semibold text-muted-foreground">{field.label}</p>
-          <p>{data[field.name] || "—"}</p>
-        </div>
-      ))}
-      <p className="text-xs text-muted-foreground italic">
-        (Full formatted letter will be generated in the downloaded .docx file.)
-      </p>
-    </div>
   );
 }
