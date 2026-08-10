@@ -13,7 +13,7 @@ import {
   Message,
   MessageContent,
   MessageResponse,
-} from "@/components/app/Message";
+} from "@/components/ai-elements/message";
 import {
   PromptInput,
   PromptInputBody,
