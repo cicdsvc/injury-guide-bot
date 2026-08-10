@@ -311,7 +311,7 @@ export function buildSettlementAgreement(d: SettlementAgreementData): Block[] {
 
 function parseRows(v: string | undefined): [string, string][] {
   const rows = lines(v).map((l) => {
-    const parts = l.split(/[|,\t]/);
+    const parts = l.split(/\s*[|\t]\s*/);
     return [(parts[0] ?? "").trim(), (parts[1] ?? "").trim()] as [string, string];
   });
   return rows.length
