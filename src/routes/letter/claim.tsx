@@ -65,7 +65,7 @@ function LetterOfClaimPage() {
           senderContact: data["senderContact"] || "",
           recipientName: data["recipientName"] || "",
           recipientAddress: data["recipientAddress"] || "",
-          recipientInsurer: data["recipientInsurer"],
+          recipientInsurer: data["recipientInsurer"] || "",
           date: data["date"] || "",
           incidentDate: data["incidentDate"] || "",
           incidentLocation: data["incidentLocation"] || "",
@@ -73,7 +73,7 @@ function LetterOfClaimPage() {
           injuries: data["injuries"] || "",
           medicalTreatment: data["medicalTreatment"] || "",
           specialDamages: data["specialDamages"] || "",
-          generalDamages: data["generalDamages"],
+          generalDamages: data["generalDamages"] || "",
           totalDemand: data["totalDemand"] || "",
           deadlineDays: data["deadlineDays"] || "",
         });

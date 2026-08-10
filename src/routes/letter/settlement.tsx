@@ -61,10 +61,10 @@ function SettlementAgreementPage() {
         await generateSettlementAgreement({
           claimantName: data["claimantName"] || "",
           claimantAddress: data["claimantAddress"] || "",
-          claimantIc: data["claimantIc"],
+          claimantIc: data["claimantIc"] || "",
           defendantName: data["defendantName"] || "",
           defendantAddress: data["defendantAddress"] || "",
-          defendantIc: data["defendantIc"],
+          defendantIc: data["defendantIc"] || "",
           date: data["date"] || "",
           incidentDate: data["incidentDate"] || "",
           incidentDescription: data["incidentDescription"] || "",
