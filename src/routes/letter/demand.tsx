@@ -33,8 +33,16 @@ export const Route = createFileRoute("/letter/demand")({
   component: LetterOfDemandPage,
 });
 
-const description =
-  "A Letter of Demand is used when the other party has not paid what they agreed to pay under a signed Settlement Agreement. It formally demands the outstanding sum within a set deadline before you take enforcement action. This builder follows the template in Annex A of the guide. Disclaimer: These templates are provided for general guidance only and do not constitute legal advice. Always adapt them to your specific circumstances and seek professional advice if needed.";
+const description = (
+  <>
+    <p>
+      A Letter of Demand is used when the other party has not paid what they agreed to pay under a signed Settlement Agreement. It formally demands the outstanding sum within a set deadline before you take enforcement action. This builder follows the template in Annex A of the guide.
+    </p>
+    <p>
+      Disclaimer: This template is provided for general guidance only and does not constitute legal advice. Always adapt it to your specific circumstances and seek professional advice if needed.
+    </p>
+  </>
+);
 
 const isInstalment = (d: Record<string, string>) => d["paymentType"] === "Instalments";
 

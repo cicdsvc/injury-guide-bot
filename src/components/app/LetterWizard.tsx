@@ -22,7 +22,7 @@ export type FieldDef = {
 
 export type LetterWizardProps = {
   title: string;
-  description: string;
+  description: React.ReactNode;
   image: string;
   imageAlt: string;
   fields: FieldDef[];
@@ -99,7 +99,7 @@ export function LetterWizard({
               </div>
             </div>
             <CardContent className="space-y-6 p-6">
-              <p className="text-foreground/90 leading-relaxed">{description}</p>
+              <div className="space-y-4 text-foreground/90 leading-relaxed">{description}</div>
               <Button onClick={() => setStep("form")} className="gap-2">
                 <FileText className="h-4 w-4" />
                 Start drafting

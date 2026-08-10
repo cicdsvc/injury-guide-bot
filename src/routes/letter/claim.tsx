@@ -29,8 +29,16 @@ export const Route = createFileRoute("/letter/claim")({
   component: LetterOfClaimPage,
 });
 
-const description =
-  "A Letter of Claim is the first formal step in making your personal injury claim. It tells the other party how the accident happened, what injuries and losses you suffered, and how much you are claiming. Disclaimer: These templates are provided for general guidance only and do not constitute legal advice. Always adapt them to your specific circumstances and seek professional advice if needed.";
+const description = (
+  <>
+    <p>
+      A Letter of Claim is the first formal step in making your personal injury claim. It tells the other party how the accident happened, what injuries and losses you suffered, and how much you are claiming.
+    </p>
+    <p>
+      Disclaimer: This template is provided for general guidance only and does not constitute legal advice. Always adapt it to your specific circumstances and seek professional advice if needed.
+    </p>
+  </>
+);
 
 const fields: FieldDef[] = [
   { name: "senderName", label: "Your name", type: "text", required: true },

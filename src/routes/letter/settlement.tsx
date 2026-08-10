@@ -33,8 +33,16 @@ export const Route = createFileRoute("/letter/settlement")({
   component: SettlementAgreementPage,
 });
 
-const description =
-  "A Private Settlement Agreement records the compensation agreed between you and the other party so the claim is resolved without going to court. Once signed, you cannot make any further claim against the other party for the same accident. This builder follows the template in Annex A of the guide. Disclaimer: These templates are provided for general guidance only and do not constitute legal advice. Always adapt them to your specific circumstances and seek professional advice if needed.";
+const description = (
+  <>
+    <p>
+      A Private Settlement Agreement records the compensation agreed between you and the other party so the claim is resolved without going to court. Once signed, you cannot make any further claim against the other party for the same accident. This builder follows the template in Annex A of the guide.
+    </p>
+    <p>
+      Disclaimer: This template is provided for general guidance only and does not constitute legal advice. Always adapt it to your specific circumstances and seek professional advice if needed.
+    </p>
+  </>
+);
 
 const isInstalment = (d: Record<string, string>) => d["paymentType"] === "Instalments";
 
