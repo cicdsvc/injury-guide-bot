@@ -88,9 +88,6 @@ export function ClaimChecklist({ onClose }: { onClose?: () => void }) {
           <h2 className="text-base font-semibold text-foreground">
             Checklist – Your Personal Injuries Claim Process
           </h2>
-          <p className="mt-1 text-xs text-muted-foreground">
-            Section IV. Resources, Part A of the guide
-          </p>
         </div>
         {onClose && (
           <Button variant="ghost" size="icon" onClick={onClose} aria-label="Close checklist">
