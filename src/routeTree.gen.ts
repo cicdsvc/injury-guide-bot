@@ -10,33 +10,102 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as LetterClaimRouteImport } from './routes/letter/claim'
+import { Route as LetterDemandRouteImport } from './routes/letter/demand'
+import { Route as LetterSettlementRouteImport } from './routes/letter/settlement'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LetterClaimRoute = LetterClaimRouteImport.update({
+  id: '/letter/claim',
+  path: '/letter/claim',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LetterDemandRoute = LetterDemandRouteImport.update({
+  id: '/letter/demand',
+  path: '/letter/demand',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LetterSettlementRoute = LetterSettlementRouteImport.update({
+  id: '/letter/settlement',
+  path: '/letter/settlement',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/faq': typeof FaqRoute
+  '/api/chat': typeof ApiChatRoute
+  '/letter/claim': typeof LetterClaimRoute
+  '/letter/demand': typeof LetterDemandRoute
+  '/letter/settlement': typeof LetterSettlementRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/faq': typeof FaqRoute
+  '/api/chat': typeof ApiChatRoute
+  '/letter/claim': typeof LetterClaimRoute
+  '/letter/demand': typeof LetterDemandRoute
+  '/letter/settlement': typeof LetterSettlementRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/faq': typeof FaqRoute
+  '/api/chat': typeof ApiChatRoute
+  '/letter/claim': typeof LetterClaimRoute
+  '/letter/demand': typeof LetterDemandRoute
+  '/letter/settlement': typeof LetterSettlementRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/faq'
+    | '/api/chat'
+    | '/letter/claim'
+    | '/letter/demand'
+    | '/letter/settlement'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/faq'
+    | '/api/chat'
+    | '/letter/claim'
+    | '/letter/demand'
+    | '/letter/settlement'
+  id:
+    | '__root__'
+    | '/'
+    | '/faq'
+    | '/api/chat'
+    | '/letter/claim'
+    | '/letter/demand'
+    | '/letter/settlement'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  FaqRoute: typeof FaqRoute
+  ApiChatRoute: typeof ApiChatRoute
+  LetterClaimRoute: typeof LetterClaimRoute
+  LetterDemandRoute: typeof LetterDemandRoute
+  LetterSettlementRoute: typeof LetterSettlementRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +117,52 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/letter/claim': {
+      id: '/letter/claim'
+      path: '/letter/claim'
+      fullPath: '/letter/claim'
+      preLoaderRoute: typeof LetterClaimRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/letter/demand': {
+      id: '/letter/demand'
+      path: '/letter/demand'
+      fullPath: '/letter/demand'
+      preLoaderRoute: typeof LetterDemandRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/letter/settlement': {
+      id: '/letter/settlement'
+      path: '/letter/settlement'
+      fullPath: '/letter/settlement'
+      preLoaderRoute: typeof LetterSettlementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  FaqRoute: FaqRoute,
+  ApiChatRoute: ApiChatRoute,
+  LetterClaimRoute: LetterClaimRoute,
+  LetterDemandRoute: LetterDemandRoute,
+  LetterSettlementRoute: LetterSettlementRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
