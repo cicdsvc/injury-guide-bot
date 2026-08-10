@@ -82,8 +82,8 @@ function HomePage() {
             </div>
             <div className="relative mx-auto w-full max-w-md lg:max-w-none">
               <img
-                src={heroImg}
-                alt="Illustration of a person reviewing legal documents with support"
+                src={heroImg.url}
+                alt="Illustration of a person with an injury using the app at home"
                 className="rounded-2xl shadow-2xl"
                 width={600}
                 height={400}
