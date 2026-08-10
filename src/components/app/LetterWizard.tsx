@@ -22,7 +22,7 @@ export type FieldDef = {
 
 export type LetterWizardProps = {
   title: string;
-  description: string;
+  description: React.ReactNode;
   image: string;
   imageAlt: string;
   fields: FieldDef[];
