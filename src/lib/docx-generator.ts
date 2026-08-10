@@ -11,21 +11,18 @@ const DEFAULT_FONT = "Arial";
 const DEFAULT_SIZE = 22; // 11pt
 
 function createRun(text: string, opts?: { bold?: boolean; underline?: boolean }) {
-  const runOpts: ConstructorParameters<typeof TextRun>[0] = {
+  return new TextRun({
     text,
     font: DEFAULT_FONT,
     size: DEFAULT_SIZE,
-  };
-  if (opts?.bold) runOpts.bold = true;
-  if (opts?.underline) runOpts.underline = { type: "single" };
-  return new TextRun(runOpts);
+    ...(opts?.bold ? { bold: true } : {}),
+    ...(opts?.underline ? { underline: { type: "single" } } : {}),
+  });
 }
 
 function createP(text: string, opts?: { bold?: boolean; spacing?: object }) {
-  const runOpts: { bold?: boolean } = {};
-  if (opts?.bold) runOpts.bold = true;
   return new Paragraph({
-    children: [createRun(text, runOpts)],
+    children: [createRun(text, opts?.bold ? { bold: true } : undefined)],
     spacing: opts?.spacing ?? { after: 200 },
   });
 }
