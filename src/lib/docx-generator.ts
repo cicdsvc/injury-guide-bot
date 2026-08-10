@@ -3,333 +3,165 @@ import {
   Document,
   Packer,
   Paragraph,
+  Table,
+  TableCell,
+  TableRow,
+  TabStopPosition,
+  TabStopType,
   TextRun,
+  WidthType,
+  BorderStyle,
 } from "docx";
 import FileSaver from "file-saver";
+import type { Block } from "@/lib/letter-templates";
+import {
+  buildLetterOfClaim,
+  buildSettlementAgreement,
+  buildLetterOfDemand,
+  type LetterOfClaimData,
+  type SettlementAgreementData,
+  type LetterOfDemandData,
+} from "@/lib/letter-templates";
+
 const { saveAs } = FileSaver;
 
-const DEFAULT_FONT = "Arial";
-const DEFAULT_SIZE = 22; // 11pt
+const FONT = "Arial";
+const SIZE = 22; // 11pt
+const INDENT_UNIT = 360; // 0.25"
 
-function createRun(text: string, opts?: { bold?: boolean; underline?: boolean }) {
+function run(text: string, opts?: { bold?: boolean; underline?: boolean; italics?: boolean }) {
   return new TextRun({
     text,
-    font: DEFAULT_FONT,
-    size: DEFAULT_SIZE,
+    font: FONT,
+    size: SIZE,
     ...(opts?.bold ? { bold: true } : {}),
+    ...(opts?.italics ? { italics: true } : {}),
     ...(opts?.underline ? { underline: { type: "single" } } : {}),
   });
 }
 
-function createP(text: string, opts?: { bold?: boolean; spacing?: object }) {
-  return new Paragraph({
-    children: [createRun(text, opts?.bold ? { bold: true } : undefined)],
-    spacing: opts?.spacing ?? { after: 200 },
+const noBorder = { style: BorderStyle.NONE, size: 0, color: "FFFFFF" };
+
+function cell(text: string, width: number, bold?: boolean) {
+  return new TableCell({
+    width: { size: width, type: WidthType.DXA },
+    borders: { top: noBorder, bottom: noBorder, left: noBorder, right: noBorder },
+    margins: { top: 40, bottom: 40, left: 0, right: 120 },
+    children: [new Paragraph({ children: [run(text, bold ? { bold: true } : undefined)] })],
   });
 }
 
-export type LetterOfClaimData = {
-  senderName: string;
-  senderAddress: string;
-  senderContact: string;
-  recipientName: string;
-  recipientAddress: string;
-  recipientInsurer?: string;
-  date: string;
-  incidentDate: string;
-  incidentLocation: string;
-  incidentDescription: string;
-  injuries: string;
-  medicalTreatment: string;
-  specialDamages: string;
-  generalDamages?: string;
-  totalDemand: string;
-  deadlineDays: string;
-};
+function blocksToDocx(blocks: Block[]): (Paragraph | Table)[] {
+  const out: (Paragraph | Table)[] = [];
+  for (const b of blocks) {
+    switch (b.t) {
+      case "spacer":
+        out.push(new Paragraph({ children: [run("")], spacing: { after: 120 } }));
+        break;
+      case "line":
+        out.push(
+          new Paragraph({
+            children: [run(b.text, { bold: b.bold, underline: b.underline, italics: b.italic })],
+            alignment: b.center ? AlignmentType.CENTER : AlignmentType.LEFT,
+            indent: b.indent ? { left: b.indent * INDENT_UNIT } : undefined,
+            spacing: { after: b.tight ? 0 : 200, before: b.bold && !b.center ? 160 : 0 },
+          }),
+        );
+        break;
+      case "twoCol":
+        out.push(
+          new Paragraph({
+            children: [run(b.left), run("\t"), run(b.right, { bold: true })],
+            tabStops: [{ type: TabStopType.RIGHT, position: TabStopPosition.MAX }],
+            spacing: { after: 0 },
+          }),
+        );
+        break;
+      case "num": {
+        const left = (b.indent ?? 0) * INDENT_UNIT + 720;
+        out.push(
+          new Paragraph({
+            children: [run(b.n), run("\t"), run(b.text)],
+            indent: { left, hanging: 720 },
+            tabStops: [{ type: TabStopType.LEFT, position: left }],
+            spacing: { after: 160 },
+          }),
+        );
+        break;
+      }
+      case "table": {
+        out.push(
+          new Table({
+            width: { size: 9360, type: WidthType.DXA },
+            columnWidths: [4680, 4680],
+            rows: [
+              new TableRow({
+                children: [cell(b.header[0], 4680, true), cell(b.header[1], 4680, true)],
+              }),
+              ...b.rows.map(
+                (r) => new TableRow({ children: [cell(r[0], 4680), cell(r[1], 4680)] }),
+              ),
+            ],
+          }),
+        );
+        out.push(new Paragraph({ children: [run("")], spacing: { after: 120 } }));
+        break;
+      }
+      case "sig":
+        out.push(
+          new Paragraph({
+            children: [run("__________________________"), run("\t"), run("___________________________")],
+            tabStops: [{ type: TabStopType.LEFT, position: 5040 }],
+            spacing: { after: 0 },
+          }),
+        );
+        out.push(
+          new Paragraph({
+            children: [run(b.left), run("\t"), run(b.right)],
+            tabStops: [{ type: TabStopType.LEFT, position: 5040 }],
+            spacing: { after: 200 },
+          }),
+        );
+        break;
+    }
+  }
+  return out;
+}
+
+async function download(blocks: Block[], filename: string) {
+  const doc = new Document({
+    styles: { default: { document: { run: { font: FONT, size: SIZE } } } },
+    sections: [
+      {
+        properties: {
+          page: {
+            size: { width: 11906, height: 16838 },
+            margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 },
+          },
+        },
+        children: blocksToDocx(blocks),
+      },
+    ],
+  });
+  const blob = await Packer.toBlob(doc);
+  saveAs(blob, filename);
+}
+
+const safe = (s: string) => (s || "Document").replace(/[^\w]+/g, "_");
+
+export type { LetterOfClaimData, SettlementAgreementData, LetterOfDemandData };
 
 export async function generateLetterOfClaim(data: LetterOfClaimData) {
-  const children: Paragraph[] = [
-    new Paragraph({
-      children: [createRun(data.senderName, { bold: true })],
-      spacing: { after: 0 },
-    }),
-    ...data.senderAddress.split("\n").map((line) =>
-      new Paragraph({
-        children: [createRun(line)],
-        spacing: { after: 0 },
-      })
-    ),
-    new Paragraph({
-      children: [createRun(data.senderContact)],
-      spacing: { after: 200 },
-    }),
-    new Paragraph({
-      children: [createRun(data.date)],
-      alignment: AlignmentType.RIGHT,
-      spacing: { after: 200 },
-    }),
-    new Paragraph({
-      children: [createRun(data.recipientName, { bold: true })],
-      spacing: { after: 0 },
-    }),
-    ...data.recipientAddress.split("\n").map((line) =>
-      new Paragraph({
-        children: [createRun(line)],
-        spacing: { after: 0 },
-      })
-    ),
-    ...(data.recipientInsurer
-      ? [createP(`Insurer (if known): ${data.recipientInsurer}`)]
-      : []),
-    new Paragraph({
-      children: [createRun("LETTER OF CLAIM", { bold: true, underline: true })],
-      spacing: { before: 300, after: 200 },
-    }),
-    createP(`Date of incident: ${data.incidentDate}`),
-    createP(`Location of incident: ${data.incidentLocation}`),
-    new Paragraph({
-      children: [createRun("Circumstances of the incident", { bold: true })],
-      spacing: { before: 200, after: 100 },
-    }),
-    ...data.incidentDescription
-      .split("\n")
-      .filter(Boolean)
-      .map((para) => createP(para)),
-    new Paragraph({
-      children: [createRun("Injuries sustained", { bold: true })],
-      spacing: { before: 200, after: 100 },
-    }),
-    ...data.injuries.split("\n").filter(Boolean).map((para) => createP(para)),
-    new Paragraph({
-      children: [createRun("Medical treatment", { bold: true })],
-      spacing: { before: 200, after: 100 },
-    }),
-    ...data.medicalTreatment.split("\n").filter(Boolean).map((para) => createP(para)),
-    new Paragraph({
-      children: [createRun("Losses and expenses", { bold: true })],
-      spacing: { before: 200, after: 100 },
-    }),
-    ...data.specialDamages.split("\n").filter(Boolean).map((para) => createP(para)),
-    ...(data.generalDamages
-      ? [
-          new Paragraph({
-            children: [createRun("General damages", { bold: true })],
-            spacing: { before: 200, after: 100 },
-          }),
-          ...data.generalDamages
-            .split("\n")
-            .filter(Boolean)
-            .map((para) => createP(para)),
-        ]
-      : []),
-    new Paragraph({
-      children: [createRun("Proposed settlement", { bold: true })],
-      spacing: { before: 200, after: 100 },
-    }),
-    createP(
-      `In the circumstances, I propose to settle my claim for the sum of ${data.totalDemand}.`
-    ),
-    createP(
-      `Please respond within ${data.deadlineDays} days from the date of this letter, failing which I reserve the right to commence legal proceedings without further notice.`
-    ),
-    createP("Yours faithfully,"),
-    new Paragraph({ children: [createRun("")], spacing: { after: 400 } }),
-    createP(data.senderName),
-  ];
-
-  const doc = new Document({
-    sections: [
-      {
-        properties: {
-          page: {
-            margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 },
-          },
-        },
-        children,
-      },
-    ],
-  });
-
-  const blob = await Packer.toBlob(doc);
-  saveAs(blob, `Letter_of_Claim_${data.senderName.replace(/\s+/g, "_")}.docx`);
+  await download(buildLetterOfClaim(data), `Letter_of_Claim_${safe(data.senderName)}.docx`);
 }
-
-export type SettlementAgreementData = {
-  claimantName: string;
-  claimantAddress: string;
-  claimantIc?: string;
-  defendantName: string;
-  defendantAddress: string;
-  defendantIc?: string;
-  date: string;
-  incidentDate: string;
-  incidentDescription: string;
-  settlementAmount: string;
-  paymentMethod: string;
-  paymentDeadline: string;
-  releaseScope: string;
-  confidentiality: string;
-  governingLaw: string;
-};
 
 export async function generateSettlementAgreement(data: SettlementAgreementData) {
-  const children: Paragraph[] = [
-    new Paragraph({
-      children: [createRun("SETTLEMENT AGREEMENT", { bold: true })],
-      alignment: AlignmentType.CENTER,
-      spacing: { after: 300 },
-    }),
-    createP(`Date: ${data.date}`),
-    new Paragraph({
-      children: [createRun("Parties", { bold: true })],
-      spacing: { before: 200, after: 100 },
-    }),
-    createP(`1. ${data.claimantName} of ${data.claimantAddress} ("the Claimant")${data.claimantIc ? `, NRIC/FIN: ${data.claimantIc}` : ""}.`),
-    createP(`2. ${data.defendantName} of ${data.defendantAddress} ("the Defendant")${data.defendantIc ? `, NRIC/FIN: ${data.defendantIc}` : ""}.`),
-    new Paragraph({
-      children: [createRun("Background", { bold: true })],
-      spacing: { before: 200, after: 100 },
-    }),
-    createP(
-      `The Claimant alleges that on ${data.incidentDate}, the Defendant caused personal injury to the Claimant as a result of the following incident:`
-    ),
-    ...data.incidentDescription
-      .split("\n")
-      .filter(Boolean)
-      .map((para) => createP(para)),
-    new Paragraph({
-      children: [createRun("Terms of settlement", { bold: true })],
-      spacing: { before: 200, after: 100 },
-    }),
-    createP(
-      `1. The Defendant shall pay the Claimant the sum of ${data.settlementAmount} in full and final settlement of all claims arising from the incident.`
-    ),
-    createP(`2. Payment shall be made by ${data.paymentMethod} on or before ${data.paymentDeadline}.`),
-    createP(
-      `3. Upon receipt of the settlement amount, the Claimant releases the Defendant from ${data.releaseScope}.`
-    ),
-    createP(`4. ${data.confidentiality}`),
-    createP(
-      `5. This agreement shall be governed by and construed in accordance with the laws of ${data.governingLaw}.`
-    ),
-    new Paragraph({
-      children: [createRun("Signatures", { bold: true })],
-      spacing: { before: 200, after: 100 },
-    }),
-    createP("Claimant: _________________________"),
-    createP(`Name: ${data.claimantName}`),
-    createP("Date: _________________________"),
-    createP("Defendant: _________________________"),
-    createP(`Name: ${data.defendantName}`),
-    createP("Date: _________________________"),
-  ];
-
-  const doc = new Document({
-    sections: [
-      {
-        properties: {
-          page: {
-            margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 },
-          },
-        },
-        children,
-      },
-    ],
-  });
-
-  const blob = await Packer.toBlob(doc);
-  saveAs(blob, `Settlement_Agreement_${data.claimantName.replace(/\s+/g, "_")}.docx`);
+  await download(
+    buildSettlementAgreement(data),
+    `Private_Settlement_Agreement_${safe(data.partyAName)}.docx`,
+  );
 }
 
-export type LetterOfDemandData = {
-  senderName: string;
-  senderAddress: string;
-  senderContact: string;
-  recipientName: string;
-  recipientAddress: string;
-  date: string;
-  demandAmount: string;
-  basisOfClaim: string;
-  incidentDate: string;
-  deadlineDays: string;
-  consequences: string;
-};
-
 export async function generateLetterOfDemand(data: LetterOfDemandData) {
-  const children: Paragraph[] = [
-    new Paragraph({
-      children: [createRun(data.senderName, { bold: true })],
-      spacing: { after: 0 },
-    }),
-    ...data.senderAddress.split("\n").map((line) =>
-      new Paragraph({
-        children: [createRun(line)],
-        spacing: { after: 0 },
-      })
-    ),
-    new Paragraph({
-      children: [createRun(data.senderContact)],
-      spacing: { after: 200 },
-    }),
-    new Paragraph({
-      children: [createRun(data.date)],
-      alignment: AlignmentType.RIGHT,
-      spacing: { after: 200 },
-    }),
-    new Paragraph({
-      children: [createRun(data.recipientName, { bold: true })],
-      spacing: { after: 0 },
-    }),
-    ...data.recipientAddress.split("\n").map((line) =>
-      new Paragraph({
-        children: [createRun(line)],
-        spacing: { after: 0 },
-      })
-    ),
-    new Paragraph({
-      children: [createRun("LETTER OF DEMAND", { bold: true, underline: true })],
-      spacing: { before: 300, after: 200 },
-    }),
-    createP(`Re: Demand for payment of ${data.demandAmount}`),
-    createP(`Date of incident: ${data.incidentDate}`),
-    new Paragraph({
-      children: [createRun("Basis of claim", { bold: true })],
-      spacing: { before: 200, after: 100 },
-    }),
-    ...data.basisOfClaim.split("\n").filter(Boolean).map((para) => createP(para)),
-    new Paragraph({
-      children: [createRun("Demand", { bold: true })],
-      spacing: { before: 200, after: 100 },
-    }),
-    createP(
-      `I hereby demand payment of ${data.demandAmount} within ${data.deadlineDays} days from the date of this letter.`
-    ),
-    new Paragraph({
-      children: [createRun("Consequences of non-payment", { bold: true })],
-      spacing: { before: 200, after: 100 },
-    }),
-    ...data.consequences.split("\n").filter(Boolean).map((para) => createP(para)),
-    createP(
-      `Please make payment to the undersigned within the stated timeframe. If you dispute this claim, please respond in writing within ${data.deadlineDays} days stating the grounds of your dispute.`
-    ),
-    createP("Yours faithfully,"),
-    new Paragraph({ children: [createRun("")], spacing: { after: 400 } }),
-    createP(data.senderName),
-  ];
-
-  const doc = new Document({
-    sections: [
-      {
-        properties: {
-          page: {
-            margin: { top: 1440, right: 1440, bottom: 1440, left: 1440 },
-          },
-        },
-        children,
-      },
-    ],
-  });
-
-  const blob = await Packer.toBlob(doc);
-  saveAs(blob, `Letter_of_Demand_${data.senderName.replace(/\s+/g, "_")}.docx`);
+  await download(buildLetterOfDemand(data), `Letter_of_Demand_${safe(data.senderName)}.docx`);
 }
