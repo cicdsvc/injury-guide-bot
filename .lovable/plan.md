@@ -1,6 +1,6 @@
 # Personal Injury Claim Helper — Interactive Guide App
 
-An approachable public web app built entirely from the attached Legal Aid Bureau guide. It opens with a main menu of four choices, and a persistent "Main menu" button lets the user restart at any time.
+An interactive app to help you understand more about your Personal Injury claims. Built from the attached Legal Aid Bureau guide, it opens with a main menu of four choices, and a persistent "Main menu" button lets the user restart at any time.
 
 ## Main menu
 
