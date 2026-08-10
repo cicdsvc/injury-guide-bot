@@ -59,21 +59,21 @@ function SettlementAgreementPage() {
       fields={fields}
       onGenerate={async (data) => {
         await generateSettlementAgreement({
-          claimantName: data.claimantName,
-          claimantAddress: data.claimantAddress,
-          claimantIc: data.claimantIc,
-          defendantName: data.defendantName,
-          defendantAddress: data.defendantAddress,
-          defendantIc: data.defendantIc,
-          date: data.date,
-          incidentDate: data.incidentDate,
-          incidentDescription: data.incidentDescription,
-          settlementAmount: data.settlementAmount,
-          paymentMethod: data.paymentMethod,
-          paymentDeadline: data.paymentDeadline,
-          releaseScope: data.releaseScope,
-          confidentiality: data.confidentiality,
-          governingLaw: data.governingLaw,
+          claimantName: data["claimantName"] || "",
+          claimantAddress: data["claimantAddress"] || "",
+          claimantIc: data["claimantIc"],
+          defendantName: data["defendantName"] || "",
+          defendantAddress: data["defendantAddress"] || "",
+          defendantIc: data["defendantIc"],
+          date: data["date"] || "",
+          incidentDate: data["incidentDate"] || "",
+          incidentDescription: data["incidentDescription"] || "",
+          settlementAmount: data["settlementAmount"] || "",
+          paymentMethod: data["paymentMethod"] || "",
+          paymentDeadline: data["paymentDeadline"] || "",
+          releaseScope: data["releaseScope"] || "",
+          confidentiality: data["confidentiality"] || "",
+          governingLaw: data["governingLaw"] || "",
         });
       }}
     />

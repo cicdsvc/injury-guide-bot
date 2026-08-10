@@ -60,22 +60,22 @@ function LetterOfClaimPage() {
       fields={fields}
       onGenerate={async (data) => {
         await generateLetterOfClaim({
-          senderName: data.senderName,
-          senderAddress: data.senderAddress,
-          senderContact: data.senderContact,
-          recipientName: data.recipientName,
-          recipientAddress: data.recipientAddress,
-          recipientInsurer: data.recipientInsurer,
-          date: data.date,
-          incidentDate: data.incidentDate,
-          incidentLocation: data.incidentLocation,
-          incidentDescription: data.incidentDescription,
-          injuries: data.injuries,
-          medicalTreatment: data.medicalTreatment,
-          specialDamages: data.specialDamages,
-          generalDamages: data.generalDamages,
-          totalDemand: data.totalDemand,
-          deadlineDays: data.deadlineDays,
+          senderName: data["senderName"] || "",
+          senderAddress: data["senderAddress"] || "",
+          senderContact: data["senderContact"] || "",
+          recipientName: data["recipientName"] || "",
+          recipientAddress: data["recipientAddress"] || "",
+          recipientInsurer: data["recipientInsurer"],
+          date: data["date"] || "",
+          incidentDate: data["incidentDate"] || "",
+          incidentLocation: data["incidentLocation"] || "",
+          incidentDescription: data["incidentDescription"] || "",
+          injuries: data["injuries"] || "",
+          medicalTreatment: data["medicalTreatment"] || "",
+          specialDamages: data["specialDamages"] || "",
+          generalDamages: data["generalDamages"],
+          totalDemand: data["totalDemand"] || "",
+          deadlineDays: data["deadlineDays"] || "",
         });
       }}
     />

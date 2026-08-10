@@ -55,17 +55,17 @@ function LetterOfDemandPage() {
       fields={fields}
       onGenerate={async (data) => {
         await generateLetterOfDemand({
-          senderName: data.senderName,
-          senderAddress: data.senderAddress,
-          senderContact: data.senderContact,
-          recipientName: data.recipientName,
-          recipientAddress: data.recipientAddress,
-          date: data.date,
-          demandAmount: data.demandAmount,
-          basisOfClaim: data.basisOfClaim,
-          incidentDate: data.incidentDate,
-          deadlineDays: data.deadlineDays,
-          consequences: data.consequences,
+          senderName: data["senderName"] || "",
+          senderAddress: data["senderAddress"] || "",
+          senderContact: data["senderContact"] || "",
+          recipientName: data["recipientName"] || "",
+          recipientAddress: data["recipientAddress"] || "",
+          date: data["date"] || "",
+          demandAmount: data["demandAmount"] || "",
+          basisOfClaim: data["basisOfClaim"] || "",
+          incidentDate: data["incidentDate"] || "",
+          deadlineDays: data["deadlineDays"] || "",
+          consequences: data["consequences"] || "",
         });
       }}
     />
