@@ -61,9 +61,15 @@ function blocksToDocx(blocks: Block[]): (Paragraph | Table)[] {
       case "line":
         out.push(
           new Paragraph({
-            children: [run(b.text, { bold: b.bold, underline: b.underline, italics: b.italic })],
+            children: [
+              run(b.text, {
+                ...(b.bold ? { bold: true } : {}),
+                ...(b.underline ? { underline: true } : {}),
+                ...(b.italic ? { italics: true } : {}),
+              }),
+            ],
             alignment: b.center ? AlignmentType.CENTER : AlignmentType.LEFT,
-            indent: b.indent ? { left: b.indent * INDENT_UNIT } : undefined,
+            ...(b.indent ? { indent: { left: b.indent * INDENT_UNIT } } : {}),
             spacing: { after: b.tight ? 0 : 200, before: b.bold && !b.center ? 160 : 0 },
           }),
         );
