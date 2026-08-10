@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { HomeButton } from "@/components/app/HomeButton";
 import { Disclaimer } from "@/components/app/Disclaimer";
+import { ClaimChecklist } from "@/components/app/ClaimChecklist";
+
 import {
   Conversation,
   ConversationContent,
@@ -46,7 +48,12 @@ export const Route = createFileRoute("/faq")({
   component: FaqPage,
 });
 
+const CHECKLIST_QUESTION =
+  "Show me the Personal Injuries Claim Process checklist";
+
 const commonQuestions = [
+  "What is a Personal Injury?",
+  CHECKLIST_QUESTION,
   "What is a Letter of Claim?",
   "How long do I have to make a personal injury claim?",
   "What damages can I claim for?",
@@ -60,6 +67,8 @@ function FaqPage() {
     id: "faq",
     transport: chatTransport,
   });
+  const [showChecklist, setShowChecklist] = useState(false);
+
 
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -103,7 +112,11 @@ function FaqPage() {
                 <button
                   key={question}
                   type="button"
-                  onClick={() => sendMessage({ text: question })}
+                  onClick={() =>
+                    question === CHECKLIST_QUESTION
+                      ? setShowChecklist(true)
+                      : sendMessage({ text: question })
+                  }
                   className="rounded-full border border-border/60 bg-secondary px-3 py-1.5 text-sm text-secondary-foreground transition-colors hover:bg-secondary/80"
                 >
                   {question}
@@ -112,6 +125,11 @@ function FaqPage() {
             </div>
           </Card>
         )}
+
+        {showChecklist && (
+          <ClaimChecklist onClose={() => setShowChecklist(false)} />
+        )}
+
 
         <Conversation className="mt-6 flex-1 rounded-xl border border-border/60 bg-card">
           <ConversationContent>
