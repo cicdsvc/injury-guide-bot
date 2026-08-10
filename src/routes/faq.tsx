@@ -54,10 +54,9 @@ const commonQuestions = [
 ];
 
 function FaqPage() {
-  const chatTransport = new DefaultChatTransport({ api: "/api/chat" });
   const { messages, sendMessage, status, error } = useChat({
     id: "faq",
-    transport: chatTransport,
+    api: "/api/chat",
   });
 
   const bottomRef = useRef<HTMLDivElement>(null);
