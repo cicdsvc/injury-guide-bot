@@ -5,7 +5,8 @@ import {
   Paragraph,
   TextRun,
 } from "docx";
-import { saveAs } from "file-saver";
+import FileSaver from "file-saver";
+const { saveAs } = FileSaver;
 
 const DEFAULT_FONT = "Arial";
 const DEFAULT_SIZE = 22; // 11pt
