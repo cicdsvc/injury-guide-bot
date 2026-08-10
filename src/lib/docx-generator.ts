@@ -1,11 +1,9 @@
 import {
   AlignmentType,
   Document,
-  HeadingLevel,
   Packer,
   Paragraph,
   TextRun,
-  UnderlineType,
 } from "docx";
 import { saveAs } from "file-saver";
 
@@ -13,12 +11,18 @@ const DEFAULT_FONT = "Arial";
 const DEFAULT_SIZE = 22; // 11pt
 
 function createRun(text: string, opts?: { bold?: boolean; underline?: boolean }) {
-  return new TextRun({ text, font: DEFAULT_FONT, size: DEFAULT_SIZE, ...opts });
+  return new TextRun({
+    text,
+    font: DEFAULT_FONT,
+    size: DEFAULT_SIZE,
+    bold: opts?.bold,
+    underline: opts?.underline ? { type: "single" } : undefined,
+  });
 }
 
 function createP(text: string, opts?: { bold?: boolean; spacing?: object }) {
   return new Paragraph({
-    children: [createRun(text, { bold: opts?.bold })],
+    children: [createRun(text, { bold: opts?.bold ?? false })],
     spacing: opts?.spacing ?? { after: 200 },
   });
 }
