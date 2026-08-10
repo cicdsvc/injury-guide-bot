@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Card, CardContent } from "@/components/ui/card";
 import { Disclaimer } from "@/components/app/Disclaimer";
-import heroImg from "@/assets/hero-personal-injury.png";
+import heroImg from "@/assets/hero-person-with-injury.png.asset.json";
 import faqImg from "@/assets/faq-questions.png";
 import claimImg from "@/assets/letter-of-claim.png";
 import settlementImg from "@/assets/settlement-agreement.png";
