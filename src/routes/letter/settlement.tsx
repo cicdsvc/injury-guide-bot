@@ -36,7 +36,7 @@ export const Route = createFileRoute("/letter/settlement")({
 const description = (
   <>
     <p>
-      A Private Settlement Agreement records the compensation agreed between you and the other party so the claim is resolved without going to court. Once signed, you cannot make any further claim against the other party for the same accident. This builder follows the template in Annex A of the guide.
+      A Private Settlement Agreement records the compensation agreed between you and the other party so the claim is resolved without going to court. Once signed, you cannot make any further claim against the other party for the same accident.
     </p>
     <p>
       Disclaimer: This template is provided for general guidance only and does not constitute legal advice. Always adapt it to your specific circumstances and seek professional advice if needed.
