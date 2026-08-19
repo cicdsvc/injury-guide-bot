@@ -41,6 +41,7 @@ const options = [
     to: "/guide",
     icon: HelpCircle,
     image: faqImg,
+    imagePosition: "center" as const,
   },
   {
     id: "settlement",
@@ -49,6 +50,7 @@ const options = [
     to: "/letter/settlement",
     icon: ShieldCheck,
     image: settlementImg,
+    imagePosition: "top" as const,
   },
   {
     id: "demand",
@@ -57,6 +59,7 @@ const options = [
     to: "/letter/demand",
     icon: Scale,
     image: demandImg,
+    imagePosition: "top" as const,
   },
 ];
 
@@ -117,7 +120,9 @@ function HomePage() {
                       <img
                         src={option.image}
                         alt=""
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        className={`h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 ${
+                          option.imagePosition === "top" ? "object-top" : "object-center"
+                        }`}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                       <option.icon className="absolute bottom-3 left-3 h-8 w-8 text-white drop-shadow-md" />
