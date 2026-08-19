@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { HomeButton } from "@/components/app/HomeButton";
-import { Disclaimer } from "@/components/app/Disclaimer";
-import { FileText, ListChecks, Scale, ClipboardList, ArrowRight } from "lucide-react";
+import { FileText, ListChecks, Scale, ClipboardList, ArrowRight, AlertTriangle } from "lucide-react";
 import faqImg from "@/assets/faq-questions.png";
 
 export const Route = createFileRoute("/_authenticated/guide")({
@@ -84,9 +83,7 @@ function GuideLandingPage() {
       </header>
 
       <div className="mx-auto max-w-4xl px-6 py-8">
-        <Disclaimer />
-
-        <Card className="mt-6 overflow-hidden border-border/60 bg-card">
+        <Card className="mt-0 overflow-hidden border-border/60 bg-card">
           <div className="relative h-48 w-full overflow-hidden">
             <img
               src={faqImg}
@@ -131,7 +128,10 @@ function GuideLandingPage() {
             </div>
 
             <div className="rounded-lg border border-amber/30 bg-amber/10 p-4 text-sm text-foreground/90">
-              <p className="font-medium">Important reminder</p>
+              <p className="flex items-center gap-2 font-medium">
+                <AlertTriangle className="h-4 w-4 text-amber" />
+                Important reminder
+              </p>
               <p className="mt-1">
                 This assistant is not a lawyer and does not provide legal advice. It is designed to
                 help you do the groundwork so that a lawyer can advise you more efficiently. Always
