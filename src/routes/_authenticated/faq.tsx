@@ -21,7 +21,6 @@ import {
   PromptInputSubmit,
   PromptInputTextarea,
 } from "@/components/ai-elements/prompt-input";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import faqImg from "@/assets/faq-questions.png";
 import { Download } from "lucide-react";
