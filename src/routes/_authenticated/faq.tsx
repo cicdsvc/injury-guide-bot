@@ -149,11 +149,7 @@ function FaqPage() {
                 consultation
               </li>
               <li>
-                Drafting a letter of claim for a lawyer to review (optional)
-              </li>
-              <li>
-                Drafting a letter of demand for a lawyer to review before it is
-                sent (optional)
+                Drafting a letter of claim for a lawyer to review
               </li>
             </ol>
             <p className="mt-2 text-sm text-muted-foreground">
