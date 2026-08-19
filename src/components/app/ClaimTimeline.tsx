@@ -61,7 +61,7 @@ export function ClaimTimeline() {
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <h2 className="text-xl font-semibold text-foreground">
-              Your claim timeline
+              Your claim journey
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
               Tick off each stage as you go, so you always know where you are.
