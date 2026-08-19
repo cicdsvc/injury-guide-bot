@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LetterWizard, type FieldDef } from "@/components/app/LetterWizard";
 import { generateSettlementAgreement } from "@/lib/docx-generator";
+import { generateSettlementAgreementPdf } from "@/lib/pdf-generator";
 import {
   blocksToText,
   buildSettlementAgreement,
@@ -132,8 +133,9 @@ function SettlementAgreementPage() {
       imageAlt="Illustration of two parties signing a settlement agreement"
       fields={fields}
       buildPreview={(d) => blocksToText(buildSettlementAgreement(toData(d)))}
-      onGenerate={async (d) => {
-        await generateSettlementAgreement(toData(d));
+      onGenerate={async (d, format) => {
+        if (format === "pdf") await generateSettlementAgreementPdf(toData(d));
+        else await generateSettlementAgreement(toData(d));
       }}
     />
   );

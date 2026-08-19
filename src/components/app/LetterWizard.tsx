@@ -34,7 +34,7 @@ export type LetterWizardProps = {
   imageAlt: string;
   fields: FieldDef[];
   buildPreview: (data: Record<string, string>) => string;
-  onGenerate: (data: Record<string, string>) => Promise<void>;
+  onGenerate: (data: Record<string, string>, format: "docx" | "pdf") => Promise<void>;
   progressKey: ProgressKey;
 };
 
@@ -93,11 +93,11 @@ export function LetterWizard({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleGenerate = async () => {
+  const handleGenerate = async (format: "docx" | "pdf") => {
     setIsGenerating(true);
     setError(null);
     try {
-      await onGenerate(formData);
+      await onGenerate(formData, format);
       setStep("done");
     } catch (err) {
       setError("Failed to generate the document. Please try again.");
@@ -291,13 +291,26 @@ export function LetterWizard({
                 >
                   Back
                 </Button>
-                <Button onClick={handleGenerate} disabled={isGenerating} className="gap-2">
+                <Button
+                  variant="secondary"
+                  onClick={() => void handleGenerate("pdf")}
+                  disabled={isGenerating}
+                  className="gap-2"
+                >
+                  <Download className="h-4 w-4" />
+                  Download PDF
+                </Button>
+                <Button
+                  onClick={() => void handleGenerate("docx")}
+                  disabled={isGenerating}
+                  className="gap-2"
+                >
                   {isGenerating ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
                     <Download className="h-4 w-4" />
                   )}
-                  {isGenerating ? "Generating..." : "Download .docx"}
+                  {isGenerating ? "Generating..." : "Download Word (.docx)"}
                 </Button>
               </div>
             </CardContent>
@@ -312,8 +325,8 @@ export function LetterWizard({
               </div>
               <h2 className="text-2xl font-semibold">Your letter is ready</h2>
               <p className="text-muted-foreground">
-                The document has been downloaded. You can open it in Microsoft Word
-                or Google Docs to make further edits.
+                The document has been downloaded. Word files can be edited in Microsoft
+                Word or Google Docs; PDFs are ready to print or send.
               </p>
               <div className="flex justify-center gap-3">
                 <Button
