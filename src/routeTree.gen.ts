@@ -10,72 +10,91 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as FaqRouteImport } from './routes/faq'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedFaqRouteImport } from './routes/_authenticated/faq'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
-import { Route as LetterClaimRouteImport } from './routes/letter/claim'
-import { Route as LetterDemandRouteImport } from './routes/letter/demand'
-import { Route as LetterSettlementRouteImport } from './routes/letter/settlement'
+import { Route as AuthenticatedLetterClaimRouteImport } from './routes/_authenticated/letter/claim'
+import { Route as AuthenticatedLetterDemandRouteImport } from './routes/_authenticated/letter/demand'
+import { Route as AuthenticatedLetterSettlementRouteImport } from './routes/_authenticated/letter/settlement'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const FaqRoute = FaqRouteImport.update({
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedFaqRoute = AuthenticatedFaqRouteImport.update({
   id: '/faq',
   path: '/faq',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const ApiChatRoute = ApiChatRouteImport.update({
   id: '/api/chat',
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LetterClaimRoute = LetterClaimRouteImport.update({
-  id: '/letter/claim',
-  path: '/letter/claim',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LetterDemandRoute = LetterDemandRouteImport.update({
-  id: '/letter/demand',
-  path: '/letter/demand',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LetterSettlementRoute = LetterSettlementRouteImport.update({
-  id: '/letter/settlement',
-  path: '/letter/settlement',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const AuthenticatedLetterClaimRoute =
+  AuthenticatedLetterClaimRouteImport.update({
+    id: '/letter/claim',
+    path: '/letter/claim',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedLetterDemandRoute =
+  AuthenticatedLetterDemandRouteImport.update({
+    id: '/letter/demand',
+    path: '/letter/demand',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedLetterSettlementRoute =
+  AuthenticatedLetterSettlementRouteImport.update({
+    id: '/letter/settlement',
+    path: '/letter/settlement',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/faq': typeof FaqRoute
+  '/auth': typeof AuthRoute
+  '/faq': typeof AuthenticatedFaqRoute
   '/api/chat': typeof ApiChatRoute
-  '/letter/claim': typeof LetterClaimRoute
-  '/letter/demand': typeof LetterDemandRoute
-  '/letter/settlement': typeof LetterSettlementRoute
+  '/letter/claim': typeof AuthenticatedLetterClaimRoute
+  '/letter/demand': typeof AuthenticatedLetterDemandRoute
+  '/letter/settlement': typeof AuthenticatedLetterSettlementRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/faq': typeof FaqRoute
+  '/auth': typeof AuthRoute
+  '/faq': typeof AuthenticatedFaqRoute
   '/api/chat': typeof ApiChatRoute
-  '/letter/claim': typeof LetterClaimRoute
-  '/letter/demand': typeof LetterDemandRoute
-  '/letter/settlement': typeof LetterSettlementRoute
+  '/letter/claim': typeof AuthenticatedLetterClaimRoute
+  '/letter/demand': typeof AuthenticatedLetterDemandRoute
+  '/letter/settlement': typeof AuthenticatedLetterSettlementRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/faq': typeof FaqRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/faq': typeof AuthenticatedFaqRoute
   '/api/chat': typeof ApiChatRoute
-  '/letter/claim': typeof LetterClaimRoute
-  '/letter/demand': typeof LetterDemandRoute
-  '/letter/settlement': typeof LetterSettlementRoute
+  '/_authenticated/letter/claim': typeof AuthenticatedLetterClaimRoute
+  '/_authenticated/letter/demand': typeof AuthenticatedLetterDemandRoute
+  '/_authenticated/letter/settlement': typeof AuthenticatedLetterSettlementRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth'
     | '/faq'
     | '/api/chat'
     | '/letter/claim'
@@ -84,6 +103,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/auth'
     | '/faq'
     | '/api/chat'
     | '/letter/claim'
@@ -92,20 +112,20 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/faq'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/faq'
     | '/api/chat'
-    | '/letter/claim'
-    | '/letter/demand'
-    | '/letter/settlement'
+    | '/_authenticated/letter/claim'
+    | '/_authenticated/letter/demand'
+    | '/_authenticated/letter/settlement'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  FaqRoute: typeof FaqRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   ApiChatRoute: typeof ApiChatRoute
-  LetterClaimRoute: typeof LetterClaimRoute
-  LetterDemandRoute: typeof LetterDemandRoute
-  LetterSettlementRoute: typeof LetterSettlementRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -117,12 +137,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/faq': {
-      id: '/faq'
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/faq': {
+      id: '/_authenticated/faq'
       path: '/faq'
       fullPath: '/faq'
-      preLoaderRoute: typeof FaqRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedFaqRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/api/chat': {
       id: '/api/chat'
@@ -131,37 +165,52 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/letter/claim': {
-      id: '/letter/claim'
+    '/_authenticated/letter/claim': {
+      id: '/_authenticated/letter/claim'
       path: '/letter/claim'
       fullPath: '/letter/claim'
-      preLoaderRoute: typeof LetterClaimRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedLetterClaimRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/letter/demand': {
-      id: '/letter/demand'
+    '/_authenticated/letter/demand': {
+      id: '/_authenticated/letter/demand'
       path: '/letter/demand'
       fullPath: '/letter/demand'
-      preLoaderRoute: typeof LetterDemandRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedLetterDemandRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/letter/settlement': {
-      id: '/letter/settlement'
+    '/_authenticated/letter/settlement': {
+      id: '/_authenticated/letter/settlement'
       path: '/letter/settlement'
       fullPath: '/letter/settlement'
-      preLoaderRoute: typeof LetterSettlementRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedLetterSettlementRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedFaqRoute: typeof AuthenticatedFaqRoute
+  AuthenticatedLetterClaimRoute: typeof AuthenticatedLetterClaimRoute
+  AuthenticatedLetterDemandRoute: typeof AuthenticatedLetterDemandRoute
+  AuthenticatedLetterSettlementRoute: typeof AuthenticatedLetterSettlementRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedFaqRoute: AuthenticatedFaqRoute,
+  AuthenticatedLetterClaimRoute: AuthenticatedLetterClaimRoute,
+  AuthenticatedLetterDemandRoute: AuthenticatedLetterDemandRoute,
+  AuthenticatedLetterSettlementRoute: AuthenticatedLetterSettlementRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  FaqRoute: FaqRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
   ApiChatRoute: ApiChatRoute,
-  LetterClaimRoute: LetterClaimRoute,
-  LetterDemandRoute: LetterDemandRoute,
-  LetterSettlementRoute: LetterSettlementRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
