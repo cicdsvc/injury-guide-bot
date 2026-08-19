@@ -78,33 +78,35 @@ export function ClaimTimeline() {
               {i < STAGES.length - 1 && (
                 <span
                   aria-hidden
-                  className="absolute left-4 top-9 h-[calc(100%-1.5rem)] w-px bg-border"
+                  className={`absolute left-4 top-9 h-[calc(100%-1.5rem)] w-px ${
+                    done[i] ? "bg-success" : "bg-border"
+                  }`}
                 />
               )}
               <span
                 className={`z-10 flex size-8 shrink-0 items-center justify-center rounded-full border text-sm font-semibold ${
                   done[i]
-                    ? "border-primary bg-primary text-primary-foreground"
+                    ? "border-success bg-success text-success-foreground"
                     : "border-border bg-background text-muted-foreground"
                 }`}
               >
                 {i + 1}
               </span>
-              <label className="flex flex-1 cursor-pointer items-start gap-3 pt-1">
+              <label
+                className={`flex flex-1 cursor-pointer items-start gap-3 rounded-lg p-3 pt-1 transition-colors ${
+                  done[i]
+                    ? "bg-success/10 text-success"
+                    : "bg-transparent text-foreground"
+                }`}
+              >
                 <Checkbox
                   checked={done[i] ?? false}
                   onCheckedChange={() => toggle(i)}
                   disabled={!ready}
                   aria-label={`Mark stage ${i + 1} as done`}
-                  className="mt-0.5"
+                  className="mt-0.5 border-success/50 data-[state=checked]:border-success data-[state=checked]:bg-success data-[state=checked]:text-success-foreground"
                 />
-                <span
-                  className={`text-sm ${
-                    done[i]
-                      ? "text-muted-foreground line-through"
-                      : "text-foreground"
-                  }`}
-                >
+                <span className={`text-sm ${done[i] ? "font-medium" : ""}`}>
                   {stage}
                 </span>
               </label>
