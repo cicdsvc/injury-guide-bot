@@ -154,10 +154,39 @@ function FaqPage() {
               const text = message.parts
                 .map((part) => (part.type === "text" ? part.text : ""))
                 .join("");
+              const isLetter =
+                message.role === "assistant" && looksLikeLetter(text);
               return (
                 <Message key={message.id} from={message.role}>
                   <MessageContent>
                     <MessageResponse>{text}</MessageResponse>
+                    {isLetter && (
+                      <div className="mt-4 flex flex-wrap gap-2 border-t border-border/60 pt-3">
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="outline"
+                          className="gap-2"
+                          onClick={() =>
+                            downloadTextAsPdf(text, letterName(text))
+                          }
+                        >
+                          <Download className="h-4 w-4" />
+                          Download PDF
+                        </Button>
+                        <Button
+                          type="button"
+                          size="sm"
+                          className="gap-2"
+                          onClick={() =>
+                            downloadTextAsDocx(text, letterName(text))
+                          }
+                        >
+                          <Download className="h-4 w-4" />
+                          Download Word (.docx)
+                        </Button>
+                      </div>
+                    )}
                   </MessageContent>
                 </Message>
               );
