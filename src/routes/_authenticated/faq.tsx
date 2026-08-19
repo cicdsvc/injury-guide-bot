@@ -82,6 +82,7 @@ const START_MESSAGE = `I would like to prepare for my personal injury consultati
 Please start with step 1.`;
 
 function FaqPage() {
+  const { ask } = Route.useSearch();
   const chatTransport = new DefaultChatTransport({ api: "/api/chat" });
   const { messages, sendMessage, status, error } = useChat({
     id: "faq",
@@ -89,6 +90,14 @@ function FaqPage() {
   });
 
   const bottomRef = useRef<HTMLDivElement>(null);
+  const autoSent = useRef(false);
+
+  useEffect(() => {
+    if (!ask || autoSent.current) return;
+    autoSent.current = true;
+    void sendMessage({ text: ask });
+  }, [ask, sendMessage]);
+
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
