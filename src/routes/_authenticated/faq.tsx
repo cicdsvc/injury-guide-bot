@@ -24,6 +24,23 @@ import {
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import faqImg from "@/assets/faq-questions.png";
+import { Download } from "lucide-react";
+import { downloadTextAsDocx, downloadTextAsPdf } from "@/lib/text-export";
+
+function looksLikeLetter(text: string) {
+  const t = text.toLowerCase();
+  const hasSalutation = /\bdear\b/.test(t);
+  const hasSignOff = /(yours faithfully|yours sincerely|yours truly)/.test(t);
+  const hasHeading = /(letter of claim|letter of demand)/.test(t);
+  return text.length > 400 && hasSalutation && (hasSignOff || hasHeading);
+}
+
+function letterName(text: string) {
+  const t = text.toLowerCase();
+  if (t.includes("letter of demand")) return "Letter_of_Demand_Draft";
+  if (t.includes("letter of claim")) return "Letter_of_Claim_Draft";
+  return "Draft_Letter";
+}
 
 export const Route = createFileRoute("/_authenticated/faq")({
   head: () => ({
@@ -154,10 +171,39 @@ function FaqPage() {
               const text = message.parts
                 .map((part) => (part.type === "text" ? part.text : ""))
                 .join("");
+              const isLetter =
+                message.role === "assistant" && looksLikeLetter(text);
               return (
                 <Message key={message.id} from={message.role}>
                   <MessageContent>
                     <MessageResponse>{text}</MessageResponse>
+                    {isLetter && (
+                      <div className="mt-4 flex flex-wrap gap-2 border-t border-border/60 pt-3">
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="outline"
+                          className="gap-2"
+                          onClick={() =>
+                            downloadTextAsPdf(text, letterName(text))
+                          }
+                        >
+                          <Download className="h-4 w-4" />
+                          Download PDF
+                        </Button>
+                        <Button
+                          type="button"
+                          size="sm"
+                          className="gap-2"
+                          onClick={() =>
+                            downloadTextAsDocx(text, letterName(text))
+                          }
+                        >
+                          <Download className="h-4 w-4" />
+                          Download Word (.docx)
+                        </Button>
+                      </div>
+                    )}
                   </MessageContent>
                 </Message>
               );
