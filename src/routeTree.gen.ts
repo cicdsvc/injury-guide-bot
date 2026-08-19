@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedFaqRouteImport } from './routes/_authenticated/faq'
+import { Route as AuthenticatedGuideRouteImport } from './routes/_authenticated/guide'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AuthenticatedLetterClaimRouteImport } from './routes/_authenticated/letter/claim'
 import { Route as AuthenticatedLetterDemandRouteImport } from './routes/_authenticated/letter/demand'
@@ -35,6 +36,11 @@ const AuthRoute = AuthRouteImport.update({
 const AuthenticatedFaqRoute = AuthenticatedFaqRouteImport.update({
   id: '/faq',
   path: '/faq',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedGuideRoute = AuthenticatedGuideRouteImport.update({
+  id: '/guide',
+  path: '/guide',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const ApiChatRoute = ApiChatRouteImport.update({
@@ -65,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/faq': typeof AuthenticatedFaqRoute
+  '/guide': typeof AuthenticatedGuideRoute
   '/api/chat': typeof ApiChatRoute
   '/letter/claim': typeof AuthenticatedLetterClaimRoute
   '/letter/demand': typeof AuthenticatedLetterDemandRoute
@@ -74,6 +81,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/faq': typeof AuthenticatedFaqRoute
+  '/guide': typeof AuthenticatedGuideRoute
   '/api/chat': typeof ApiChatRoute
   '/letter/claim': typeof AuthenticatedLetterClaimRoute
   '/letter/demand': typeof AuthenticatedLetterDemandRoute
@@ -85,6 +93,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/faq': typeof AuthenticatedFaqRoute
+  '/_authenticated/guide': typeof AuthenticatedGuideRoute
   '/api/chat': typeof ApiChatRoute
   '/_authenticated/letter/claim': typeof AuthenticatedLetterClaimRoute
   '/_authenticated/letter/demand': typeof AuthenticatedLetterDemandRoute
@@ -96,6 +105,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/faq'
+    | '/guide'
     | '/api/chat'
     | '/letter/claim'
     | '/letter/demand'
@@ -105,6 +115,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/faq'
+    | '/guide'
     | '/api/chat'
     | '/letter/claim'
     | '/letter/demand'
@@ -115,6 +126,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/faq'
+    | '/_authenticated/guide'
     | '/api/chat'
     | '/_authenticated/letter/claim'
     | '/_authenticated/letter/demand'
@@ -158,6 +170,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFaqRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/guide': {
+      id: '/_authenticated/guide'
+      path: '/guide'
+      fullPath: '/guide'
+      preLoaderRoute: typeof AuthenticatedGuideRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/api/chat': {
       id: '/api/chat'
       path: '/api/chat'
@@ -191,6 +210,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedFaqRoute: typeof AuthenticatedFaqRoute
+  AuthenticatedGuideRoute: typeof AuthenticatedGuideRoute
   AuthenticatedLetterClaimRoute: typeof AuthenticatedLetterClaimRoute
   AuthenticatedLetterDemandRoute: typeof AuthenticatedLetterDemandRoute
   AuthenticatedLetterSettlementRoute: typeof AuthenticatedLetterSettlementRoute
@@ -198,6 +218,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFaqRoute: AuthenticatedFaqRoute,
+  AuthenticatedGuideRoute: AuthenticatedGuideRoute,
   AuthenticatedLetterClaimRoute: AuthenticatedLetterClaimRoute,
   AuthenticatedLetterDemandRoute: AuthenticatedLetterDemandRoute,
   AuthenticatedLetterSettlementRoute: AuthenticatedLetterSettlementRoute,

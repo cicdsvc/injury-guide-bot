@@ -38,7 +38,7 @@ const options = [
     description:
       "Follow a guided process to understand and prepare your Personal Injury claim.",
 
-    to: "/faq",
+    to: "/guide",
     icon: HelpCircle,
     image: faqImg,
   },
