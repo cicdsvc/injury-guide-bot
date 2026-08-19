@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LetterWizard, type FieldDef } from "@/components/app/LetterWizard";
 import { generateLetterOfDemand } from "@/lib/docx-generator";
+import { generateLetterOfDemandPdf } from "@/lib/pdf-generator";
 import {
   blocksToText,
   buildLetterOfDemand,
@@ -149,8 +150,9 @@ function LetterOfDemandPage() {
       imageAlt="Illustration of a formal demand letter"
       fields={fields}
       buildPreview={(d) => blocksToText(buildLetterOfDemand(toData(d)))}
-      onGenerate={async (d) => {
-        await generateLetterOfDemand(toData(d));
+      onGenerate={async (d, format) => {
+        if (format === "pdf") await generateLetterOfDemandPdf(toData(d));
+        else await generateLetterOfDemand(toData(d));
       }}
     />
   );

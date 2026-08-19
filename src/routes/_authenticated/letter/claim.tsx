@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LetterWizard, type FieldDef } from "@/components/app/LetterWizard";
 import { generateLetterOfClaim } from "@/lib/docx-generator";
+import { generateLetterOfClaimPdf } from "@/lib/pdf-generator";
 import { blocksToText, buildLetterOfClaim, type LetterOfClaimData } from "@/lib/letter-templates";
 import claimImg from "@/assets/letter-of-claim.png";
 
@@ -160,8 +161,9 @@ function LetterOfClaimPage() {
       imageAlt="Illustration of a formal letter being prepared for a personal injury claim"
       fields={fields}
       buildPreview={(d) => blocksToText(buildLetterOfClaim(toData(d)))}
-      onGenerate={async (d) => {
-        await generateLetterOfClaim(toData(d));
+      onGenerate={async (d, format) => {
+        if (format === "pdf") await generateLetterOfClaimPdf(toData(d));
+        else await generateLetterOfClaim(toData(d));
       }}
     />
   );
