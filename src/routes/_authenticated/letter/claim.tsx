@@ -153,6 +153,7 @@ const toData = (d: Record<string, string>): LetterOfClaimData => ({
 function LetterOfClaimPage() {
   return (
     <LetterWizard
+      progressKey="letter:claim"
       title="Letter of Claim"
       description={description}
       image={claimImg}

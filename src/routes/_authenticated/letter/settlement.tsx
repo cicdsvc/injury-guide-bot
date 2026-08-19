@@ -125,6 +125,7 @@ const toData = (d: Record<string, string>): SettlementAgreementData => ({
 function SettlementAgreementPage() {
   return (
     <LetterWizard
+      progressKey="letter:settlement"
       title="Private Settlement Agreement"
       description={description}
       image={settlementImg}

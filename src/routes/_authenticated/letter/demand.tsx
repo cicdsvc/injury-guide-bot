@@ -142,6 +142,7 @@ const toData = (d: Record<string, string>): LetterOfDemandData => ({
 function LetterOfDemandPage() {
   return (
     <LetterWizard
+      progressKey="letter:demand"
       title="Letter of Demand"
       description={description}
       image={demandImg}
