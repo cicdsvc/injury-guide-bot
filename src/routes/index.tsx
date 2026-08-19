@@ -120,7 +120,9 @@ function HomePage() {
                       <img
                         src={option.image}
                         alt=""
-                        className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                        className={`h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 ${
+                          option.imagePosition === "top" ? "object-top" : "object-center"
+                        }`}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                       <option.icon className="absolute bottom-3 left-3 h-8 w-8 text-white drop-shadow-md" />
