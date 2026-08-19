@@ -8,7 +8,7 @@ import {
 } from "@/lib/letter-templates";
 import settlementImg from "@/assets/settlement-agreement.png";
 
-export const Route = createFileRoute("/letter/settlement")({
+export const Route = createFileRoute("/_authenticated/letter/settlement")({
   head: () => ({
     meta: [
       { title: "Settlement Agreement — Personal Injury Claim Helper" },

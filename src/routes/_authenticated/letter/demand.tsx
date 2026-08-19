@@ -8,7 +8,7 @@ import {
 } from "@/lib/letter-templates";
 import demandImg from "@/assets/letter-of-demand.png";
 
-export const Route = createFileRoute("/letter/demand")({
+export const Route = createFileRoute("/_authenticated/letter/demand")({
   head: () => ({
     meta: [
       { title: "Letter of Demand — Personal Injury Claim Helper" },
