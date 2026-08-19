@@ -67,8 +67,6 @@ function FaqPage() {
     id: "faq",
     transport: chatTransport,
   });
-  const [showChecklist, setShowChecklist] = useState(false);
-
 
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -121,30 +119,16 @@ function FaqPage() {
               lawyer. Please get legal advice before you settle anything or send
               any formal letter.
             </p>
-            <h3 className="mt-5 mb-3 text-sm font-medium text-foreground">
-              Where would you like to start?
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {commonQuestions.map((question) => (
-                <button
-                  key={question}
-                  type="button"
-                  onClick={() =>
-                    question === CHECKLIST_QUESTION
-                      ? setShowChecklist(true)
-                      : sendMessage({ text: question })
-                  }
-                  className="rounded-full border border-border/60 bg-secondary px-3 py-1.5 text-sm text-secondary-foreground transition-colors hover:bg-secondary/80"
-                >
-                  {question}
-                </button>
-              ))}
+            <div className="mt-6">
+              <Button
+                type="button"
+                onClick={() => sendMessage({ text: START_MESSAGE })}
+                className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+              >
+                Click here to begin
+              </Button>
             </div>
           </Card>
-        )}
-
-        {showChecklist && (
-          <ClaimChecklist onClose={() => setShowChecklist(false)} />
         )}
 
 
