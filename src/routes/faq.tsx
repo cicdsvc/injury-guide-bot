@@ -157,9 +157,10 @@ function FaqPage() {
           <ConversationContent>
             {messages.length === 0 ? (
               <ConversationEmptyState
-                title="No questions yet"
-                description="Pick a common question above or type your own."
+                title="Nothing here yet"
+                description="Pick a starting point above, or tell me in your own words what happened."
               />
+
             ) : (
               messages.map((message) => {
                 const text = message.parts
