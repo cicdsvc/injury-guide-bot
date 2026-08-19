@@ -1,10 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { HomeButton } from "@/components/app/HomeButton";
 import { Disclaimer } from "@/components/app/Disclaimer";
-import { ClaimChecklist } from "@/components/app/ClaimChecklist";
 
 import {
   Conversation,
@@ -24,6 +23,7 @@ import {
   PromptInputTextarea,
 } from "@/components/ai-elements/prompt-input";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import faqImg from "@/assets/faq-questions.png";
 
 export const Route = createFileRoute("/faq")({
@@ -51,18 +51,15 @@ export const Route = createFileRoute("/faq")({
   component: FaqPage,
 });
 
-const CHECKLIST_QUESTION =
-  "Show me the Personal Injuries Claim Process checklist";
+const START_MESSAGE = `I would like to prepare for my personal injury consultation. Please walk me through the following steps, one at a time:
 
-const commonQuestions = [
-  "Help me work out what evidence I should collect",
-  "Help me prepare a summary of my case for a lawyer",
-  "What will a lawyer want to advise me on?",
-  CHECKLIST_QUESTION,
-  "Help me draft a letter of claim for my lawyer to review",
-  "Help me draft a letter of demand for my lawyer to review",
-  "What is a Personal Injury?",
-];
+1. Identifying relevant evidence to collect (e.g. medical reports, photos, police reports, witness details, expense receipts)
+2. Understanding the key issues a lawyer will want to advise on
+3. Preparing a structured summary of facts and evidence for a legal consultation
+4. Drafting a letter of claim for a lawyer to review (optional)
+5. Drafting a letter of demand for a lawyer to review before it is sent (optional)
+
+Please start with step 1.`;
 
 function FaqPage() {
   const chatTransport = new DefaultChatTransport({ api: "/api/chat" });
