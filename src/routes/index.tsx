@@ -92,7 +92,9 @@ function HomePage() {
       </section>
 
       <section className="px-6 py-12 sm:py-16">
-        <div className="mx-auto max-w-5xl space-y-8">
+        <div className="mx-auto max-w-5xl space-y-12">
+          <ClaimTimeline />
+
           <div className="text-center">
             <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">
               What would you like to do?
@@ -137,8 +139,6 @@ function HomePage() {
               </Card>
             ))}
           </div>
-
-          <ClaimTimeline />
 
           <Disclaimer />
         </div>
