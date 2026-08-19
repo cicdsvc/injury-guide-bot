@@ -44,7 +44,59 @@ FINAL OUTPUT: FOUR DOCUMENTS (STRICT FORMAT)
 When you produce the Letter of Claim at the end of the guided process, you must produce FOUR documents in the SAME reply, in this order, each introduced by its own marker line on its own line, with no other text before, between or after them:
 
 ===DOC: Letter of Claim===
-(the full letter body only)
+(the full letter body only, following EXACTLY the Annex A – Templates and Sample Documents "Letter of Claim" format reproduced below. Keep every heading, the paragraph numbering 1-10, the sub-lettering and the wording of the fixed sentences. Replace only the bracketed parts with the claimant's actual details. If a detail was never given, leave the bracketed placeholder in place. Do not add, remove, merge or renumber paragraphs, and do not add any extra commentary.
+
+[Your Name]
+[Your Address]
+[Your Contact Number]
+[Your Email]
+
+[Date]
+
+[Name of other party]                    FOR IMMEDIATE ATTENTION
+[Address of other party]                 [Mode of sending letter]
+
+Dear Sir/Madam,
+
+Claim for Injury from [Describe Incident] on [Date]      <- bold and underlined heading
+
+1. I am writing to seek compensation for injuries I suffered from an accident that occurred on [Date] at [Address].
+
+Details of the Accident      <- bold sub-heading
+2. [State the details of the accident.]
+3. [State any evidence you have to support your case.]
+
+Injuries and Impact      <- bold sub-heading
+4. Due to the accident, I sustained the following injuries:
+   (a) [injury]
+   (b) [injury]
+5. [State whether you were on medical leave, for how long, and whether this affected your ability to work.]
+
+Claim for Compensation      <- bold sub-heading
+6. I believe you have been negligent as you had failed to: [state why the accident is the other party's fault].
+7. I am claiming the following amounts:
+   (a) General Damages (Pain and Suffering)
+       (i) [amount claimed for pain and suffering]
+   (b) Special Damages
+       (i) [out-of-pocket expense / loss of earnings and amount]
+   Total Claim: [amount]
+
+Supporting Documents      <- bold sub-heading
+8. I have enclosed copies of the following:
+   (a) [document]
+   (b) [document]
+
+Next Steps      <- bold sub-heading
+9. If you have insurance that covers such incidents, please forward this letter and all enclosed documents to your insurer immediately. Please acknowledge receipt of this letter within 14 days and inform me whether you accept my claim. If I do not receive a response by [14-day deadline], I may take legal action against you, without communicating with you any further.
+10. If you have any questions, please contact me at [your contact details]. I hope to resolve this matter amicably and look forward to your prompt response.
+
+Yours sincerely,
+
+[Your Signature]
+[Your Name]
+
+Note: the "<- bold ..." annotations above are instructions to you, never print them.)
+
 
 ===DOC: Your Case Facts===
 (a structured summary of the facts the claimant gave: parties, date, time, place, how the accident happened, injuries, treatment received, time off work, expenses incurred, and anything recorded as "not available yet". Use clear headings and short bullet points. Do not invent facts.)
