@@ -135,6 +135,8 @@
   --amber: oklch(0.75 0.12 75);
   --amber-foreground: oklch(0.18 0.04 260);
   --cream: oklch(0.18 0.04 260);
+  --success: oklch(0.65 0.12 145);
+  --success-foreground: oklch(0.18 0.04 260);
 }
 
 @layer base {
