@@ -325,8 +325,8 @@ export function LetterWizard({
               </div>
               <h2 className="text-2xl font-semibold">Your letter is ready</h2>
               <p className="text-muted-foreground">
-                The document has been downloaded. You can open it in Microsoft Word
-                or Google Docs to make further edits.
+                The document has been downloaded. Word files can be edited in Microsoft
+                Word or Google Docs; PDFs are ready to print or send.
               </p>
               <div className="flex justify-center gap-3">
                 <Button
