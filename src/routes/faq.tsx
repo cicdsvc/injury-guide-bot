@@ -139,7 +139,7 @@ function FaqPage() {
             {messages.length === 0 ? (
               <ConversationEmptyState
                 title="Nothing here yet"
-                description="Pick a starting point above, or tell me in your own words what happened."
+                description="Click the button above to begin, or tell me in your own words what happened."
               />
 
             ) : (
