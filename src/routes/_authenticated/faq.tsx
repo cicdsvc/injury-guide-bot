@@ -43,6 +43,9 @@ function letterName(text: string) {
 }
 
 export const Route = createFileRoute("/_authenticated/faq")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    ask: typeof search.ask === "string" ? search.ask : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Prepare for your lawyer — Personal Injury Claim Helper" },
