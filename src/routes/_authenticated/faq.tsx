@@ -41,6 +41,23 @@ function letterName(text: string) {
   return "Draft_Letter";
 }
 
+type DocSection = { title: string; body: string };
+
+const DOC_MARKER = /^[=\s]*===DOC:\s*(.+?)\s*===[=\s]*$/gm;
+
+function splitDocuments(text: string): DocSection[] {
+  const sections: DocSection[] = [];
+  const matches = [...text.matchAll(DOC_MARKER)];
+  matches.forEach((match, i) => {
+    const start = (match.index ?? 0) + match[0].length;
+    const end = i + 1 < matches.length ? matches[i + 1]!.index : text.length;
+    const body = text.slice(start, end).trim();
+    if (body) sections.push({ title: match[1] ?? "Document", body });
+  });
+  return sections;
+}
+
+
 export const Route = createFileRoute("/_authenticated/faq")({
   validateSearch: (
     search: Record<string, unknown>,
