@@ -21,7 +21,6 @@ import {
   PromptInputSubmit,
   PromptInputTextarea,
 } from "@/components/ai-elements/prompt-input";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import faqImg from "@/assets/faq-questions.png";
 import { Download } from "lucide-react";
@@ -45,8 +44,14 @@ function letterName(text: string) {
 export const Route = createFileRoute("/_authenticated/faq")({
   validateSearch: (
     search: Record<string, unknown>,
-  ): { ask?: string } =>
-    typeof search["ask"] === "string" ? { ask: search["ask"] } : {},
+  ): { ask?: string; start?: boolean } => {
+    const result: { ask?: string; start?: boolean } = {};
+    if (typeof search["ask"] === "string") result.ask = search["ask"];
+    if (search["start"] === true || search["start"] === "true") {
+      result.start = true;
+    }
+    return result;
+  },
   head: () => ({
     meta: [
       { title: "Prepare for your lawyer — Personal Injury Claim Helper" },
@@ -76,13 +81,12 @@ const START_MESSAGE = `I would like to prepare for my personal injury consultati
 1. Identifying relevant evidence to collect (e.g. medical reports, photos, police reports, witness details, expense receipts)
 2. Understanding the key issues a lawyer will want to advise on
 3. Preparing a structured summary of facts and evidence for a legal consultation
-4. Drafting a letter of claim for a lawyer to review (optional)
-5. Drafting a letter of demand for a lawyer to review before it is sent (optional)
+4. Drafting a letter of claim for a lawyer to review
 
 Please start with step 1.`;
 
 function FaqPage() {
-  const { ask } = Route.useSearch();
+  const { ask, start } = Route.useSearch();
   const chatTransport = new DefaultChatTransport({ api: "/api/chat" });
   const { messages, sendMessage, status, error } = useChat({
     id: "faq",
@@ -93,10 +97,15 @@ function FaqPage() {
   const autoSent = useRef(false);
 
   useEffect(() => {
-    if (!ask || autoSent.current) return;
-    autoSent.current = true;
-    void sendMessage({ text: ask });
-  }, [ask, sendMessage]);
+    if (autoSent.current) return;
+    if (start) {
+      autoSent.current = true;
+      void sendMessage({ text: START_MESSAGE });
+    } else if (ask) {
+      autoSent.current = true;
+      void sendMessage({ text: ask });
+    }
+  }, [ask, start, sendMessage]);
 
 
   useEffect(() => {
@@ -129,46 +138,6 @@ function FaqPage() {
       <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col px-6 py-6">
         <Disclaimer />
 
-        {messages.length === 0 && (
-          <Card className="mt-6 border-border/60 bg-card p-5">
-            <h2 className="text-sm font-medium text-foreground">
-              How this helps you
-            </h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              I can help you get ready for a legal consultation by walking you
-              through these steps:
-            </p>
-            <ol className="mt-3 list-decimal space-y-1.5 pl-5 text-sm text-muted-foreground">
-              <li>
-                Identifying relevant evidence to collect (e.g. medical reports,
-                photos, police reports, witness details, expense receipts)
-              </li>
-              <li>Understanding the key issues a lawyer will want to advise on</li>
-              <li>
-                Preparing a structured summary of facts and evidence for a legal
-                consultation
-              </li>
-              <li>
-                Drafting a letter of claim for a lawyer to review
-              </li>
-            </ol>
-            <p className="mt-2 text-sm text-muted-foreground">
-              I cannot tell you how strong your claim is, how much it is worth,
-              or whether to accept an offer — those are questions for your
-              lawyer. Please get legal advice before you settle anything or send
-              any formal letter.
-            </p>
-            <div className="mt-6">
-              <Button
-                type="button"
-                onClick={() => sendMessage({ text: START_MESSAGE })}
-                className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
-              >
-                Click here to begin
-              </Button>
-            </div>
-          </Card>
-        )}
 
 
 
