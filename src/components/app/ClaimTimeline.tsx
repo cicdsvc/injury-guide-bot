@@ -118,12 +118,9 @@ export function ClaimTimeline() {
                       </Link>
                       {" to generate a draft Letter of Claim."}
                     </>
-                  ) : (
-                    stage
-                  )}
-                  {i === 2 && (
+                  ) : i === 2 ? (
                     <>
-                      {" "}
+                      {stage}{" "}
                       <Link
                         to="/faq"
                         search={{ ask: "Give me Negotiations and Practical Tips" }}
@@ -133,6 +130,20 @@ export function ClaimTimeline() {
                         Get negotiation tips
                       </Link>
                     </>
+                  ) : i === 3 ? (
+                    <>
+                      An agreement is reached.{" "}
+                      <Link
+                        to="/letter/settlement"
+                        onClick={(e) => e.stopPropagation()}
+                        className="font-medium text-primary underline underline-offset-2 hover:text-primary/80"
+                      >
+                        Draft a Settlement Agreement
+                      </Link>
+                      {" and have a lawyer review it."}
+                    </>
+                  ) : (
+                    stage
                   )}
                 </span>
               </label>

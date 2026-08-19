@@ -45,7 +45,7 @@ const options = [
   },
   {
     id: "settlement",
-    label: "4. I want to craft a Settlement Agreement",
+    label: "4. I want to draft a Settlement Agreement",
     description: "Record the terms of settlement between the parties.",
     to: "/letter/settlement",
     icon: ShieldCheck,
