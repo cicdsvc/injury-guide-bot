@@ -41,6 +41,7 @@ const options = [
     to: "/guide",
     icon: HelpCircle,
     image: faqImg,
+    imagePosition: "center" as const,
   },
   {
     id: "settlement",
@@ -49,6 +50,7 @@ const options = [
     to: "/letter/settlement",
     icon: ShieldCheck,
     image: settlementImg,
+    imagePosition: "top" as const,
   },
   {
     id: "demand",
@@ -57,6 +59,7 @@ const options = [
     to: "/letter/demand",
     icon: Scale,
     image: demandImg,
+    imagePosition: "top" as const,
   },
 ];
 
