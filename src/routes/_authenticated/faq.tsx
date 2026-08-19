@@ -165,12 +165,65 @@ function FaqPage() {
               const text = message.parts
                 .map((part) => (part.type === "text" ? part.text : ""))
                 .join("");
+              const docs =
+                message.role === "assistant" ? splitDocuments(text) : [];
               const isLetter =
-                message.role === "assistant" && looksLikeLetter(text);
+                message.role === "assistant" &&
+                docs.length === 0 &&
+                looksLikeLetter(text);
               return (
                 <Message key={message.id} from={message.role}>
                   <MessageContent>
-                    <MessageResponse>{text}</MessageResponse>
+                    {docs.length > 0 ? (
+                      <div className="flex w-full flex-col gap-4">
+                        {docs.map((doc, i) => (
+                          <div
+                            key={`${message.id}-doc-${i}`}
+                            className="rounded-xl border border-border/60 bg-background p-4"
+                          >
+                            <h3 className="mb-3 text-sm font-semibold text-foreground">
+                              {doc.title}
+                            </h3>
+                            <div className="overflow-x-auto">
+                              <MessageResponse>{doc.body}</MessageResponse>
+                            </div>
+                            <div className="mt-4 flex flex-wrap gap-2 border-t border-border/60 pt-3">
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="outline"
+                                className="gap-2"
+                                onClick={() =>
+                                  downloadTextAsPdf(
+                                    `${doc.title}\n\n${doc.body}`,
+                                    doc.title,
+                                  )
+                                }
+                              >
+                                <Download className="h-4 w-4" />
+                                Download PDF
+                              </Button>
+                              <Button
+                                type="button"
+                                size="sm"
+                                className="gap-2"
+                                onClick={() =>
+                                  downloadTextAsDocx(
+                                    `${doc.title}\n\n${doc.body}`,
+                                    doc.title,
+                                  )
+                                }
+                              >
+                                <Download className="h-4 w-4" />
+                                Download Word (.docx)
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <MessageResponse>{text}</MessageResponse>
+                    )}
                     {isLetter && (
                       <div className="mt-4 flex flex-wrap gap-2 border-t border-border/60 pt-3">
                         <Button
@@ -202,6 +255,7 @@ function FaqPage() {
                 </Message>
               );
             })}
+
             <div ref={bottomRef} />
           </ConversationContent>
         </Conversation>
