@@ -70,10 +70,10 @@ async function downloadPdf(blocks: Block[], filename: string) {
         break;
       case "line":
         writeText(b.text, {
-          bold: b.bold,
-          italic: b.italic,
-          underline: b.underline,
-          center: b.center,
+          bold: !!b.bold,
+          italic: !!b.italic,
+          underline: !!b.underline,
+          center: !!b.center,
           indent: (b.indent ?? 0) * 6,
           after: b.tight ? 0 : 2,
         });
