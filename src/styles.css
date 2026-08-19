@@ -50,6 +50,8 @@
   --color-amber: var(--amber);
   --color-amber-foreground: var(--amber-foreground);
   --color-cream: var(--cream);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
 }
 
 :root {
@@ -91,6 +93,8 @@
   --amber: oklch(0.72 0.16 75);
   --amber-foreground: oklch(0.22 0.04 260);
   --cream: oklch(0.985 0.005 85);
+  --success: oklch(0.55 0.12 145);
+  --success-foreground: oklch(0.99 0.005 85);
 }
 
 .dark {
@@ -131,6 +135,8 @@
   --amber: oklch(0.75 0.12 75);
   --amber-foreground: oklch(0.18 0.04 260);
   --cream: oklch(0.18 0.04 260);
+  --success: oklch(0.65 0.12 145);
+  --success-foreground: oklch(0.18 0.04 260);
 }
 
 @layer base {
