@@ -106,12 +106,27 @@ function FaqPage() {
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
               I am not a lawyer and I cannot give legal advice. I can help you
-              get ready for a legal consultation: working out what evidence to
-              collect, understanding the questions a lawyer will want to go
-              through with you, putting your facts into a clear summary, and
-              drafting a letter of claim or letter of demand for your lawyer to
-              review.
+              get ready for a legal consultation by walking you through these
+              steps:
             </p>
+            <ol className="mt-3 list-decimal space-y-1.5 pl-5 text-sm text-muted-foreground">
+              <li>
+                Identifying relevant evidence to collect (e.g. medical reports,
+                photos, police reports, witness details, expense receipts)
+              </li>
+              <li>Understanding the key issues a lawyer will want to advise on</li>
+              <li>
+                Preparing a structured summary of facts and evidence for a legal
+                consultation
+              </li>
+              <li>
+                Drafting a letter of claim for a lawyer to review (optional)
+              </li>
+              <li>
+                Drafting a letter of demand for a lawyer to review before it is
+                sent (optional)
+              </li>
+            </ol>
             <p className="mt-2 text-sm text-muted-foreground">
               I cannot tell you how strong your claim is, how much it is worth,
               or whether to accept an offer — those are questions for your
