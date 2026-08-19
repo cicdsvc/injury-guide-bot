@@ -34,7 +34,7 @@ export const Route = createFileRoute("/")({
 const options = [
   {
     id: "faq",
-    label: "Step-by-Step guide on how to make a Personal Injury claim",
+    label: "1. Step-by-Step guide on how to make a Personal Injury claim",
     description:
       "Follow a guided process to understand and prepare your Personal Injury claim.",
 
@@ -45,7 +45,7 @@ const options = [
   },
   {
     id: "settlement",
-    label: "I want to craft a Settlement Agreement",
+    label: "4. I want to craft a Settlement Agreement",
     description: "Record the terms of settlement between the parties.",
     to: "/letter/settlement",
     icon: ShieldCheck,
@@ -54,7 +54,7 @@ const options = [
   },
   {
     id: "demand",
-    label: "I want to draft a Letter of Demand",
+    label: "5. I want to draft a Letter of Demand",
     description: "Formally demand payment or action before legal proceedings.",
     to: "/letter/demand",
     icon: Scale,
