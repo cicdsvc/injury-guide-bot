@@ -12,7 +12,7 @@ const STAGES = [
   "Consult a lawyer to get proper legal advice on your situation.",
   "Negotiate with the other party to reach a resolution.",
   "An agreement is reached. Draft a Settlement Agreement and have a lawyer review it.",
-  "If the agreed compensation is not received by the deadline, draft and send a Letter of Demand to the other party.",
+  "The agreed compensation is not received by the deadline. Draft and send a Letter of Demand to the other party.",
 ];
 
 type TimelineState = { done: boolean[] };
