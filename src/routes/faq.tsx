@@ -194,7 +194,7 @@ function FaqPage() {
           >
             <PromptInputBody>
               <PromptInputTextarea
-                placeholder="Type your question..."
+                placeholder="Tell me what happened, or ask what to prepare..."
                 className="min-h-[60px] resize-none"
               />
               <PromptInputFooter>
@@ -202,7 +202,21 @@ function FaqPage() {
               </PromptInputFooter>
             </PromptInputBody>
           </PromptInput>
+          <p className="mt-3 text-xs text-muted-foreground">
+            When you are ready for advice, speak to a private lawyer or{" "}
+            <a
+              href="https://www.probono.sg"
+              target="_blank"
+              rel="noreferrer"
+              className="underline underline-offset-2 hover:text-foreground"
+            >
+              Pro Bono SG
+            </a>
+            . Get legal advice before settling anything or sending any formal
+            letter.
+          </p>
         </div>
+
       </div>
     </main>
   );
