@@ -139,18 +139,18 @@ function GuideLandingPage() {
               </p>
             </div>
 
-            <div className="flex items-start gap-3 rounded-lg border border-border/60 bg-secondary p-4">
+            <div className="flex items-start gap-3 rounded-lg border border-purple/30 bg-purple/15 p-4">
               <Checkbox
                 id="legal-advice-declaration"
                 checked={accepted}
                 onCheckedChange={(checked) => setAccepted(checked === true)}
-                className="mt-0.5"
+                className="mt-0.5 border-purple-foreground/30 data-[state=checked]:bg-purple data-[state=checked]:text-purple-foreground"
               />
               <div className="grid gap-1.5 leading-none">
-                <Label htmlFor="legal-advice-declaration" className="text-sm font-medium">
+                <Label htmlFor="legal-advice-declaration" className="text-sm font-medium text-purple-foreground">
                   I understand and agree
                 </Label>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-purple-foreground/80">
                   By checking this box, I understand that this guide does not constitute legal
                   advice and that I should seek advice from a qualified lawyer for my situation.
                 </p>

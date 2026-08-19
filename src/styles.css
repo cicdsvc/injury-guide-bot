@@ -54,6 +54,8 @@
   --color-success-foreground: var(--success-foreground);
   --color-yellow: var(--yellow);
   --color-yellow-foreground: var(--yellow-foreground);
+  --color-purple: var(--purple);
+  --color-purple-foreground: var(--purple-foreground);
 }
 
 :root {
@@ -99,6 +101,8 @@
   --success-foreground: oklch(0.99 0.005 85);
   --yellow: oklch(0.85 0.14 90);
   --yellow-foreground: oklch(0.22 0.04 260);
+  --purple: oklch(0.85 0.08 300);
+  --purple-foreground: oklch(0.22 0.04 260);
 }
 
 .dark {
@@ -143,6 +147,8 @@
   --success-foreground: oklch(0.18 0.04 260);
   --yellow: oklch(0.8 0.12 90);
   --yellow-foreground: oklch(0.18 0.04 260);
+  --purple: oklch(0.35 0.08 300);
+  --purple-foreground: oklch(0.96 0.01 85);
 }
 
 @layer base {
