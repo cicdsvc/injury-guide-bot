@@ -108,6 +108,19 @@ export function ClaimTimeline() {
                 />
                 <span className={`text-sm ${done[i] ? "font-medium" : ""}`}>
                   {stage}
+                  {i === 2 && (
+                    <>
+                      {" "}
+                      <Link
+                        to="/faq"
+                        search={{ ask: "Give me Negotiations and Practical Tips" }}
+                        onClick={(e) => e.stopPropagation()}
+                        className="font-medium text-primary underline underline-offset-2 hover:text-primary/80"
+                      >
+                        Get negotiation tips
+                      </Link>
+                    </>
+                  )}
                 </span>
               </label>
             </li>
