@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Card, CardContent } from "@/components/ui/card";
 import { Disclaimer } from "@/components/app/Disclaimer";
 import { AccountBar } from "@/components/app/AccountBar";
+import { ClaimTimeline } from "@/components/app/ClaimTimeline";
 import heroImg from "@/assets/hero-person-with-injury.png.asset.json";
 import faqImg from "@/assets/faq-questions.png";
 import settlementImg from "@/assets/settlement-agreement.png";
@@ -136,6 +137,8 @@ function HomePage() {
               </Card>
             ))}
           </div>
+
+          <ClaimTimeline />
 
           <Disclaimer />
         </div>
