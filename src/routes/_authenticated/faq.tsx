@@ -135,9 +135,8 @@ function FaqPage() {
               How this helps you
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              I am not a lawyer and I cannot give legal advice. I can help you
-              get ready for a legal consultation by walking you through these
-              steps:
+              I can help you get ready for a legal consultation by walking you
+              through these steps:
             </p>
             <ol className="mt-3 list-decimal space-y-1.5 pl-5 text-sm text-muted-foreground">
               <li>
