@@ -8,7 +8,6 @@ import { Disclaimer } from "@/components/app/Disclaimer";
 import {
   Conversation,
   ConversationContent,
-  ConversationEmptyState,
 } from "@/components/ai-elements/conversation";
 import {
   Message,
@@ -136,26 +135,18 @@ function FaqPage() {
 
         <Conversation className="mt-6 flex-1 rounded-xl border border-border/60 bg-card">
           <ConversationContent>
-            {messages.length === 0 ? (
-              <ConversationEmptyState
-                title="Nothing here yet"
-                description="Click the button above to begin, or tell me in your own words what happened."
-              />
-
-            ) : (
-              messages.map((message) => {
-                const text = message.parts
-                  .map((part) => (part.type === "text" ? part.text : ""))
-                  .join("");
-                return (
-                  <Message key={message.id} from={message.role}>
-                    <MessageContent>
-                      <MessageResponse>{text}</MessageResponse>
-                    </MessageContent>
-                  </Message>
-                );
-              })
-            )}
+            {messages.map((message) => {
+              const text = message.parts
+                .map((part) => (part.type === "text" ? part.text : ""))
+                .join("");
+              return (
+                <Message key={message.id} from={message.role}>
+                  <MessageContent>
+                    <MessageResponse>{text}</MessageResponse>
+                  </MessageContent>
+                </Message>
+              );
+            })}
             <div ref={bottomRef} />
           </ConversationContent>
         </Conversation>
