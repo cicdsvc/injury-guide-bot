@@ -25,7 +25,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import faqImg from "@/assets/faq-questions.png";
 
-export const Route = createFileRoute("/faq")({
+export const Route = createFileRoute("/_authenticated/faq")({
   head: () => ({
     meta: [
       { title: "Prepare for your lawyer — Personal Injury Claim Helper" },

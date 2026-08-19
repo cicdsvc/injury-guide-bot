@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -7,6 +7,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { HomeButton } from "@/components/app/HomeButton";
 import { Disclaimer } from "@/components/app/Disclaimer";
 import { ArrowLeft, Download, FileText, Loader2, RefreshCcw } from "lucide-react";
+import { ResumePrompt } from "@/components/app/ResumePrompt";
+import {
+  clearProgress,
+  loadProgress,
+  saveProgress,
+  type ProgressKey,
+} from "@/lib/progress";
 
 export type FieldDef = {
   name: string;
@@ -28,6 +35,13 @@ export type LetterWizardProps = {
   fields: FieldDef[];
   buildPreview: (data: Record<string, string>) => string;
   onGenerate: (data: Record<string, string>) => Promise<void>;
+  progressKey: ProgressKey;
+};
+
+type SavedLetter = {
+  formData: Record<string, string>;
+  step: "intro" | "form" | "preview";
+  savedAt?: string;
 };
 
 export function LetterWizard({
@@ -38,11 +52,40 @@ export function LetterWizard({
   fields,
   buildPreview,
   onGenerate,
+  progressKey,
 }: LetterWizardProps) {
   const [step, setStep] = useState<"intro" | "form" | "preview" | "done">("intro");
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [ready, setReady] = useState(false);
+  const [savedDraft, setSavedDraft] = useState<SavedLetter | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    loadProgress<SavedLetter>(progressKey).then((saved) => {
+      if (!active) return;
+      const hasAnswers =
+        saved?.formData &&
+        Object.values(saved.formData).some((v) => typeof v === "string" && v.trim() !== "");
+      if (hasAnswers) setSavedDraft(saved);
+      setReady(true);
+    });
+    return () => {
+      active = false;
+    };
+  }, [progressKey]);
+
+  useEffect(() => {
+    if (!ready || savedDraft) return;
+    const hasAnswers = Object.values(formData).some((v) => v && v.trim() !== "");
+    if (!hasAnswers) return;
+    void saveProgress(progressKey, {
+      formData,
+      step: step === "done" ? "preview" : step,
+      savedAt: new Date().toISOString(),
+    });
+  }, [formData, step, ready, savedDraft, progressKey]);
 
   const visibleFields = fields.filter((f) => !f.showIf || f.showIf(formData));
 
@@ -85,7 +128,36 @@ export function LetterWizard({
       <div className="mx-auto max-w-4xl px-6 py-8">
         <Disclaimer />
 
-        {step === "intro" && (
+        {!ready && (
+          <div className="mt-10 flex justify-center">
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          </div>
+        )}
+
+        {ready && savedDraft && (
+          <ResumePrompt
+            description="You have a saved draft of this letter. Continue with your saved answers, or start a new draft."
+            savedAt={
+              savedDraft.savedAt
+                ? new Date(savedDraft.savedAt).toLocaleString()
+                : undefined
+            }
+            onResume={() => {
+              setFormData(savedDraft.formData);
+              setStep(savedDraft.step === "intro" ? "form" : savedDraft.step);
+              setSavedDraft(null);
+            }}
+            onRestart={() => {
+              void clearProgress(progressKey);
+              setFormData({});
+              setStep("intro");
+              setSavedDraft(null);
+            }}
+          />
+        )}
+
+        {ready && !savedDraft && step === "intro" && (
+
           <Card className="mt-6 overflow-hidden border-border/60 bg-card">
             <div className="relative h-48 w-full overflow-hidden">
               <img
@@ -247,6 +319,7 @@ export function LetterWizard({
                 <Button
                   variant="outline"
                   onClick={() => {
+                    void clearProgress(progressKey);
                     setFormData({});
                     setStep("intro");
                   }}

@@ -4,7 +4,7 @@ import { generateLetterOfClaim } from "@/lib/docx-generator";
 import { blocksToText, buildLetterOfClaim, type LetterOfClaimData } from "@/lib/letter-templates";
 import claimImg from "@/assets/letter-of-claim.png";
 
-export const Route = createFileRoute("/letter/claim")({
+export const Route = createFileRoute("/_authenticated/letter/claim")({
   head: () => ({
     meta: [
       { title: "Letter of Claim — Personal Injury Claim Helper" },

@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Card, CardContent } from "@/components/ui/card";
 import { Disclaimer } from "@/components/app/Disclaimer";
+import { AccountBar } from "@/components/app/AccountBar";
 import heroImg from "@/assets/hero-person-with-injury.png.asset.json";
 import faqImg from "@/assets/faq-questions.png";
 import claimImg from "@/assets/letter-of-claim.png";
@@ -72,6 +73,9 @@ function HomePage() {
     <main className="min-h-screen bg-cream">
       <section className="relative overflow-hidden bg-navy px-6 py-16 text-navy-foreground sm:py-24">
         <div className="mx-auto max-w-5xl">
+          <div className="mb-10 flex justify-end">
+            <AccountBar />
+          </div>
           <div className="grid items-center gap-10 lg:grid-cols-2">
             <div className="space-y-6">
               <h1 className="text-balance text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
@@ -102,7 +106,8 @@ function HomePage() {
               What would you like to do?
             </h2>
             <p className="mt-2 text-muted-foreground">
-              Choose an option below to get started.
+              Choose an option below to get started. Sign in to save your
+              progress and continue later.
             </p>
           </div>
 
