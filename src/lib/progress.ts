@@ -1,6 +1,11 @@
 import { supabase } from "@/integrations/supabase/client";
 
-export type ProgressKey = "faq" | "letter:claim" | "letter:settlement" | "letter:demand";
+export type ProgressKey =
+  | "faq"
+  | "letter:claim"
+  | "letter:settlement"
+  | "letter:demand"
+  | "timeline";
 
 async function getUserId(): Promise<string | null> {
   const { data } = await supabase.auth.getSession();
