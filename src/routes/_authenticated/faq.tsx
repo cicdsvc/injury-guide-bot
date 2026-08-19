@@ -24,6 +24,23 @@ import {
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import faqImg from "@/assets/faq-questions.png";
+import { Download } from "lucide-react";
+import { downloadTextAsDocx, downloadTextAsPdf } from "@/lib/text-export";
+
+function looksLikeLetter(text: string) {
+  const t = text.toLowerCase();
+  const hasSalutation = /\bdear\b/.test(t);
+  const hasSignOff = /(yours faithfully|yours sincerely|yours truly)/.test(t);
+  const hasHeading = /(letter of claim|letter of demand)/.test(t);
+  return text.length > 400 && hasSalutation && (hasSignOff || hasHeading);
+}
+
+function letterName(text: string) {
+  const t = text.toLowerCase();
+  if (t.includes("letter of demand")) return "Letter_of_Demand_Draft";
+  if (t.includes("letter of claim")) return "Letter_of_Claim_Draft";
+  return "Draft_Letter";
+}
 
 export const Route = createFileRoute("/_authenticated/faq")({
   head: () => ({
