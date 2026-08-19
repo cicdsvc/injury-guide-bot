@@ -11,7 +11,7 @@ const STAGES = [
   "Use the step-by-step guide to generate a draft Letter of Claim.",
   "Consult a lawyer to get proper legal advice on your situation.",
   "Negotiate with the other party to reach a resolution.",
-  "An agreement is reached, have a lawyer review the settlement agreement before you sign.",
+  "An agreement is reached. Draft a Settlement Agreement and have a lawyer review it.",
   "The agreed compensation is not received, send a Letter of Demand to the other party.",
 ];
 
