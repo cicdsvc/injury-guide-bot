@@ -127,9 +127,9 @@ function GuideLandingPage() {
               ))}
             </div>
 
-            <div className="rounded-lg border border-primary/30 bg-primary/10 p-4 text-sm text-foreground/90">
-              <p className="flex items-center gap-2 font-medium text-primary">
-                <AlertTriangle className="h-4 w-4 text-primary" />
+            <div className="rounded-lg border border-yellow/30 bg-yellow/15 p-4 text-sm text-yellow-foreground">
+              <p className="flex items-center gap-2 font-medium text-yellow-foreground">
+                <AlertTriangle className="h-4 w-4 text-yellow-foreground" />
                 Important reminder
               </p>
               <p className="mt-1">
