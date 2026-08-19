@@ -74,8 +74,8 @@ function HomePage() {
                 Personal Injury Claim Helper
               </h1>
               <p className="text-lg/relaxed text-navy-foreground/80 sm:text-xl/relaxed">
-                An interactive app to help you understand more about your
-                Personal Injury claims.
+                An interactive app to facilitate out of court settlements for
+                minor Personal Injury claims.
               </p>
             </div>
             <div className="relative mx-auto w-full max-w-md lg:max-w-none">
