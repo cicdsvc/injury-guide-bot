@@ -81,8 +81,7 @@ const START_MESSAGE = `I would like to prepare for my personal injury consultati
 1. Identifying relevant evidence to collect (e.g. medical reports, photos, police reports, witness details, expense receipts)
 2. Understanding the key issues a lawyer will want to advise on
 3. Preparing a structured summary of facts and evidence for a legal consultation
-4. Drafting a letter of claim for a lawyer to review (optional)
-5. Drafting a letter of demand for a lawyer to review before it is sent (optional)
+4. Drafting a letter of claim for a lawyer to review
 
 Please start with step 1.`;
 
