@@ -159,7 +159,7 @@ function GuideLandingPage() {
 
             <div className="flex justify-end">
               <Button asChild disabled={!accepted} className="gap-2">
-                <Link to="/faq">
+                <Link to="/faq" search={{}}>
                   Start the guided process
                   <ArrowRight className="h-4 w-4" />
                 </Link>
