@@ -29,17 +29,20 @@ import faqImg from "@/assets/faq-questions.png";
 export const Route = createFileRoute("/faq")({
   head: () => ({
     meta: [
-      { title: "FAQ — Personal Injury Claim Helper" },
+      { title: "Prepare for your lawyer — Personal Injury Claim Helper" },
       {
         name: "description",
         content:
-          "Ask questions about Personal Injury claims and get answers grounded in the guide.",
+          "Get help gathering evidence and preparing a clear summary of your personal injury claim before you see a lawyer.",
       },
-      { property: "og:title", content: "FAQ — Personal Injury Claim Helper" },
+      {
+        property: "og:title",
+        content: "Prepare for your lawyer — Personal Injury Claim Helper",
+      },
       {
         property: "og:description",
         content:
-          "Ask questions about Personal Injury claims and get answers grounded in the guide.",
+          "Get help gathering evidence and preparing a clear summary of your personal injury claim before you see a lawyer.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -52,13 +55,13 @@ const CHECKLIST_QUESTION =
   "Show me the Personal Injuries Claim Process checklist";
 
 const commonQuestions = [
-  "What is a Personal Injury?",
+  "Help me work out what evidence I should collect",
+  "Help me prepare a summary of my case for a lawyer",
+  "What will a lawyer want to advise me on?",
   CHECKLIST_QUESTION,
-  "What is a Letter of Claim?",
-  "How long do I have to make a personal injury claim?",
-  "What damages can I claim for?",
-  "What is contributory negligence?",
-  "Do I need a lawyer to settle my claim?",
+  "Help me draft a letter of claim for my lawyer to review",
+  "Help me draft a letter of demand for my lawyer to review",
+  "What is a Personal Injury?",
 ];
 
 function FaqPage() {
@@ -88,10 +91,10 @@ function FaqPage() {
             />
             <div>
               <h1 className="text-lg font-semibold text-foreground">
-                FAQ Assistant
+                Consultation Prep Assistant
               </h1>
               <p className="text-xs text-muted-foreground">
-                Answers are based on the guide only
+                Groundwork for your claim, so your lawyer's time goes further
               </p>
             </div>
           </div>
@@ -104,9 +107,26 @@ function FaqPage() {
 
         {messages.length === 0 && (
           <Card className="mt-6 border-border/60 bg-card p-5">
-            <h2 className="mb-3 text-sm font-medium text-foreground">
-              Common questions
+            <h2 className="text-sm font-medium text-foreground">
+              How this helps you
             </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              I am not a lawyer and I cannot give legal advice. I can help you
+              get ready for a legal consultation: working out what evidence to
+              collect, understanding the questions a lawyer will want to go
+              through with you, putting your facts into a clear summary, and
+              drafting a letter of claim or letter of demand for your lawyer to
+              review.
+            </p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              I cannot tell you how strong your claim is, how much it is worth,
+              or whether to accept an offer — those are questions for your
+              lawyer. Please get legal advice before you settle anything or send
+              any formal letter.
+            </p>
+            <h3 className="mt-5 mb-3 text-sm font-medium text-foreground">
+              Where would you like to start?
+            </h3>
             <div className="flex flex-wrap gap-2">
               {commonQuestions.map((question) => (
                 <button
@@ -131,13 +151,16 @@ function FaqPage() {
         )}
 
 
+
+
         <Conversation className="mt-6 flex-1 rounded-xl border border-border/60 bg-card">
           <ConversationContent>
             {messages.length === 0 ? (
               <ConversationEmptyState
-                title="No questions yet"
-                description="Pick a common question above or type your own."
+                title="Nothing here yet"
+                description="Pick a starting point above, or tell me in your own words what happened."
               />
+
             ) : (
               messages.map((message) => {
                 const text = message.parts
@@ -171,7 +194,7 @@ function FaqPage() {
           >
             <PromptInputBody>
               <PromptInputTextarea
-                placeholder="Type your question..."
+                placeholder="Tell me what happened, or ask what to prepare..."
                 className="min-h-[60px] resize-none"
               />
               <PromptInputFooter>
@@ -179,7 +202,21 @@ function FaqPage() {
               </PromptInputFooter>
             </PromptInputBody>
           </PromptInput>
+          <p className="mt-3 text-xs text-muted-foreground">
+            When you are ready for advice, speak to a private lawyer or{" "}
+            <a
+              href="https://www.probono.sg"
+              target="_blank"
+              rel="noreferrer"
+              className="underline underline-offset-2 hover:text-foreground"
+            >
+              Pro Bono SG
+            </a>
+            . Get legal advice before settling anything or sending any formal
+            letter.
+          </p>
         </div>
+
       </div>
     </main>
   );

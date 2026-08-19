@@ -34,7 +34,9 @@ const options = [
   {
     id: "faq",
     label: "I got questions regarding my Personal Injury claim",
-    description: "Browse common questions or ask your own.",
+    description:
+      "Get ready for a lawyer: what evidence to collect and how to summarise your case.",
+
     to: "/faq",
     icon: HelpCircle,
     image: faqImg,
