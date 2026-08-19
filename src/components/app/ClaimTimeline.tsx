@@ -142,6 +142,18 @@ export function ClaimTimeline() {
                       </Link>
                       {" and have a lawyer review it."}
                     </>
+                  ) : i === 4 ? (
+                    <>
+                      The agreed compensation is not received by the deadline.{" "}
+                      <Link
+                        to="/letter/demand"
+                        onClick={(e) => e.stopPropagation()}
+                        className="font-medium text-primary underline underline-offset-2 hover:text-primary/80"
+                      >
+                        Draft a Letter of Demand
+                      </Link>
+                      {" and send to the other party."}
+                    </>
                   ) : (
                     stage
                   )}
