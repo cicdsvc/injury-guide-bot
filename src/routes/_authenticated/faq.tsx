@@ -134,46 +134,6 @@ function FaqPage() {
       <div className="mx-auto flex w-full max-w-4xl flex-1 flex-col px-6 py-6">
         <Disclaimer />
 
-        {messages.length === 0 && (
-          <Card className="mt-6 border-border/60 bg-card p-5">
-            <h2 className="text-sm font-medium text-foreground">
-              How this helps you
-            </h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              I can help you get ready for a legal consultation by walking you
-              through these steps:
-            </p>
-            <ol className="mt-3 list-decimal space-y-1.5 pl-5 text-sm text-muted-foreground">
-              <li>
-                Identifying relevant evidence to collect (e.g. medical reports,
-                photos, police reports, witness details, expense receipts)
-              </li>
-              <li>Understanding the key issues a lawyer will want to advise on</li>
-              <li>
-                Preparing a structured summary of facts and evidence for a legal
-                consultation
-              </li>
-              <li>
-                Drafting a letter of claim for a lawyer to review
-              </li>
-            </ol>
-            <p className="mt-2 text-sm text-muted-foreground">
-              I cannot tell you how strong your claim is, how much it is worth,
-              or whether to accept an offer — those are questions for your
-              lawyer. Please get legal advice before you settle anything or send
-              any formal letter.
-            </p>
-            <div className="mt-6">
-              <Button
-                type="button"
-                onClick={() => sendMessage({ text: START_MESSAGE })}
-                className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
-              >
-                Click here to begin
-              </Button>
-            </div>
-          </Card>
-        )}
 
 
 
