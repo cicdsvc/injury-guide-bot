@@ -43,14 +43,6 @@ const options = [
     image: faqImg,
   },
   {
-    id: "claim",
-    label: "I want to craft a Letter of Claim",
-    description: "Notify the other party of your claim and demand compensation.",
-    to: "/letter/claim",
-    icon: FileText,
-    image: claimImg,
-  },
-  {
     id: "settlement",
     label: "I want to craft a Settlement Agreement",
     description: "Record the terms of settlement between the parties.",
