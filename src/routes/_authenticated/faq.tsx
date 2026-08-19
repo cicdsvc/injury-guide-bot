@@ -44,10 +44,14 @@ function letterName(text: string) {
 export const Route = createFileRoute("/_authenticated/faq")({
   validateSearch: (
     search: Record<string, unknown>,
-  ): { ask?: string; start?: boolean } => ({
-    ask: typeof search["ask"] === "string" ? search["ask"] : undefined,
-    start: search["start"] === true || search["start"] === "true",
-  }),
+  ): { ask?: string; start?: boolean } => {
+    const result: { ask?: string; start?: boolean } = {};
+    if (typeof search["ask"] === "string") result.ask = search["ask"];
+    if (search["start"] === true || search["start"] === "true") {
+      result.start = true;
+    }
+    return result;
+  },
   head: () => ({
     meta: [
       { title: "Prepare for your lawyer — Personal Injury Claim Helper" },
