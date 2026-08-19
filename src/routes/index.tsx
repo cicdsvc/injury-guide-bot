@@ -34,7 +34,7 @@ export const Route = createFileRoute("/")({
 const options = [
   {
     id: "faq",
-    label: "Step-by-Step guide on how to make a Personal Injury claim",
+    label: "1. Step-by-Step guide on how to make a Personal Injury claim",
     description:
       "Follow a guided process to understand and prepare your Personal Injury claim.",
 
