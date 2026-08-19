@@ -34,7 +34,7 @@ export type LetterWizardProps = {
   imageAlt: string;
   fields: FieldDef[];
   buildPreview: (data: Record<string, string>) => string;
-  onGenerate: (data: Record<string, string>) => Promise<void>;
+  onGenerate: (data: Record<string, string>, format: "docx" | "pdf") => Promise<void>;
   progressKey: ProgressKey;
 };
 
@@ -93,11 +93,11 @@ export function LetterWizard({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleGenerate = async () => {
+  const handleGenerate = async (format: "docx" | "pdf") => {
     setIsGenerating(true);
     setError(null);
     try {
-      await onGenerate(formData);
+      await onGenerate(formData, format);
       setStep("done");
     } catch (err) {
       setError("Failed to generate the document. Please try again.");
@@ -291,13 +291,26 @@ export function LetterWizard({
                 >
                   Back
                 </Button>
-                <Button onClick={handleGenerate} disabled={isGenerating} className="gap-2">
+                <Button
+                  variant="secondary"
+                  onClick={() => void handleGenerate("pdf")}
+                  disabled={isGenerating}
+                  className="gap-2"
+                >
+                  <Download className="h-4 w-4" />
+                  Download PDF
+                </Button>
+                <Button
+                  onClick={() => void handleGenerate("docx")}
+                  disabled={isGenerating}
+                  className="gap-2"
+                >
                   {isGenerating ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
                     <Download className="h-4 w-4" />
                   )}
-                  {isGenerating ? "Generating..." : "Download .docx"}
+                  {isGenerating ? "Generating..." : "Download Word (.docx)"}
                 </Button>
               </div>
             </CardContent>
