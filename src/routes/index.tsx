@@ -4,10 +4,9 @@ import { Disclaimer } from "@/components/app/Disclaimer";
 import { AccountBar } from "@/components/app/AccountBar";
 import heroImg from "@/assets/hero-person-with-injury.png.asset.json";
 import faqImg from "@/assets/faq-questions.png";
-import claimImg from "@/assets/letter-of-claim.png";
 import settlementImg from "@/assets/settlement-agreement.png";
 import demandImg from "@/assets/letter-of-demand.png";
-import { ArrowRight, FileText, HelpCircle, Scale, ShieldCheck } from "lucide-react";
+import { ArrowRight, HelpCircle, Scale, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
