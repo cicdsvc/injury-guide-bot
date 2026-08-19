@@ -50,6 +50,8 @@
   --color-amber: var(--amber);
   --color-amber-foreground: var(--amber-foreground);
   --color-cream: var(--cream);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
 }
 
 :root {
