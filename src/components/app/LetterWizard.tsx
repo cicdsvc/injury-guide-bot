@@ -59,7 +59,10 @@ export function LetterWizard({
   onGenerate,
   progressKey,
   requireTerms = false,
+  documentKey,
+  documentTitle,
 }: LetterWizardProps) {
+
   const [step, setStep] = useState<"intro" | "form" | "preview" | "done">("intro");
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [isGenerating, setIsGenerating] = useState(false);
