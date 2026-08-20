@@ -175,9 +175,11 @@ export type SettlementAgreementData = {
   month: string;
   year: string;
   partyAName: string;
+  partyAIdType?: string; // "Individual (NRIC)" | "Company (UEN)"
   partyAId: string;
   partyAAddress: string;
   partyBName: string;
+  partyBIdType?: string;
   partyBId: string;
   partyBAddress: string;
   incidentDate: string;
