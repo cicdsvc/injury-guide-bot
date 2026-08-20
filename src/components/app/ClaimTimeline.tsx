@@ -197,6 +197,35 @@ export function ClaimTimeline() {
           {STAGES.map((stage, i) => {
             const Icon = STAGE_ICONS[i]!;
             const isDone = done[i];
+            const skipped = i === 4 && settledPath;
+            const optionalPending =
+              i === 4 && !settledPath && !hasDemand && paymentReceived === null;
+
+            if (skipped) {
+              return (
+                <li key={stage} className="relative flex gap-4 pb-5 last:pb-0">
+                  <span className="z-10 flex size-10 shrink-0 items-center justify-center rounded-full border-2 border-success/50 bg-success/15 text-success">
+                    <Check className="h-5 w-5" />
+                  </span>
+                  <div className="flex flex-1 items-start gap-3 rounded-xl border border-dashed border-success/40 bg-success/5 p-4 text-sm">
+                    <Mail className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+                    <div>
+                      <p className="font-medium text-success">
+                        Letter of Demand — not needed, compensation received.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => answerPayment(null)}
+                        className="mt-1 text-xs text-muted-foreground underline underline-offset-2 hover:text-foreground"
+                      >
+                        Payment didn&apos;t arrive after all?
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              );
+            }
+
             return (
               <li key={stage} className="relative flex gap-4 pb-5 last:pb-0">
                 {i < STAGES.length - 1 && (
@@ -211,7 +240,9 @@ export function ClaimTimeline() {
                   className={`z-10 flex size-10 shrink-0 items-center justify-center rounded-full border-2 text-sm font-semibold transition-colors ${
                     isDone
                       ? "border-success bg-success text-success-foreground"
-                      : "border-border bg-background text-muted-foreground"
+                      : optionalPending
+                        ? "border-dashed border-border bg-background text-muted-foreground/60"
+                        : "border-border bg-background text-muted-foreground"
                   }`}
                 >
                   {isDone ? (
@@ -221,12 +252,16 @@ export function ClaimTimeline() {
                   )}
                 </span>
                 <label
-                  className={`group flex flex-1 cursor-pointer items-start gap-3 rounded-xl border p-4 transition-all ${
+                  className={`group flex flex-1 cursor-pointer flex-col gap-3 rounded-xl border p-4 transition-all ${
                     isDone
                       ? "border-success/40 bg-success/8 text-foreground shadow-sm"
-                      : "border-border/60 bg-card hover:border-primary/30 hover:bg-primary/5"
+                      : optionalPending
+                        ? "border-dashed border-border/60 bg-muted/20"
+                        : "border-border/60 bg-card hover:border-primary/30 hover:bg-primary/5"
                   }`}
                 >
+                  <div className="flex items-start gap-3">
+
                   <Checkbox
                     checked={done[i] ?? false}
                     onCheckedChange={() => toggle(i)}
