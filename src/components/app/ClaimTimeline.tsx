@@ -114,7 +114,12 @@ export function ClaimTimeline() {
 
 
   const toggle = (index: number) => {
-    persist(done.map((v, i) => (i === index ? !v : v)));
+    const next = done.map((v, i) => (i === index ? !v : v));
+    // If Stage 4 is being unchecked, Stage 5 must also be unchecked.
+    if (index === 3 && done[3] && next[4]) {
+      next[4] = false;
+    }
+    persist(next);
   };
 
   const settledPath = paymentReceived === true && !hasDemand;
