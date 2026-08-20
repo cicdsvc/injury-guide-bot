@@ -6,7 +6,10 @@ export type ProgressKey =
   | "letter:settlement"
   | "letter:demand"
   | "timeline"
-  | "documents";
+  | "documents"
+  | "documents:settlement"
+  | "documents:demand";
+
 
 async function getUserId(): Promise<string | null> {
   const { data } = await supabase.auth.getSession();
