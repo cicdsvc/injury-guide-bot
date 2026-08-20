@@ -8,7 +8,7 @@ import faqImg from "@/assets/faq-questions.png";
 import settlementImg from "@/assets/settlement-agreement.png";
 import demandImg from "@/assets/letter-of-demand.png";
 import whatIsImg from "@/assets/what-is-personal-injury.png";
-import { ArrowRight, HelpCircle, Scale, ShieldCheck, Info } from "lucide-react";
+import { ArrowRight, HelpCircle, Scale, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
