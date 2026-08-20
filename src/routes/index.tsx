@@ -64,6 +64,8 @@ const options = [
   },
 ];
 
+const SHOW_OPTIONS = false;
+
 function HomePage() {
   return (
     <main className="min-h-screen bg-cream">
