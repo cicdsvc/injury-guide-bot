@@ -36,6 +36,8 @@ export function ClaimTimeline() {
   const [done, setDone] = useState<boolean[]>(EMPTY);
   const [ready, setReady] = useState(false);
   const [hasDocs, setHasDocs] = useState(false);
+  const [hasSettlement, setHasSettlement] = useState(false);
+  const [hasDemand, setHasDemand] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -48,13 +50,17 @@ export function ClaimTimeline() {
     void Promise.all([
       loadProgress<TimelineState>("timeline"),
       loadProgress<SavedDocuments>("documents"),
-    ]).then(([saved, savedDocs]) => {
+      loadProgress<SavedDocuments>("documents:settlement"),
+      loadProgress<SavedDocuments>("documents:demand"),
+    ]).then(([saved, savedDocs, savedSettlement, savedDemand]) => {
       if (!active) return;
       let next = saved?.done && Array.isArray(saved.done)
         ? STAGES.map((_, i) => Boolean(saved.done[i]))
         : [...EMPTY];
       const docs = savedDocs?.docs ?? [];
       setHasDocs(docs.length > 0);
+      setHasSettlement((savedSettlement?.docs ?? []).length > 0);
+      setHasDemand((savedDemand?.docs ?? []).length > 0);
       if (docs.length > 0 && !next[0]) {
         next = next.map((v, i) => (i === 0 ? true : v));
         void saveProgress("timeline", { done: next });
@@ -75,10 +81,14 @@ export function ClaimTimeline() {
   const startNewProcess = () => {
     setDone(EMPTY);
     setHasDocs(false);
+    setHasSettlement(false);
+    setHasDemand(false);
     if (user) {
       void Promise.all([
         clearProgress("timeline"),
         clearProgress("documents"),
+        clearProgress("documents:settlement"),
+        clearProgress("documents:demand"),
         clearProgress("faq"),
         clearProgress("letter:claim"),
         clearProgress("letter:settlement"),
@@ -86,6 +96,7 @@ export function ClaimTimeline() {
       ]);
     }
   };
+
 
   const toggle = (index: number) => {
     persist(done.map((v, i) => (i === index ? !v : v)));
