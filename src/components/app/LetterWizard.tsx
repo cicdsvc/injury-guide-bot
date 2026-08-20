@@ -26,6 +26,8 @@ export type FieldDef = {
   help?: string;
   options?: string[];
   showIf?: (data: Record<string, string>) => boolean;
+  /** Live guidance shown beneath the input, based on the current answers. */
+  hint?: (data: Record<string, string>) => React.ReactNode;
 };
 
 export type LetterWizardProps = {
