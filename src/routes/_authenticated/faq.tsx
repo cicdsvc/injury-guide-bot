@@ -107,7 +107,11 @@ Please start with step 1.`;
 function FaqPage() {
   const { ask, start } = Route.useSearch();
   const chatId = start ? "faq-guide" : ask ? "faq-ask" : "faq";
-  const chatTransport = new DefaultChatTransport({ api: "/api/chat" });
+  const mode = start ? "guided" : "qa";
+  const chatTransport = useMemo(
+    () => new DefaultChatTransport({ api: "/api/chat", body: { mode } }),
+    [mode],
+  );
   const { messages, sendMessage, status, error } = useChat({
     id: chatId,
     transport: chatTransport,
