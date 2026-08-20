@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -57,6 +57,7 @@ const outcomes = [
 
 function GuideLandingPage() {
   const [accepted, setAccepted] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <main className="min-h-screen bg-cream">
@@ -145,11 +146,13 @@ function GuideLandingPage() {
             />
 
             <div className="flex justify-end">
-              <Button asChild disabled={!accepted} className="gap-2">
-                <Link to="/faq" search={{ start: true }}>
-                  Start the guided process
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
+              <Button
+                disabled={!accepted}
+                className="gap-2"
+                onClick={() => navigate({ to: "/faq", search: { start: true } })}
+              >
+                Start the guided process
+                <ArrowRight className="h-4 w-4" />
               </Button>
             </div>
           </CardContent>
