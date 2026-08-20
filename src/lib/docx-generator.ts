@@ -41,13 +41,26 @@ function run(text: string, opts?: { bold?: boolean; underline?: boolean; italics
 }
 
 const noBorder = { style: BorderStyle.NONE, size: 0, color: "FFFFFF" };
+const solidBorder = { style: BorderStyle.SINGLE, size: 1, color: "999999" };
 
-function cell(text: string, width: number, bold?: boolean) {
+function cell(
+  text: string,
+  width: number,
+  bold?: boolean,
+  opts?: { bordered?: boolean; right?: boolean },
+) {
+  const b = opts?.bordered ? solidBorder : noBorder;
   return new TableCell({
     width: { size: width, type: WidthType.DXA },
-    borders: { top: noBorder, bottom: noBorder, left: noBorder, right: noBorder },
-    margins: { top: 40, bottom: 40, left: 0, right: 120 },
-    children: [new Paragraph({ children: [run(text, bold ? { bold: true } : undefined)] })],
+    borders: { top: b, bottom: b, left: b, right: b },
+    margins: { top: 60, bottom: 60, left: 120, right: 120 },
+    children: [
+      new Paragraph({
+        children: [run(text, bold ? { bold: true } : undefined)],
+        alignment: opts?.right ? AlignmentType.RIGHT : AlignmentType.LEFT,
+        spacing: { after: 0 },
+      }),
+    ],
   });
 }
 
