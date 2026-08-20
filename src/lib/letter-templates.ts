@@ -13,9 +13,16 @@ export type Block =
       tight?: boolean;
     }
   | { t: "twoCol"; left: string; right: string; bold?: boolean }
-  | { t: "num"; n: string; text: string; indent?: number }
+  | { t: "num"; n: string; text: string; indent?: number; tight?: boolean }
   | { t: "spacer" }
-  | { t: "table"; header: [string, string]; rows: [string, string][] }
+  | {
+      t: "table";
+      header: [string, string];
+      rows: [string, string][];
+      bordered?: boolean;
+      alignRight?: boolean;
+      indent?: number;
+    }
   | { t: "sig"; left: string; right: string };
 
 const lines = (v: string | undefined) =>
@@ -168,9 +175,11 @@ export type SettlementAgreementData = {
   month: string;
   year: string;
   partyAName: string;
+  partyAIdType?: string; // "Individual (NRIC)" | "Company (UEN)"
   partyAId: string;
   partyAAddress: string;
   partyBName: string;
+  partyBIdType?: string;
   partyBId: string;
   partyBAddress: string;
   incidentDate: string;
@@ -186,6 +195,19 @@ export type SettlementAgreementData = {
   witnessB: string;
 };
 
+const idLabel = (type: string | undefined) =>
+  (type ?? "").toLowerCase().includes("uen") ? "UEN:" : "NRIC No.";
+
+/** Recital A of the Settlement Agreement, exactly as it will appear. */
+export function settlementRecitalA(d: {
+  incidentDate?: string;
+  incidentLocation?: string;
+  incidentFacts?: string;
+}): string {
+  const facts = ph(d.incidentFacts, "[brief facts of what happened]").replace(/[.\s]+$/, "");
+  return `On ${ph(d.incidentDate, "[Date]")}, an incident occurred at ${ph(d.incidentLocation, "[Location]")} where ${facts}. This incident (the "Accident") was caused by Party B's actions or negligence and resulted in injuries and/or damages to Party A.`;
+}
+
 export function buildSettlementAgreement(d: SettlementAgreementData): Block[] {
   const b: Block[] = [];
   const instalment = d.paymentType === "Instalments";
@@ -196,90 +218,113 @@ export function buildSettlementAgreement(d: SettlementAgreementData): Block[] {
     t: "line",
     text: `THIS SETTLEMENT AGREEMENT ("Agreement") is entered on this ${ph(d.day, "__")} day of ${ph(d.month, "[Month]")} ${ph(d.year, "[Year]")}`,
   });
+  b.push({ t: "spacer" });
   b.push({ t: "line", text: "BETWEEN:", bold: true });
   b.push({
     t: "num",
     n: "(1)",
-    text: `${ph(d.partyAName, "[Name of Party A]")} (NRIC No. ${ph(d.partyAId, "[XXXXXXXXX]")}) of ${ph(d.partyAAddress.replace(/\n/g, ", "), "[registered address]")} ("Party A");`,
+    indent: 1,
+    text: `${ph(d.partyAName, "[Name of Party A]")} (${idLabel(d.partyAIdType)} ${ph(d.partyAId, "[XXXXXXXXX]")}) of ${ph(d.partyAAddress.replace(/\n/g, ", "), "[registered address]")} ("Party A");`,
   });
   b.push({ t: "line", text: "AND", bold: true });
   b.push({
     t: "num",
     n: "(2)",
-    text: `${ph(d.partyBName, "[Name of Party B]")} (NRIC No. ${ph(d.partyBId, "[XXXXXXXXX]")}) of ${ph(d.partyBAddress.replace(/\n/g, ", "), "[registered address]")} ("Party B");`,
+    indent: 1,
+    text: `${ph(d.partyBName, "[Name of Party B]")} (${idLabel(d.partyBIdType)} ${ph(d.partyBId, "[XXXXXXXXX]")}) of ${ph(d.partyBAddress.replace(/\n/g, ", "), "[registered address]")} ("Party B");`,
   });
   b.push({
     t: "line",
     text: '(Together, both individuals are called the "Parties," and each of them is a "Party").',
     indent: 1,
   });
+  b.push({ t: "spacer" });
 
   b.push({ t: "line", text: "WHEREAS:", bold: true });
   b.push({
     t: "num",
     n: "A.",
-    text: `On ${ph(d.incidentDate, "[Date]")}, an incident occurred at ${ph(d.incidentLocation, "[Location]")} where ${ph(d.incidentFacts, "[brief facts of what happened]")}. This incident (the "Accident") was caused by Party B's actions or negligence and resulted in injuries and/or damages to Party A.`,
+    indent: 1,
+    text: settlementRecitalA(d),
   });
   b.push({
     t: "num",
     n: "B.",
+    indent: 1,
     text: "Both Parties understand and accept that this is a legal agreement that both Parties must follow, and it can be enforced in court.",
   });
   b.push({
     t: "num",
     n: "C.",
+    indent: 1,
     text: "Subject to the terms of this Agreement, both Parties agree that this Agreement settles everything between them related to the Accident, and that they will not make any further claims against each other for any losses that may have been caused by it.",
   });
+  b.push({ t: "spacer" });
 
   b.push({ t: "line", text: "IT IS HEREBY AGREED THAT:", bold: true });
   b.push({
     t: "num",
     n: "1.",
+    indent: 1,
     text: `To fully and finally settle any claims Party A may have against Party B because of the Accident, Party B agrees to pay Party A ${ph(d.settlementSum, "$[amount]")} (the "Settlement Sum").`,
   });
 
-  b.push({ t: "line", text: "Payment Plan", bold: true, indent: 1 });
+  b.push({ t: "line", text: "Payment Plan", bold: true, indent: 2, tight: true });
   if (instalment) {
     b.push({
       t: "num",
       n: "2.",
+      indent: 1,
       text: `Party B will pay the Settlement Sum by way of bank transfer to Party A's bank account ${ph(`${d.bankName} ${d.bankAccount}`.trim(), "[name of bank and bank account number]")} in the following instalments:`,
     });
-    b.push({ t: "table", header: ["DUE DATE", "AMOUNT (S$)"], rows: parseRows(d.instalments) });
+    b.push({
+      t: "table",
+      header: ["DUE DATE", "AMOUNT (S$)"],
+      rows: parseRows(d.instalments),
+      bordered: true,
+      alignRight: true,
+      indent: 2,
+    });
     b.push({
       t: "num",
       n: "3.",
+      indent: 1,
       text: "If Party B misses any instalment payment, the full remaining amount will be due right away, and Party A can go ahead to take legal action to collect that full amount.",
     });
   } else {
     b.push({
       t: "num",
       n: "2.",
+      indent: 1,
       text: `Party B will pay the Settlement Sum by ${ph(d.lumpSumDueDate, "[date]")} through a bank transfer to Party A's account at ${ph(d.bankName, "[name of bank]")}, account number ${ph(d.bankAccount, "[bank account number]")}.`,
     });
     b.push({
       t: "num",
       n: "3.",
+      indent: 1,
       text: "If Party B does not pay the full amount by the due date, the full remaining amount will be due right away, and Party A can go ahead to take legal action to collect that full amount.",
     });
   }
 
-  b.push({ t: "line", text: "Entire Agreement", bold: true, indent: 1 });
+  b.push({ t: "line", text: "Entire Agreement", bold: true, indent: 2, tight: true });
   b.push({
     t: "num",
     n: "4.",
+    indent: 1,
     text: "This Agreement replaces all previous statements, promises, agreements, or understandings — whether made in writing or spoken — made by the Parties or their representatives. The rights and responsibilities of the Parties in relation to the Accident are governed by the terms in this Agreement only – meaning that the Parties can only refer to the contents of this Agreement in relation to the Accident, and not any other document, text, recording or communication.",
   });
-  b.push({ t: "line", text: "Jurisdiction & Governing Law", bold: true, indent: 1 });
+  b.push({ t: "line", text: "Jurisdiction & Governing Law", bold: true, indent: 2, tight: true });
   b.push({
     t: "num",
     n: "5.",
+    indent: 1,
     text: "This Agreement is governed by Singapore law. If there is any legal dispute or action related to this Agreement, it will be handled under Singapore law in the courts of Singapore.",
   });
-  b.push({ t: "line", text: "Legal Advice", bold: true, indent: 1 });
+  b.push({ t: "line", text: "Legal Advice", bold: true, indent: 2, tight: true });
   b.push({
     t: "num",
     n: "6.",
+    indent: 1,
     text: "Each Party confirms that they have read and understand this Agreement and its consequences. Each Party also confirms that they have had the chance to get legal advice.",
   });
 
@@ -443,11 +488,15 @@ export function blocksToText(blocks: Block[]): string {
         out.push(`${" ".repeat((bl.indent ?? 0) * 4)}${bl.n}\t${bl.text}`);
         out.push("");
         break;
-      case "table":
-        out.push(`${bl.header[0].padEnd(34)}${bl.header[1]}`);
-        for (const r of bl.rows) out.push(`${r[0].padEnd(34)}${r[1]}`);
+      case "table": {
+        const pad = " ".repeat((bl.indent ?? 0) * 4);
+        const col = (l: string, r: string) =>
+          pad + l.padEnd(30) + (bl.alignRight ? r.padStart(14) : r);
+        out.push(col(bl.header[0], bl.header[1]));
+        for (const r of bl.rows) out.push(col(r[0], r[1]));
         out.push("");
         break;
+      }
       case "sig":
         out.push("__________________________\t___________________________");
         out.push(`${bl.left.padEnd(28)}${bl.right}`);
