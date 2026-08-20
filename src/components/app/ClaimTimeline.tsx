@@ -106,153 +106,220 @@ export function ClaimTimeline() {
   };
 
   const completed = done.filter(Boolean).length;
+  const progressPercent = Math.round((completed / STAGES.length) * 100);
+  const allDone = completed === STAGES.length;
 
   return (
-    <Card className="border-border/60 bg-card">
+    <Card className="border-border/60 bg-card overflow-hidden">
       <CardContent className="p-6">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <h2 className="text-xl font-semibold text-foreground">
-              Your claim journey
-            </h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Tick off each stage as you go, so you always know where you are.
-            </p>
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="flex items-start gap-3">
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-navy text-navy-foreground">
+              <Flag className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold text-foreground">
+                Your claim journey
+              </h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Tick off each stage as you go, so you always know where you are.
+              </p>
+            </div>
           </div>
-          <span className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">
+          <span
+            className={`rounded-full px-3 py-1 text-xs font-medium ${
+              allDone
+                ? "bg-success text-success-foreground"
+                : "bg-secondary text-secondary-foreground"
+            }`}
+          >
             {completed} of {STAGES.length} done
           </span>
         </div>
 
-        <ol className="mt-6 space-y-0">
-          {STAGES.map((stage, i) => (
-            <li key={stage} className="relative flex gap-4 pb-6 last:pb-0">
-              {i < STAGES.length - 1 && (
-                <span
-                  aria-hidden
-                  className={`absolute left-4 top-9 h-[calc(100%-1.5rem)] w-px ${
-                    done[i] ? "bg-success" : "bg-border"
-                  }`}
-                />
-              )}
-              <span
-                className={`z-10 flex size-8 shrink-0 items-center justify-center rounded-full border text-sm font-semibold ${
-                  done[i]
-                    ? "border-success bg-success text-success-foreground"
-                    : "border-border bg-background text-muted-foreground"
-                }`}
-              >
-                {i + 1}
-              </span>
-              <label
-                className={`flex flex-1 cursor-pointer items-start gap-3 rounded-lg p-3 pt-1 transition-colors ${
-                  done[i]
-                    ? "bg-success/10 text-success"
-                    : "bg-transparent text-foreground"
-                }`}
-              >
-                <Checkbox
-                  checked={done[i] ?? false}
-                  onCheckedChange={() => toggle(i)}
-                  disabled={!ready}
-                  aria-label={`Mark stage ${i + 1} as done`}
-                  className="mt-0.5 border-success/50 data-[state=checked]:border-success data-[state=checked]:bg-success data-[state=checked]:text-success-foreground"
-                />
-                <span className={`text-sm ${done[i] ? "font-medium" : ""}`}>
-              {i === 0 ? (
-                <>
-                  <Link
-                    to="/guide"
-                    onClick={(e) => e.stopPropagation()}
-                    className="font-medium text-primary underline underline-offset-2 hover:text-primary/80"
-                  >
-                    Draft a Letter of Claim
-                  </Link>
-                  {" using the step-by-step guide."}
-                  {hasDocs && (
-                    <>
-                      {" "}
-                      <Link
-                        to="/documents"
-                        onClick={(e) => e.stopPropagation()}
-                        className="font-medium text-primary underline underline-offset-2 hover:text-primary/80"
-                      >
-                        View your documents
-                      </Link>
-                    </>
-                  )}
-                </>
-              ) : i === 2 ? (
-                    <>
-                      {stage}{" "}
-                      <Link
-                        to="/faq"
-                        search={{ ask: "Give me Negotiations and Practical Tips" }}
-                        onClick={(e) => e.stopPropagation()}
-                        className="font-medium text-primary underline underline-offset-2 hover:text-primary/80"
-                      >
-                        Get negotiation tips
-                      </Link>
-                    </>
-                  ) : i === 3 ? (
-                    <>
-                      An agreement is reached.{" "}
-                      <Link
-                        to="/letter/settlement"
-                        onClick={(e) => e.stopPropagation()}
-                        className="font-medium text-primary underline underline-offset-2 hover:text-primary/80"
-                      >
-                        Draft a Settlement Agreement
-                      </Link>
-                      {" and have a lawyer review it."}
-                      {hasSettlement && (
-                        <>
-                          {" "}
-                          <Link
-                            to="/documents"
-                            onClick={(e) => e.stopPropagation()}
-                            className="font-medium text-primary underline underline-offset-2 hover:text-primary/80"
-                          >
-                            View your document
-                          </Link>
-                        </>
-                      )}
-                    </>
-                  ) : i === 4 ? (
-                    <>
-                      The agreed compensation is not received by the deadline.{" "}
-                      <Link
-                        to="/letter/demand"
-                        onClick={(e) => e.stopPropagation()}
-                        className="font-medium text-primary underline underline-offset-2 hover:text-primary/80"
-                      >
-                        Draft a Letter of Demand
-                      </Link>
-                      {" and send to the other party."}
-                      {hasDemand && (
-                        <>
-                          {" "}
-                          <Link
-                            to="/documents"
-                            onClick={(e) => e.stopPropagation()}
-                            className="font-medium text-primary underline underline-offset-2 hover:text-primary/80"
-                          >
-                            View your document
-                          </Link>
-                        </>
-                      )}
-                    </>
+        {/* Progress bar */}
+        <div className="mt-5">
+          <div className="flex items-center justify-between text-xs text-muted-foreground mb-1.5">
+            <span>Progress</span>
+            <span>{progressPercent}%</span>
+          </div>
+          <div className="h-2.5 w-full overflow-hidden rounded-full bg-muted">
+            <div
+              className="h-full rounded-full bg-success transition-all duration-500 ease-out"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+        </div>
 
+        {/* Quick stage labels for larger screens */}
+        <div className="mt-4 hidden sm:flex items-center justify-between gap-2">
+          {STAGES.map((_, i) => {
+            const Icon = STAGE_ICONS[i];
+            const isDone = done[i];
+            return (
+              <div
+                key={i}
+                className={`flex flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-xs font-medium transition-colors ${
+                  isDone
+                    ? "bg-success/10 text-success"
+                    : "bg-muted/50 text-muted-foreground"
+                }`}
+              >
+                <Icon className="h-3.5 w-3.5" />
+                <span className="hidden md:inline">{STAGE_LABELS[i]}</span>
+              </div>
+            );
+          })}
+        </div>
+
+        <ol className="mt-6 space-y-0">
+          {STAGES.map((stage, i) => {
+            const Icon = STAGE_ICONS[i];
+            const isDone = done[i];
+            return (
+              <li key={stage} className="relative flex gap-4 pb-5 last:pb-0">
+                {i < STAGES.length - 1 && (
+                  <span
+                    aria-hidden
+                    className={`absolute left-5 top-10 h-[calc(100%-1.25rem)] w-0.5 rounded-full ${
+                      isDone ? "bg-success" : "bg-border"
+                    }`}
+                  />
+                )}
+                <span
+                  className={`z-10 flex size-10 shrink-0 items-center justify-center rounded-full border-2 text-sm font-semibold transition-colors ${
+                    isDone
+                      ? "border-success bg-success text-success-foreground"
+                      : "border-border bg-background text-muted-foreground"
+                  }`}
+                >
+                  {isDone ? (
+                    <Check className="h-5 w-5" />
                   ) : (
-                    stage
+                    <Icon className="h-4 w-4" />
                   )}
                 </span>
-              </label>
-            </li>
-          ))}
+                <label
+                  className={`group flex flex-1 cursor-pointer items-start gap-3 rounded-xl border p-4 transition-all ${
+                    isDone
+                      ? "border-success/40 bg-success/8 text-foreground shadow-sm"
+                      : "border-border/60 bg-card hover:border-primary/30 hover:bg-primary/5"
+                  }`}
+                >
+                  <Checkbox
+                    checked={done[i] ?? false}
+                    onCheckedChange={() => toggle(i)}
+                    disabled={!ready}
+                    aria-label={`Mark stage ${i + 1} as done`}
+                    className="mt-0.5 border-success/50 data-[state=checked]:border-success data-[state=checked]:bg-success data-[state=checked]:text-success-foreground"
+                  />
+                  <span className="text-sm leading-relaxed">
+                    {i === 0 ? (
+                      <>
+                        <Link
+                          to="/guide"
+                          onClick={(e) => e.stopPropagation()}
+                          className="font-medium text-primary underline underline-offset-2 hover:text-primary/80"
+                        >
+                          Draft a Letter of Claim
+                        </Link>
+                        {" using the step-by-step guide."}
+                        {hasDocs && (
+                          <>
+                            {" "}
+                            <Link
+                              to="/documents"
+                              onClick={(e) => e.stopPropagation()}
+                              className="font-medium text-success underline underline-offset-2 hover:text-success/80"
+                            >
+                              View your documents
+                            </Link>
+                          </>
+                        )}
+                      </>
+                    ) : i === 2 ? (
+                      <>
+                        {stage}{" "}
+                        <Link
+                          to="/faq"
+                          search={{ ask: "Give me Negotiations and Practical Tips" }}
+                          onClick={(e) => e.stopPropagation()}
+                          className="font-medium text-primary underline underline-offset-2 hover:text-primary/80"
+                        >
+                          Get negotiation tips
+                        </Link>
+                      </>
+                    ) : i === 3 ? (
+                      <>
+                        An agreement is reached.{" "}
+                        <Link
+                          to="/letter/settlement"
+                          onClick={(e) => e.stopPropagation()}
+                          className="font-medium text-primary underline underline-offset-2 hover:text-primary/80"
+                        >
+                          Draft a Settlement Agreement
+                        </Link>
+                        {" and have a lawyer review it."}
+                        {hasSettlement && (
+                          <>
+                            {" "}
+                            <Link
+                              to="/documents"
+                              onClick={(e) => e.stopPropagation()}
+                              className="font-medium text-success underline underline-offset-2 hover:text-success/80"
+                            >
+                              View your document
+                            </Link>
+                          </>
+                        )}
+                      </>
+                    ) : i === 4 ? (
+                      <>
+                        The agreed compensation is not received by the deadline.{" "}
+                        <Link
+                          to="/letter/demand"
+                          onClick={(e) => e.stopPropagation()}
+                          className="font-medium text-primary underline underline-offset-2 hover:text-primary/80"
+                        >
+                          Draft a Letter of Demand
+                        </Link>
+                        {" and send to the other party."}
+                        {hasDemand && (
+                          <>
+                            {" "}
+                            <Link
+                              to="/documents"
+                              onClick={(e) => e.stopPropagation()}
+                              className="font-medium text-success underline underline-offset-2 hover:text-success/80"
+                            >
+                              View your document
+                            </Link>
+                          </>
+                        )}
+                      </>
+                    ) : (
+                      stage
+                    )}
+                  </span>
+                </label>
+              </li>
+            );
+          })}
         </ol>
 
-        <div className="mt-4 flex flex-wrap items-center gap-3">
+        {allDone && (
+          <div className="mt-5 rounded-xl border border-success/40 bg-success/10 p-4 text-sm text-success">
+            <div className="flex items-center gap-2 font-medium">
+              <Check className="h-4 w-4" />
+              You have completed all the stages of your claim journey.
+            </div>
+            <p className="mt-1 text-success/90">
+              Remember to consult a lawyer before sending any legal documents or signing a settlement.
+            </p>
+          </div>
+        )}
+
+        <div className="mt-5 flex flex-wrap items-center gap-3">
           {(completed > 0 || hasDocs || hasSettlement || hasDemand) && (
             <AlertDialog>
               <AlertDialogTrigger asChild>
