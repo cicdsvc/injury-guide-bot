@@ -148,7 +148,7 @@ export function ClaimTimeline() {
                 : "bg-secondary text-secondary-foreground"
             }`}
           >
-            {completed} of {STAGES.length} done
+            {completed} of {totalStages} done
           </span>
         </div>
 
