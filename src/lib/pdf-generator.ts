@@ -104,20 +104,36 @@ async function downloadPdf(blocks: Block[], filename: string) {
           doc.text(line, MARGIN + indent + numW, ly);
           ly += LINE_H;
         }
-        y = ly + 2;
+        y = ly + (b.tight ? 0 : 2);
         break;
       }
       case "table": {
-        const colW = CONTENT_W / 2;
+        const indent = (b.indent ?? 0) * 6;
+        const tableW = CONTENT_W - indent;
+        const x0 = MARGIN + indent;
+        const colW = tableW * 0.6;
         const rows = [b.header, ...b.rows];
+        const padX = 2;
+        const padY = 1.6;
         rows.forEach((r, i) => {
           doc.setFont("helvetica", i === 0 ? "bold" : "normal");
-          const l = doc.splitTextToSize(r[0], colW - 4) as string[];
-          const rr = doc.splitTextToSize(r[1], colW - 4) as string[];
-          const h = Math.max(l.length, rr.length) * LINE_H;
+          const l = doc.splitTextToSize(r[0], colW - padX * 2) as string[];
+          const rr = doc.splitTextToSize(r[1], tableW - colW - padX * 2) as string[];
+          const h = Math.max(l.length, rr.length) * LINE_H + padY * 2;
           ensureSpace(h);
-          l.forEach((line, j) => doc.text(line, MARGIN, y + j * LINE_H));
-          rr.forEach((line, j) => doc.text(line, MARGIN + colW, y + j * LINE_H));
+          if (b.bordered) {
+            doc.setDrawColor(150);
+            doc.rect(x0, y - LINE_H + padY, colW, h);
+            doc.rect(x0 + colW, y - LINE_H + padY, tableW - colW, h);
+          }
+          l.forEach((line, j) => doc.text(line, x0 + padX, y + j * LINE_H));
+          rr.forEach((line, j) => {
+            if (b.alignRight) {
+              doc.text(line, x0 + tableW - padX, y + j * LINE_H, { align: "right" });
+            } else {
+              doc.text(line, x0 + colW + padX, y + j * LINE_H);
+            }
+          });
           y += h;
         });
         y += 3;
