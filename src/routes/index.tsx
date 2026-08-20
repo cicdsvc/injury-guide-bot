@@ -16,13 +16,13 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "An interactive app to facilitate out of court settlements for minor Personal Injury claims.",
+          "An interactive guide to facilitate out of court settlements for minor Personal Injury claims.",
       },
       { property: "og:title", content: "Personal Injury Claim Helper" },
       {
         property: "og:description",
         content:
-          "An interactive app to facilitate out of court settlements for minor Personal Injury claims.",
+          "An interactive guide to facilitate out of court settlements for minor Personal Injury claims.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -77,7 +77,7 @@ function HomePage() {
                 Personal Injury Claim Helper
               </h1>
               <p className="text-lg/relaxed text-navy-foreground/80 sm:text-xl/relaxed">
-                An interactive app to facilitate out of court settlements for
+                An interactive guide to facilitate out of court settlements for
                 minor Personal Injury claims.
               </p>
             </div>
