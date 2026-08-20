@@ -110,12 +110,6 @@ function HomePage() {
                 />
               </div>
               <CardContent className="space-y-4 p-6 sm:p-8">
-                <div className="flex items-center gap-2 text-primary">
-                  <Info className="h-5 w-5" />
-                  <span className="text-sm font-semibold uppercase tracking-wide">
-                    What is this about?
-                  </span>
-                </div>
                 <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">
                   What is a Personal Injury and who this guide is for?
                 </h2>
@@ -134,7 +128,7 @@ function HomePage() {
                     </li>
                   </ul>
                   <p>
-                    This guide is designed for self-represented persons - people who are handling their own minor personal injuries claim without hiring a lawyer, to try and reach an out of court settlement. This guide does not cover what to do if you need to file a claim in court. If you need to file a claim in court, then you should seek a lawyer’s advice on what to do.
+                    This guide is designed for self-represented persons - people who are handling their own minor personal injuries claim to try and reach an out of court settlement. This guide does not cover what to do if you need to file a claim in court. If you need to file a claim in court, then you should seek a lawyer’s advice on what to do.
                   </p>
                 </div>
               </CardContent>
