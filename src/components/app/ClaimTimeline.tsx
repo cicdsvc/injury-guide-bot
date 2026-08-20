@@ -250,7 +250,7 @@ export function ClaimTimeline() {
         </ol>
 
         <div className="mt-4 flex flex-wrap items-center gap-3">
-          {(completed > 0 || hasDocs) && (
+          {(completed > 0 || hasDocs || hasSettlement || hasDemand) && (
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button variant="outline" size="sm" className="gap-2">
