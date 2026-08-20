@@ -57,6 +57,7 @@ const outcomes = [
 
 function GuideLandingPage() {
   const [accepted, setAccepted] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <main className="min-h-screen bg-cream">
