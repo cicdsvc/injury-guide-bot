@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { HomeButton } from "@/components/app/HomeButton";
 import { Disclaimer } from "@/components/app/Disclaimer";
+import { TermsOfUse } from "@/components/app/TermsOfUse";
 import { ArrowLeft, Download, FileText, Loader2, RefreshCcw } from "lucide-react";
 import { ResumePrompt } from "@/components/app/ResumePrompt";
 import {
