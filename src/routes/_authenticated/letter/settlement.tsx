@@ -5,6 +5,7 @@ import { generateSettlementAgreementPdf } from "@/lib/pdf-generator";
 import {
   blocksToText,
   buildSettlementAgreement,
+  settlementRecitalA,
   type SettlementAgreementData,
 } from "@/lib/letter-templates";
 import settlementImg from "@/assets/settlement-agreement.png";
