@@ -199,16 +199,32 @@ export function ClaimTimeline() {
         </ol>
 
         <div className="mt-4 flex flex-wrap items-center gap-3">
-          {completed > 0 && (
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-2"
-              onClick={() => persist(EMPTY)}
-            >
-              <RefreshCcw className="h-4 w-4" />
-              Reset timeline
-            </Button>
+          {(completed > 0 || hasDocs) && (
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="outline" size="sm" className="gap-2">
+                  <RefreshCcw className="h-4 w-4" />
+                  Start New Process
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Start a new process?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Everything will be deleted, including your claim journey
+                    progress, your saved conversation and all generated
+                    documents. This cannot be undone. Download anything you want
+                    to keep before continuing.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={startNewProcess}>
+                    OK, delete everything
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           )}
           {!loading && !user && (
             <Button asChild size="sm" variant="ghost" className="gap-2">
