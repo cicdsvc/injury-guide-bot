@@ -104,14 +104,7 @@ export function TermsOfUse({
         Terms of Use, Consent and Waiver
       </h3>
       <div
-        ref={setScrollBox}
-        onScroll={() => {
-          if (!scrollBox) return;
-          const nearBottom =
-            scrollBox.scrollHeight - scrollBox.scrollTop - scrollBox.clientHeight < 20;
-          if (nearBottom && !accepted) onAcceptedChange(true);
-        }}
-        className="mb-4 max-h-60 overflow-y-auto rounded-md border border-black/5 bg-background/50 p-3 text-xs leading-relaxed"
+        className="mb-4 max-h-96 overflow-y-auto rounded-md border border-black/5 bg-background/50 p-3 text-xs leading-relaxed"
       >
         <p className="mb-3 font-medium">
           By using this service, you agree to the following terms. Please read them carefully before proceeding.
