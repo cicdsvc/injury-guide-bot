@@ -187,39 +187,45 @@ function FaqPage() {
                             <div className="overflow-x-auto">
                               <MessageResponse>{doc.body}</MessageResponse>
                             </div>
-                            <div className="mt-4 flex flex-wrap gap-2 border-t border-border/60 pt-3">
-                              <Button
-                                type="button"
-                                size="sm"
-                                variant="outline"
-                                className="gap-2"
-                                onClick={() =>
-                                  downloadTextAsPdf(
-                                    `${doc.title}\n\n${doc.body}`,
-                                    doc.title,
-                                  )
-                                }
-                              >
-                                <Download className="h-4 w-4" />
-                                Download PDF
-                              </Button>
-                              <Button
-                                type="button"
-                                size="sm"
-                                className="gap-2"
-                                onClick={() =>
-                                  downloadTextAsDocx(
-                                    `${doc.title}\n\n${doc.body}`,
-                                    doc.title,
-                                  )
-                                }
-                              >
-                                <Download className="h-4 w-4" />
-                                Download Word (.docx)
-                              </Button>
-                            </div>
                           </div>
                         ))}
+
+                        <div className="rounded-xl border border-border/60 bg-background p-4">
+                          <Button
+                            type="button"
+                            className="gap-2"
+                            onClick={() => downloadAll(docs)}
+                          >
+                            <Download className="h-4 w-4" />
+                            Download all documents (Word + PDF)
+                          </Button>
+                          <p className="mt-4 text-sm font-medium text-foreground">
+                            What to do next
+                          </p>
+                          <p className="mt-1 text-sm text-muted-foreground">
+                            Bring these documents to a lawyer and consult them
+                            to get proper legal advice on your situation before
+                            you send anything or agree to any settlement. You
+                            can speak to a private lawyer or{" "}
+                            <a
+                              href="https://www.probono.sg"
+                              target="_blank"
+                              rel="noreferrer"
+                              className="underline underline-offset-2 hover:text-foreground"
+                            >
+                              Pro Bono SG
+                            </a>
+                            .
+                          </p>
+                          <div className="mt-4 border-t border-border/60 pt-3">
+                            <Button asChild variant="outline" size="sm" className="gap-2">
+                              <Link to="/">
+                                <Home className="h-4 w-4" />
+                                Go back to main menu
+                              </Link>
+                            </Button>
+                          </div>
+                        </div>
                       </div>
                     ) : (
                       <MessageResponse>{text}</MessageResponse>
