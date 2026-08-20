@@ -37,6 +37,7 @@ export type LetterWizardProps = {
   buildPreview: (data: Record<string, string>) => string;
   onGenerate: (data: Record<string, string>, format: "docx" | "pdf") => Promise<void>;
   progressKey: ProgressKey;
+  requireTerms?: boolean;
 };
 
 type SavedLetter = {
