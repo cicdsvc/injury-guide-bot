@@ -174,7 +174,7 @@ export function ClaimTimeline() {
 
         <ol className="mt-6 space-y-0">
           {STAGES.map((stage, i) => {
-            const Icon = STAGE_ICONS[i];
+            const Icon = STAGE_ICONS[i]!;
             const isDone = done[i];
             return (
               <li key={stage} className="relative flex gap-4 pb-5 last:pb-0">
