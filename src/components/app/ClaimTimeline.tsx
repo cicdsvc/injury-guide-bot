@@ -420,7 +420,10 @@ export function ClaimTimeline() {
           <div className="mt-5 rounded-xl border border-success/40 bg-success/10 p-4 text-sm text-success">
             <div className="flex items-center gap-2 font-medium">
               <Check className="h-4 w-4" />
-              You have completed all the stages of your claim journey.
+              {settledPath
+                ? "Your claim journey is complete — settlement reached and compensation received."
+                : "You have completed all the stages of your claim journey."}
+
             </div>
             <p className="mt-1 text-success/90">
               Remember to consult a lawyer before sending any legal documents or signing a settlement.
