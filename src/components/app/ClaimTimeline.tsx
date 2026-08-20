@@ -4,8 +4,19 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { LogIn, RefreshCcw } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { useAuthUser } from "@/hooks/useAuthUser";
-import { loadProgress, saveProgress } from "@/lib/progress";
+import { clearProgress, loadProgress, saveProgress } from "@/lib/progress";
 import type { SavedDocuments } from "@/lib/claim-documents";
 
 const STAGES = [
@@ -59,6 +70,21 @@ export function ClaimTimeline() {
   const persist = (next: boolean[]) => {
     setDone(next);
     if (user) void saveProgress("timeline", { done: next });
+  };
+
+  const startNewProcess = () => {
+    setDone(EMPTY);
+    setHasDocs(false);
+    if (user) {
+      void Promise.all([
+        clearProgress("timeline"),
+        clearProgress("documents"),
+        clearProgress("faq"),
+        clearProgress("letter:claim"),
+        clearProgress("letter:settlement"),
+        clearProgress("letter:demand"),
+      ]);
+    }
   };
 
   const toggle = (index: number) => {
@@ -188,16 +214,32 @@ export function ClaimTimeline() {
         </ol>
 
         <div className="mt-4 flex flex-wrap items-center gap-3">
-          {completed > 0 && (
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-2"
-              onClick={() => persist(EMPTY)}
-            >
-              <RefreshCcw className="h-4 w-4" />
-              Reset timeline
-            </Button>
+          {(completed > 0 || hasDocs) && (
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="outline" size="sm" className="gap-2">
+                  <RefreshCcw className="h-4 w-4" />
+                  Start New Process
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Start a new process?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Everything will be deleted, including your claim journey
+                    progress, your saved conversation and all generated
+                    documents. This cannot be undone. Download anything you want
+                    to keep before continuing.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={startNewProcess}>
+                    OK, delete everything
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           )}
           {!loading && !user && (
             <Button asChild size="sm" variant="ghost" className="gap-2">
