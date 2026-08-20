@@ -7,7 +7,8 @@ import heroImg from "@/assets/hero-person-with-injury.png.asset.json";
 import faqImg from "@/assets/faq-questions.png";
 import settlementImg from "@/assets/settlement-agreement.png";
 import demandImg from "@/assets/letter-of-demand.png";
-import { ArrowRight, HelpCircle, Scale, ShieldCheck } from "lucide-react";
+import whatIsImg from "@/assets/what-is-personal-injury.png";
+import { ArrowRight, HelpCircle, Scale, ShieldCheck, Info } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -96,6 +97,50 @@ function HomePage() {
 
       <section className="px-6 py-12 sm:py-16">
         <div className="mx-auto max-w-5xl space-y-12">
+          <Card className="overflow-hidden border-border/60 bg-card">
+            <div className="grid items-center gap-0 lg:grid-cols-2">
+              <div className="relative h-64 w-full overflow-hidden bg-muted lg:h-full">
+                <img
+                  src={whatIsImg}
+                  alt="Illustration of a person with a minor injury reading a guide on a tablet at home"
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                  width={1024}
+                  height={768}
+                />
+              </div>
+              <CardContent className="space-y-4 p-6 sm:p-8">
+                <div className="flex items-center gap-2 text-primary">
+                  <Info className="h-5 w-5" />
+                  <span className="text-sm font-semibold uppercase tracking-wide">
+                    What is this about?
+                  </span>
+                </div>
+                <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">
+                  What is a Personal Injury?
+                </h2>
+                <div className="space-y-3 text-foreground/90 leading-relaxed">
+                  <p>
+                    A personal injury is when you suffer harm to your body or mind because of someone else’s actions or carelessness. It could include:
+                  </p>
+                  <ul className="space-y-2 pl-1">
+                    <li className="flex items-start gap-2">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                      <span>Physical injuries (e.g. cuts, bruises, broken bones, or whiplash); or</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                      <span>Psychological injuries (e.g., anxiety or trauma).</span>
+                    </li>
+                  </ul>
+                  <p>
+                    This guide is designed for self-represented persons - people who are handling their own minor personal injuries claim without hiring a lawyer, to try and reach an out of court settlement. This guide does not cover what to do if you need to file a claim in court. If you need to file a claim in court, then you should seek a lawyer’s advice on what to do.
+                  </p>
+                </div>
+              </CardContent>
+            </div>
+          </Card>
+
           <ClaimTimeline />
 
           <div className="text-center">
