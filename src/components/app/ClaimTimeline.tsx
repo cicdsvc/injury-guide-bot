@@ -154,7 +154,7 @@ export function ClaimTimeline() {
         {/* Quick stage labels for larger screens */}
         <div className="mt-4 hidden sm:flex items-center justify-between gap-2">
           {STAGES.map((_, i) => {
-            const Icon = STAGE_ICONS[i];
+            const Icon = STAGE_ICONS[i]!;
             const isDone = done[i];
             return (
               <div
