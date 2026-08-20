@@ -108,7 +108,19 @@ export function LetterWizard({
     setError(null);
     try {
       await onGenerate(formData, format);
+      if (documentKey) {
+        void saveProgress(documentKey, {
+          docs: [
+            {
+              title: documentTitle ?? title,
+              body: buildPreview(formData),
+            },
+          ],
+          savedAt: new Date().toISOString(),
+        });
+      }
       setStep("done");
+
     } catch (err) {
       setError("Failed to generate the document. Please try again.");
     } finally {
