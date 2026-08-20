@@ -156,7 +156,6 @@ function FaqPage() {
       const docs = splitDocuments(text);
       if (docs.length > 0) {
         void saveProgress("documents", { docs, savedAt: new Date().toISOString() });
-        void saveProgress("timeline-stage1", { done: true });
       }
       break;
     }
