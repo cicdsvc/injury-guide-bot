@@ -488,11 +488,15 @@ export function blocksToText(blocks: Block[]): string {
         out.push(`${" ".repeat((bl.indent ?? 0) * 4)}${bl.n}\t${bl.text}`);
         out.push("");
         break;
-      case "table":
-        out.push(`${bl.header[0].padEnd(34)}${bl.header[1]}`);
-        for (const r of bl.rows) out.push(`${r[0].padEnd(34)}${r[1]}`);
+      case "table": {
+        const pad = " ".repeat((bl.indent ?? 0) * 4);
+        const col = (l: string, r: string) =>
+          pad + l.padEnd(30) + (bl.alignRight ? r.padStart(14) : r);
+        out.push(col(bl.header[0], bl.header[1]));
+        for (const r of bl.rows) out.push(col(r[0], r[1]));
         out.push("");
         break;
+      }
       case "sig":
         out.push("__________________________\t___________________________");
         out.push(`${bl.left.padEnd(28)}${bl.right}`);
