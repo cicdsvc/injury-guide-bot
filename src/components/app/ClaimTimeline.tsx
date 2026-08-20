@@ -107,18 +107,18 @@ export function ClaimTimeline() {
                   className="mt-0.5 border-success/50 data-[state=checked]:border-success data-[state=checked]:bg-success data-[state=checked]:text-success-foreground"
                 />
                 <span className={`text-sm ${done[i] ? "font-medium" : ""}`}>
-                  {i === 0 ? (
-                    <>
-                      <Link
-                        to="/guide"
-                        onClick={(e) => e.stopPropagation()}
-                        className="font-medium text-primary underline underline-offset-2 hover:text-primary/80"
-                      >
-                        Use the step-by-step guide
-                      </Link>
-                      {" to generate a draft Letter of Claim."}
-                    </>
-                  ) : i === 2 ? (
+              {i === 0 ? (
+                <>
+                  <Link
+                    to="/guide"
+                    onClick={(e) => e.stopPropagation()}
+                    className="font-medium text-primary underline underline-offset-2 hover:text-primary/80"
+                  >
+                    Draft a Letter of Claim
+                  </Link>
+                  {" using the step-by-step guide."}
+                </>
+              ) : i === 2 ? (
                     <>
                       {stage}{" "}
                       <Link
