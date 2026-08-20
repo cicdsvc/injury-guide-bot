@@ -2,9 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { HomeButton } from "@/components/app/HomeButton";
+import { TermsOfUse } from "@/components/app/TermsOfUse";
 import { FileText, ListChecks, Scale, ClipboardList, ArrowRight, AlertTriangle } from "lucide-react";
 import faqImg from "@/assets/faq-questions.png";
 
