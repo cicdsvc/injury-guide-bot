@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { LogIn, RefreshCcw } from "lucide-react";
+import { LogIn, RefreshCcw, FileText, UserCheck, Handshake, FileSignature, Mail, Check, Flag } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,6 +26,9 @@ const STAGES = [
   "An agreement is reached. Draft a Settlement Agreement and have a lawyer review it.",
   "The agreed compensation is not received by the deadline. Draft and send a Letter of Demand to the other party.",
 ];
+
+const STAGE_ICONS = [FileText, UserCheck, Handshake, FileSignature, Mail];
+const STAGE_LABELS = ["Draft", "Consult", "Negotiate", "Settle", "Demand"];
 
 type TimelineState = { done: boolean[] };
 
