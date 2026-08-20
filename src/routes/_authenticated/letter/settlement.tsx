@@ -127,6 +127,8 @@ function SettlementAgreementPage() {
   return (
     <LetterWizard
       progressKey="letter:settlement"
+      documentKey="documents:settlement"
+      documentTitle="Settlement Agreement"
       title="Private Settlement Agreement"
       description={description}
       image={settlementImg}

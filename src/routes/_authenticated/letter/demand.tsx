@@ -144,6 +144,8 @@ function LetterOfDemandPage() {
   return (
     <LetterWizard
       progressKey="letter:demand"
+      documentKey="documents:demand"
+      documentTitle="Letter of Demand"
       title="Letter of Demand"
       description={description}
       image={demandImg}
