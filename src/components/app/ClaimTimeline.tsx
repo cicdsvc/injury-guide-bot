@@ -202,6 +202,18 @@ export function ClaimTimeline() {
                         Draft a Settlement Agreement
                       </Link>
                       {" and have a lawyer review it."}
+                      {hasSettlement && (
+                        <>
+                          {" "}
+                          <Link
+                            to="/documents"
+                            onClick={(e) => e.stopPropagation()}
+                            className="font-medium text-primary underline underline-offset-2 hover:text-primary/80"
+                          >
+                            View your document
+                          </Link>
+                        </>
+                      )}
                     </>
                   ) : i === 4 ? (
                     <>
@@ -214,7 +226,20 @@ export function ClaimTimeline() {
                         Draft a Letter of Demand
                       </Link>
                       {" and send to the other party."}
+                      {hasDemand && (
+                        <>
+                          {" "}
+                          <Link
+                            to="/documents"
+                            onClick={(e) => e.stopPropagation()}
+                            className="font-medium text-primary underline underline-offset-2 hover:text-primary/80"
+                          >
+                            View your document
+                          </Link>
+                        </>
+                      )}
                     </>
+
                   ) : (
                     stage
                   )}
