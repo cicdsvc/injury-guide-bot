@@ -59,6 +59,20 @@ function splitDocuments(text: string): DocSection[] {
   return sections;
 }
 
+export function combineDocuments(docs: DocSection[]) {
+  return docs
+    .map((doc) => `${doc.title}\n\n${doc.body}`)
+    .join("\n\n\n----------------------------------------\n\n\n");
+}
+
+async function downloadAll(docs: DocSection[]) {
+  const combined = combineDocuments(docs);
+  await downloadTextAsDocx(combined, "Personal_Injury_Claim_Documents");
+  await downloadTextAsPdf(combined, "Personal_Injury_Claim_Documents");
+}
+
+
+
 
 export const Route = createFileRoute("/_authenticated/faq")({
   validateSearch: (
