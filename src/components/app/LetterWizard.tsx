@@ -176,7 +176,14 @@ export function LetterWizard({
             </div>
             <CardContent className="space-y-6 p-6">
               <div className="space-y-4 text-foreground/90 leading-relaxed">{description}</div>
-              <Button onClick={() => setStep("form")} className="gap-2">
+              {requireTerms && (
+                <TermsOfUse
+                  accepted={termsAccepted}
+                  onAcceptedChange={setTermsAccepted}
+                  variant="purple"
+                />
+              )}
+              <Button onClick={() => setStep("form")} disabled={requireTerms && !termsAccepted} className="gap-2">
                 <FileText className="h-4 w-4" />
                 Start drafting
               </Button>
