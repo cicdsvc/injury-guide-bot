@@ -171,20 +171,26 @@ export function ClaimTimeline() {
           {STAGES.map((_, i) => {
             const Icon = STAGE_ICONS[i]!;
             const isDone = done[i];
+            const skipped = i === 4 && settledPath;
             return (
               <div
                 key={i}
                 className={`flex flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-xs font-medium transition-colors ${
                   isDone
                     ? "bg-success/10 text-success"
-                    : "bg-muted/50 text-muted-foreground"
+                    : skipped
+                      ? "bg-muted/30 text-muted-foreground/60"
+                      : "bg-muted/50 text-muted-foreground"
                 }`}
               >
-                <Icon className="h-3.5 w-3.5" />
-                <span className="hidden md:inline">{STAGE_LABELS[i]}</span>
+                {skipped ? <Check className="h-3.5 w-3.5" /> : <Icon className="h-3.5 w-3.5" />}
+                <span className="hidden md:inline">
+                  {skipped ? "Not needed" : STAGE_LABELS[i]}
+                </span>
               </div>
             );
           })}
+
         </div>
 
         <ol className="mt-6 space-y-0">
