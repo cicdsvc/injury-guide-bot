@@ -38,7 +38,10 @@ export type LetterWizardProps = {
   onGenerate: (data: Record<string, string>, format: "docx" | "pdf") => Promise<void>;
   progressKey: ProgressKey;
   requireTerms?: boolean;
+  documentKey?: ProgressKey;
+  documentTitle?: string;
 };
+
 
 type SavedLetter = {
   formData: Record<string, string>;
@@ -56,7 +59,10 @@ export function LetterWizard({
   onGenerate,
   progressKey,
   requireTerms = false,
+  documentKey,
+  documentTitle,
 }: LetterWizardProps) {
+
   const [step, setStep] = useState<"intro" | "form" | "preview" | "done">("intro");
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [isGenerating, setIsGenerating] = useState(false);
@@ -102,7 +108,19 @@ export function LetterWizard({
     setError(null);
     try {
       await onGenerate(formData, format);
+      if (documentKey) {
+        void saveProgress(documentKey, {
+          docs: [
+            {
+              title: documentTitle ?? title,
+              body: buildPreview(formData),
+            },
+          ],
+          savedAt: new Date().toISOString(),
+        });
+      }
       setStep("done");
+
     } catch (err) {
       setError("Failed to generate the document. Please try again.");
     } finally {
