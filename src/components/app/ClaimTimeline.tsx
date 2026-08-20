@@ -248,7 +248,7 @@ export function ClaimTimeline() {
                   {isDone ? (
                     <Check className="h-5 w-5" />
                   ) : (
-                    <Icon className="h-4 w-4" />
+                    <span className="text-sm font-semibold">{i + 1}</span>
                   )}
                 </span>
                 <label
