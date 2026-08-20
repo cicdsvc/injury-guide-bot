@@ -146,11 +146,13 @@ function GuideLandingPage() {
             />
 
             <div className="flex justify-end">
-              <Button asChild disabled={!accepted} className="gap-2">
-                <Link to="/faq" search={{ start: true }}>
-                  Start the guided process
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
+              <Button
+                disabled={!accepted}
+                className="gap-2"
+                onClick={() => navigate({ to: "/faq", search: { start: true } })}
+              >
+                Start the guided process
+                <ArrowRight className="h-4 w-4" />
               </Button>
             </div>
           </CardContent>
