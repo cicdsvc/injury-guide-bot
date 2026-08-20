@@ -30,13 +30,14 @@ const STAGES = [
 const STAGE_ICONS = [FileText, UserCheck, Handshake, FileSignature, Mail];
 const STAGE_LABELS = ["Draft", "Consult", "Negotiate", "Settle", "Demand"];
 
-type TimelineState = { done: boolean[] };
+type TimelineState = { done: boolean[]; paymentReceived?: boolean | null };
 
 const EMPTY: boolean[] = STAGES.map(() => false);
 
 export function ClaimTimeline() {
   const { user, loading } = useAuthUser();
   const [done, setDone] = useState<boolean[]>(EMPTY);
+  const [paymentReceived, setPaymentReceived] = useState<boolean | null>(null);
   const [ready, setReady] = useState(false);
   const [hasDocs, setHasDocs] = useState(false);
   const [hasSettlement, setHasSettlement] = useState(false);
@@ -47,6 +48,7 @@ export function ClaimTimeline() {
     if (loading) return;
     if (!user) {
       setDone(EMPTY);
+      setPaymentReceived(null);
       setReady(true);
       return;
     }
@@ -60,13 +62,15 @@ export function ClaimTimeline() {
       let next = saved?.done && Array.isArray(saved.done)
         ? STAGES.map((_, i) => Boolean(saved.done[i]))
         : [...EMPTY];
+      const payment = saved?.paymentReceived ?? null;
+      setPaymentReceived(payment);
       const docs = savedDocs?.docs ?? [];
       setHasDocs(docs.length > 0);
       setHasSettlement((savedSettlement?.docs ?? []).length > 0);
       setHasDemand((savedDemand?.docs ?? []).length > 0);
       if (docs.length > 0 && !next[0]) {
         next = next.map((v, i) => (i === 0 ? true : v));
-        void saveProgress("timeline", { done: next });
+        void saveProgress("timeline", { done: next, paymentReceived: payment });
       }
       setDone(next);
       setReady(true);
@@ -76,13 +80,21 @@ export function ClaimTimeline() {
     };
   }, [user, loading]);
 
-  const persist = (next: boolean[]) => {
+  const persist = (next: boolean[], payment: boolean | null = paymentReceived) => {
     setDone(next);
-    if (user) void saveProgress("timeline", { done: next });
+    setPaymentReceived(payment);
+    if (user) void saveProgress("timeline", { done: next, paymentReceived: payment });
+  };
+
+  const answerPayment = (value: boolean | null) => {
+    // Clearing stage 5 when payment is received keeps the journey honest.
+    const next = value === true ? done.map((v, i) => (i === 4 ? false : v)) : done;
+    persist(next, value);
   };
 
   const startNewProcess = () => {
     setDone(EMPTY);
+    setPaymentReceived(null);
     setHasDocs(false);
     setHasSettlement(false);
     setHasDemand(false);
@@ -105,9 +117,12 @@ export function ClaimTimeline() {
     persist(done.map((v, i) => (i === index ? !v : v)));
   };
 
-  const completed = done.filter(Boolean).length;
-  const progressPercent = Math.round((completed / STAGES.length) * 100);
-  const allDone = completed === STAGES.length;
+  const settledPath = paymentReceived === true && !hasDemand;
+  const totalStages = settledPath ? 4 : STAGES.length;
+  const completed = done.slice(0, totalStages).filter(Boolean).length;
+  const progressPercent = Math.round((completed / totalStages) * 100);
+  const allDone = completed === totalStages;
+
 
   return (
     <Card className="border-border/60 bg-card overflow-hidden">
@@ -133,7 +148,7 @@ export function ClaimTimeline() {
                 : "bg-secondary text-secondary-foreground"
             }`}
           >
-            {completed} of {STAGES.length} done
+            {completed} of {totalStages} done
           </span>
         </div>
 
@@ -156,26 +171,61 @@ export function ClaimTimeline() {
           {STAGES.map((_, i) => {
             const Icon = STAGE_ICONS[i]!;
             const isDone = done[i];
+            const skipped = i === 4 && settledPath;
             return (
               <div
                 key={i}
                 className={`flex flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-xs font-medium transition-colors ${
                   isDone
                     ? "bg-success/10 text-success"
-                    : "bg-muted/50 text-muted-foreground"
+                    : skipped
+                      ? "bg-muted/30 text-muted-foreground/60"
+                      : "bg-muted/50 text-muted-foreground"
                 }`}
               >
-                <Icon className="h-3.5 w-3.5" />
-                <span className="hidden md:inline">{STAGE_LABELS[i]}</span>
+                {skipped ? <Check className="h-3.5 w-3.5" /> : <Icon className="h-3.5 w-3.5" />}
+                <span className="hidden md:inline">
+                  {skipped ? "Not needed" : STAGE_LABELS[i]}
+                </span>
               </div>
             );
           })}
+
         </div>
 
         <ol className="mt-6 space-y-0">
           {STAGES.map((stage, i) => {
             const Icon = STAGE_ICONS[i]!;
             const isDone = done[i];
+            const skipped = i === 4 && settledPath;
+            const optionalPending =
+              i === 4 && !settledPath && !hasDemand && paymentReceived === null;
+
+            if (skipped) {
+              return (
+                <li key={stage} className="relative flex gap-4 pb-5 last:pb-0">
+                  <span className="z-10 flex size-10 shrink-0 items-center justify-center rounded-full border-2 border-success/50 bg-success/15 text-success">
+                    <Check className="h-5 w-5" />
+                  </span>
+                  <div className="flex flex-1 items-start gap-3 rounded-xl border border-dashed border-success/40 bg-success/5 p-4 text-sm">
+                    <Mail className="mt-0.5 h-4 w-4 shrink-0 text-success" />
+                    <div>
+                      <p className="font-medium text-success">
+                        Letter of Demand — not needed, compensation received.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => answerPayment(null)}
+                        className="mt-1 text-xs text-muted-foreground underline underline-offset-2 hover:text-foreground"
+                      >
+                        Payment didn&apos;t arrive after all?
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              );
+            }
+
             return (
               <li key={stage} className="relative flex gap-4 pb-5 last:pb-0">
                 {i < STAGES.length - 1 && (
@@ -190,7 +240,9 @@ export function ClaimTimeline() {
                   className={`z-10 flex size-10 shrink-0 items-center justify-center rounded-full border-2 text-sm font-semibold transition-colors ${
                     isDone
                       ? "border-success bg-success text-success-foreground"
-                      : "border-border bg-background text-muted-foreground"
+                      : optionalPending
+                        ? "border-dashed border-border bg-background text-muted-foreground/60"
+                        : "border-border bg-background text-muted-foreground"
                   }`}
                 >
                   {isDone ? (
@@ -200,12 +252,16 @@ export function ClaimTimeline() {
                   )}
                 </span>
                 <label
-                  className={`group flex flex-1 cursor-pointer items-start gap-3 rounded-xl border p-4 transition-all ${
+                  className={`group flex flex-1 cursor-pointer flex-col gap-3 rounded-xl border p-4 transition-all ${
                     isDone
                       ? "border-success/40 bg-success/8 text-foreground shadow-sm"
-                      : "border-border/60 bg-card hover:border-primary/30 hover:bg-primary/5"
+                      : optionalPending
+                        ? "border-dashed border-border/60 bg-muted/20"
+                        : "border-border/60 bg-card hover:border-primary/30 hover:bg-primary/5"
                   }`}
                 >
+                  <div className="flex items-start gap-3">
+
                   <Checkbox
                     checked={done[i] ?? false}
                     onCheckedChange={() => toggle(i)}
@@ -275,6 +331,11 @@ export function ClaimTimeline() {
                       </>
                     ) : i === 4 ? (
                       <>
+                        {optionalPending && (
+                          <span className="mr-2 inline-block rounded-full bg-muted px-2 py-0.5 align-middle text-[11px] font-medium text-muted-foreground">
+                            Only if needed
+                          </span>
+                        )}
                         The agreed compensation is not received by the deadline.{" "}
                         <Link
                           to="/letter/demand"
@@ -284,6 +345,11 @@ export function ClaimTimeline() {
                           Draft a Letter of Demand
                         </Link>
                         {" and send to the other party."}
+                        {optionalPending && (
+                          <span className="mt-1 block text-xs text-muted-foreground">
+                            You only need this if payment is not received by the deadline.
+                          </span>
+                        )}
                         {hasDemand && (
                           <>
                             {" "}
@@ -301,7 +367,50 @@ export function ClaimTimeline() {
                       stage
                     )}
                   </span>
+                  </div>
+
+                  {i === 3 && done[3] && (
+                    <div
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                      className="rounded-lg border border-border/60 bg-background/70 p-3"
+                    >
+                      <p className="text-xs font-medium text-foreground">
+                        Has the agreed compensation been received?
+                      </p>
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant={paymentReceived === true ? "default" : "outline"}
+                          className={
+                            paymentReceived === true
+                              ? "h-7 bg-success text-success-foreground hover:bg-success/90"
+                              : "h-7"
+                          }
+                          onClick={() => answerPayment(true)}
+                        >
+                          Yes, received
+                        </Button>
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant={paymentReceived === false ? "default" : "outline"}
+                          className="h-7"
+                          onClick={() => answerPayment(false)}
+                        >
+                          Not yet
+                        </Button>
+                      </div>
+                      <p className="mt-2 text-xs text-muted-foreground">
+                        If payment is received, you can skip the final stage.
+                      </p>
+                    </div>
+                  )}
                 </label>
+
               </li>
             );
           })}
@@ -311,7 +420,10 @@ export function ClaimTimeline() {
           <div className="mt-5 rounded-xl border border-success/40 bg-success/10 p-4 text-sm text-success">
             <div className="flex items-center gap-2 font-medium">
               <Check className="h-4 w-4" />
-              You have completed all the stages of your claim journey.
+              {settledPath
+                ? "Your claim journey is complete — settlement reached and compensation received."
+                : "You have completed all the stages of your claim journey."}
+
             </div>
             <p className="mt-1 text-success/90">
               Remember to consult a lawyer before sending any legal documents or signing a settlement.
