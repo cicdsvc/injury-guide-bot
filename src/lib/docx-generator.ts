@@ -103,27 +103,40 @@ function blocksToDocx(blocks: Block[]): (Paragraph | Table)[] {
             children: [run(b.n), run("\t"), run(b.text)],
             indent: { left, hanging: 720 },
             tabStops: [{ type: TabStopType.LEFT, position: left }],
-            spacing: { after: 160 },
+            spacing: { after: b.tight ? 0 : 160 },
           }),
         );
         break;
       }
       case "table": {
+        const indent = (b.indent ?? 0) * INDENT_UNIT;
+        const total = 9360 - indent;
+        const c1 = Math.round(total * 0.6);
+        const c2 = total - c1;
+        const opt = { bordered: !!b.bordered };
+        const optR = { bordered: !!b.bordered, right: !!b.alignRight };
         out.push(
           new Table({
-            width: { size: 9360, type: WidthType.DXA },
-            columnWidths: [4680, 4680],
+            width: { size: total, type: WidthType.DXA },
+            columnWidths: [c1, c2],
+            indent: { size: indent, type: WidthType.DXA },
             rows: [
               new TableRow({
-                children: [cell(b.header[0], 4680, true), cell(b.header[1], 4680, true)],
+                children: [
+                  cell(b.header[0], c1, true, opt),
+                  cell(b.header[1], c2, true, optR),
+                ],
               }),
               ...b.rows.map(
-                (r) => new TableRow({ children: [cell(r[0], 4680), cell(r[1], 4680)] }),
+                (r) =>
+                  new TableRow({
+                    children: [cell(r[0], c1, false, opt), cell(r[1], c2, false, optR)],
+                  }),
               ),
             ],
           }),
         );
-        out.push(new Paragraph({ children: [run("")], spacing: { after: 120 } }));
+        out.push(new Paragraph({ children: [run("")], spacing: { after: 160 } }));
         break;
       }
       case "sig":
