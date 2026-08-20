@@ -85,8 +85,6 @@ export function TermsOfUse({
   variant = "purple",
   checkboxLabel = "I have read, understood, and agree to the above Terms of Use, Consent and Waiver.",
 }: TermsOfUseProps) {
-  const [scrollBox, setScrollBox] = useState<HTMLDivElement | null>(null);
-
   const boxTheme =
     variant === "yellow"
       ? "border-yellow/30 bg-yellow/15 text-yellow-foreground"
