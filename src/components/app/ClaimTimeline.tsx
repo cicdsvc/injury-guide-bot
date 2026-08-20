@@ -4,8 +4,19 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { LogIn, RefreshCcw } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { useAuthUser } from "@/hooks/useAuthUser";
-import { loadProgress, saveProgress } from "@/lib/progress";
+import { clearProgress, loadProgress, saveProgress } from "@/lib/progress";
 import type { SavedDocuments } from "@/lib/claim-documents";
 
 const STAGES = [
