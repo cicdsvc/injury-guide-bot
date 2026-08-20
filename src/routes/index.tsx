@@ -139,52 +139,56 @@ function HomePage() {
 
           <ClaimTimeline />
 
-          <div className="text-center">
-            <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">
-              What would you like to do?
-            </h2>
-            <p className="mt-2 text-muted-foreground">
-              Choose an option below to get started. Sign in to save your
-              progress and continue later.
-            </p>
-          </div>
+          {SHOW_OPTIONS && (
+            <>
+              <div className="text-center">
+                <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">
+                  What would you like to do?
+                </h2>
+                <p className="mt-2 text-muted-foreground">
+                  Choose an option below to get started. Sign in to save your
+                  progress and continue later.
+                </p>
+              </div>
 
-          <div className="grid gap-6 sm:grid-cols-2">
-            {options.map((option) => (
-              <Card
-                key={option.id}
-                className="group overflow-hidden border-border/60 bg-card transition-shadow hover:shadow-lg"
-              >
-                <Link to={option.to} className="block">
-                  <CardContent className="flex h-full flex-col p-0">
-                    <div className="relative h-40 w-full overflow-hidden bg-muted">
-                      <img
-                        src={option.image}
-                        alt=""
-                        className={`h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 ${
-                          option.imagePosition === "top" ? "object-top" : "object-center"
-                        }`}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                      <option.icon className="absolute bottom-3 left-3 h-8 w-8 text-white drop-shadow-md" />
-                    </div>
-                    <div className="flex flex-1 flex-col p-5">
-                      <h3 className="text-lg font-semibold text-foreground">
-                        {option.label}
-                      </h3>
-                      <p className="mt-1 flex-1 text-sm text-muted-foreground">
-                        {option.description}
-                      </p>
-                      <div className="mt-4 flex items-center text-sm font-medium text-primary">
-                        Get started
-                        <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Link>
-              </Card>
-            ))}
-          </div>
+              <div className="grid gap-6 sm:grid-cols-2">
+                {options.map((option) => (
+                  <Card
+                    key={option.id}
+                    className="group overflow-hidden border-border/60 bg-card transition-shadow hover:shadow-lg"
+                  >
+                    <Link to={option.to} className="block">
+                      <CardContent className="flex h-full flex-col p-0">
+                        <div className="relative h-40 w-full overflow-hidden bg-muted">
+                          <img
+                            src={option.image}
+                            alt=""
+                            className={`h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 ${
+                              option.imagePosition === "top" ? "object-top" : "object-center"
+                            }`}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                          <option.icon className="absolute bottom-3 left-3 h-8 w-8 text-white drop-shadow-md" />
+                        </div>
+                        <div className="flex flex-1 flex-col p-5">
+                          <h3 className="text-lg font-semibold text-foreground">
+                            {option.label}
+                          </h3>
+                          <p className="mt-1 flex-1 text-sm text-muted-foreground">
+                            {option.description}
+                          </p>
+                          <div className="mt-4 flex items-center text-sm font-medium text-primary">
+                            Get started
+                            <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Link>
+                  </Card>
+                ))}
+              </div>
+            </>
+          )}
 
           <Disclaimer />
         </div>
