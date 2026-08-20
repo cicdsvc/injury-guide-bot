@@ -345,11 +345,6 @@ export function ClaimTimeline() {
                           Draft a Letter of Demand
                         </Link>
                         {" and send to the other party."}
-                        {optionalPending && (
-                          <span className="mt-1 block text-xs text-muted-foreground">
-                            You only need this if payment is not received by the deadline.
-                          </span>
-                        )}
                         {hasDemand && (
                           <>
                             {" "}
