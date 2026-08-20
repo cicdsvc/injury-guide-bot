@@ -3,7 +3,7 @@ import { GUIDE_CONTENT } from "@/lib/guide-content";
 import { createFileRoute } from "@tanstack/react-router";
 import { convertToModelMessages, streamText, type UIMessage } from "ai";
 
-type ChatRequestBody = { messages?: unknown };
+type ChatRequestBody = { messages?: unknown; mode?: unknown };
 
 const SYSTEM_PROMPT = `You are a legal preparation assistant for personal injury (PI) claimants in Singapore with lower-value claims. You have internal knowledge of the relevant legal information framework (reproduced below).
 
@@ -184,12 +184,36 @@ Use only the information provided below as your source of substantive informatio
 GUIDE CONTENT:
 ${GUIDE_CONTENT}`;
 
+const QA_SYSTEM_PROMPT = `You are a helpful assistant for personal injury (PI) claimants in Singapore with lower-value claims.
+
+YOUR ROLE
+Answer the claimant's question directly, clearly and practically. You are NOT a lawyer and you do NOT give legal advice.
+
+HOW TO ANSWER
+- Answer the question that was asked. Do NOT start an intake interview, do NOT ask for the date of the accident, and do NOT work through any step-by-step checklist.
+- Use simple, plain English with a warm, patient tone. Explain any legal term in everyday words.
+- Use short paragraphs and bullet points where it helps readability.
+- If you need one small clarification to answer well, you may ask a single short question — but only after giving what help you can.
+- Never generate the ===DOC:=== documents, the Letter of Claim template, or any downloadable document in this mode. If the claimant wants a draft Letter of Claim, tell them to use the step-by-step guide from the main menu.
+- End by inviting a follow-up question.
+
+YOU DO NOT
+- Advise on the merits of a claim, how much a claim is worth, or whether to accept a settlement offer. If asked, acknowledge warmly and redirect: "That's a question for your lawyer."
+
+DISCLAIMERS
+- In your first reply, remind them plainly that you are not a lawyer and they should get legal advice before concluding any settlement or sending any formal correspondence.
+- When a topic is wrapped up, direct them to a private lawyer or Pro Bono SG (https://www.probono.sg).
+
+Use only the information provided below as your source of substantive information. If something is not covered, say so plainly and suggest they raise it with a lawyer. Never mention that your answers come from the Personal Injury Guide, the Legal Aid Bureau, or any other source document.
+
+GUIDE CONTENT:
+${GUIDE_CONTENT}`;
 
 export const Route = createFileRoute("/api/chat")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const { messages } = (await request.json()) as ChatRequestBody;
+        const { messages, mode } = (await request.json()) as ChatRequestBody;
         if (!Array.isArray(messages)) {
           return new Response("Messages are required", { status: 400 });
         }
@@ -199,11 +223,13 @@ export const Route = createFileRoute("/api/chat")({
           return new Response("Missing LOVABLE_API_KEY", { status: 500 });
         }
 
+        const system = mode === "qa" ? QA_SYSTEM_PROMPT : SYSTEM_PROMPT;
+
         const gateway = createLovableAiGatewayProvider(key);
         const model = gateway.languageModel("google/gemini-3.6-flash");
         const result = streamText({
           model,
-          system: SYSTEM_PROMPT,
+          system,
           messages: await convertToModelMessages(messages as UIMessage[]),
         });
 
