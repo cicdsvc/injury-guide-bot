@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { LogIn, RefreshCcw } from "lucide-react";
 import { useAuthUser } from "@/hooks/useAuthUser";
 import { loadProgress, saveProgress } from "@/lib/progress";
+import type { SavedDocuments } from "@/lib/claim-documents";
 
 const STAGES = [
   "Use the step-by-step guide to generate a draft Letter of Claim.",
@@ -23,6 +24,7 @@ export function ClaimTimeline() {
   const { user, loading } = useAuthUser();
   const [done, setDone] = useState<boolean[]>(EMPTY);
   const [ready, setReady] = useState(false);
+  const [hasDocs, setHasDocs] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -32,11 +34,21 @@ export function ClaimTimeline() {
       setReady(true);
       return;
     }
-    loadProgress<TimelineState>("timeline").then((saved) => {
+    void Promise.all([
+      loadProgress<TimelineState>("timeline"),
+      loadProgress<SavedDocuments>("documents"),
+    ]).then(([saved, savedDocs]) => {
       if (!active) return;
-      if (saved?.done && Array.isArray(saved.done)) {
-        setDone(STAGES.map((_, i) => Boolean(saved.done[i])));
+      let next = saved?.done && Array.isArray(saved.done)
+        ? STAGES.map((_, i) => Boolean(saved.done[i]))
+        : [...EMPTY];
+      const docs = savedDocs?.docs ?? [];
+      setHasDocs(docs.length > 0);
+      if (docs.length > 0 && !next[0]) {
+        next = next.map((v, i) => (i === 0 ? true : v));
+        void saveProgress("timeline", { done: next });
       }
+      setDone(next);
       setReady(true);
     });
     return () => {
@@ -117,6 +129,18 @@ export function ClaimTimeline() {
                     Draft a Letter of Claim
                   </Link>
                   {" using the step-by-step guide."}
+                  {hasDocs && (
+                    <>
+                      {" "}
+                      <Link
+                        to="/documents"
+                        onClick={(e) => e.stopPropagation()}
+                        className="font-medium text-primary underline underline-offset-2 hover:text-primary/80"
+                      >
+                        View your documents
+                      </Link>
+                    </>
+                  )}
                 </>
               ) : i === 2 ? (
                     <>
