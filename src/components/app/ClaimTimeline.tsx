@@ -72,6 +72,21 @@ export function ClaimTimeline() {
     if (user) void saveProgress("timeline", { done: next });
   };
 
+  const startNewProcess = () => {
+    setDone(EMPTY);
+    setHasDocs(false);
+    if (user) {
+      void Promise.all([
+        clearProgress("timeline"),
+        clearProgress("documents"),
+        clearProgress("faq"),
+        clearProgress("letter:claim"),
+        clearProgress("letter:settlement"),
+        clearProgress("letter:demand"),
+      ]);
+    }
+  };
+
   const toggle = (index: number) => {
     persist(done.map((v, i) => (i === index ? !v : v)));
   };
