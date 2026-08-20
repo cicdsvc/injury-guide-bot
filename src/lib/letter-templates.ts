@@ -205,29 +205,34 @@ export function buildSettlementAgreement(d: SettlementAgreementData): Block[] {
     t: "line",
     text: `THIS SETTLEMENT AGREEMENT ("Agreement") is entered on this ${ph(d.day, "__")} day of ${ph(d.month, "[Month]")} ${ph(d.year, "[Year]")}`,
   });
+  b.push({ t: "spacer" });
   b.push({ t: "line", text: "BETWEEN:", bold: true });
   b.push({
     t: "num",
     n: "(1)",
-    text: `${ph(d.partyAName, "[Name of Party A]")} (NRIC No. ${ph(d.partyAId, "[XXXXXXXXX]")}) of ${ph(d.partyAAddress.replace(/\n/g, ", "), "[registered address]")} ("Party A");`,
+    indent: 1,
+    text: `${ph(d.partyAName, "[Name of Party A]")} (${idLabel(d.partyAIdType)} ${ph(d.partyAId, "[XXXXXXXXX]")}) of ${ph(d.partyAAddress.replace(/\n/g, ", "), "[registered address]")} ("Party A");`,
   });
   b.push({ t: "line", text: "AND", bold: true });
   b.push({
     t: "num",
     n: "(2)",
-    text: `${ph(d.partyBName, "[Name of Party B]")} (NRIC No. ${ph(d.partyBId, "[XXXXXXXXX]")}) of ${ph(d.partyBAddress.replace(/\n/g, ", "), "[registered address]")} ("Party B");`,
+    indent: 1,
+    text: `${ph(d.partyBName, "[Name of Party B]")} (${idLabel(d.partyBIdType)} ${ph(d.partyBId, "[XXXXXXXXX]")}) of ${ph(d.partyBAddress.replace(/\n/g, ", "), "[registered address]")} ("Party B");`,
   });
   b.push({
     t: "line",
     text: '(Together, both individuals are called the "Parties," and each of them is a "Party").',
     indent: 1,
   });
+  b.push({ t: "spacer" });
 
   b.push({ t: "line", text: "WHEREAS:", bold: true });
   b.push({
     t: "num",
     n: "A.",
-    text: `On ${ph(d.incidentDate, "[Date]")}, an incident occurred at ${ph(d.incidentLocation, "[Location]")} where ${ph(d.incidentFacts, "[brief facts of what happened]")}. This incident (the "Accident") was caused by Party B's actions or negligence and resulted in injuries and/or damages to Party A.`,
+    indent: 1,
+    text: settlementRecitalA(d),
   });
   b.push({
     t: "num",
