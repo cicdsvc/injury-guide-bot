@@ -3,7 +3,7 @@ import { GUIDE_CONTENT } from "@/lib/guide-content";
 import { createFileRoute } from "@tanstack/react-router";
 import { convertToModelMessages, streamText, type UIMessage } from "ai";
 
-type ChatRequestBody = { messages?: unknown };
+type ChatRequestBody = { messages?: unknown; mode?: unknown };
 
 const SYSTEM_PROMPT = `You are a legal preparation assistant for personal injury (PI) claimants in Singapore with lower-value claims. You have internal knowledge of the relevant legal information framework (reproduced below).
 
