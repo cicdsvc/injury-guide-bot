@@ -272,6 +272,7 @@ export function LetterWizard({
                         onChange={(e) => updateField(field.name, e.target.value)}
                       />
                     )}
+                    {field.hint?.(formData)}
                   </div>
                 ))}
               </div>
