@@ -117,7 +117,7 @@ function HomePage() {
                   </span>
                 </div>
                 <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">
-                  What is a Personal Injury?
+                  What is a Personal Injury and who this guide is for?
                 </h2>
                 <div className="space-y-3 text-foreground/90 leading-relaxed">
                   <p>
