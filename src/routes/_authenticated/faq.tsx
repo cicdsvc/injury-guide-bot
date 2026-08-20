@@ -145,6 +145,24 @@ function FaqPage() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  useEffect(() => {
+    if (status === "streaming" || status === "submitted") return;
+    for (let i = messages.length - 1; i >= 0; i--) {
+      const message = messages[i]!;
+      if (message.role !== "assistant") continue;
+      const text = message.parts
+        .map((part) => (part.type === "text" ? part.text : ""))
+        .join("");
+      const docs = splitDocuments(text);
+      if (docs.length > 0) {
+        void saveProgress("documents", { docs, savedAt: new Date().toISOString() });
+        void saveProgress("timeline-stage1", { done: true });
+      }
+      break;
+    }
+  }, [messages, status]);
+
+
   return (
     <main className="flex min-h-screen flex-col bg-cream">
       <header className="sticky top-0 z-20 border-b border-border/60 bg-background/80 px-6 py-3 backdrop-blur-md">
