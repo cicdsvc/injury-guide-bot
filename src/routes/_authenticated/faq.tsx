@@ -106,25 +106,27 @@ Please start with step 1.`;
 
 function FaqPage() {
   const { ask, start } = Route.useSearch();
+  const chatId = start ? "faq-guide" : ask ? "faq-ask" : "faq";
   const chatTransport = new DefaultChatTransport({ api: "/api/chat" });
   const { messages, sendMessage, status, error } = useChat({
-    id: "faq",
+    id: chatId,
     transport: chatTransport,
   });
 
   const bottomRef = useRef<HTMLDivElement>(null);
-  const autoSent = useRef(false);
+  const autoSent = useRef<{ ask?: string; start?: boolean }>({});
 
   useEffect(() => {
-    if (autoSent.current) return;
+    if (autoSent.current.ask === ask && autoSent.current.start === start) return;
     if (start) {
-      autoSent.current = true;
+      autoSent.current = { start: true };
       void sendMessage({ text: START_MESSAGE });
     } else if (ask) {
-      autoSent.current = true;
+      autoSent.current = { ask };
       void sendMessage({ text: ask });
     }
   }, [ask, start, sendMessage]);
+
 
 
   useEffect(() => {
