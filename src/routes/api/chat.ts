@@ -152,16 +152,17 @@ Note: the "<- bold ..." annotations above are instructions to you, never print t
 (a structured summary of the facts the claimant gave: parties, date, time, place, how the accident happened, injuries, treatment received, time off work, expenses incurred, and anything recorded as "not available yet". Use clear headings and short bullet points. Do not invent facts.)
 
 ===DOC: Evidence — What You Have and What Is Still Missing===
-(a single Markdown table benchmarked against "Step 5: Gather and Organise Your Evidence", with exactly these columns:
+(a single Markdown table benchmarked against the list of documents and evidence below, with exactly these columns:
 | Evidence category | Examples | What you have | Still missing / next step |
-Include one row for each of these six categories, in this order:
-1. Proof of what happened (photos/videos of the scene, accident report, CCTV, eyewitness accounts)
-2. Proof of who was responsible (safety rules, cleaning or maintenance records, witness statements identifying the responsible party)
-3. Medical condition and treatment (medical reports, hospital records, doctor's letters, test results, photos of injuries, prescriptions, physiotherapy schedules)
-4. Financial losses (medical leave slips, payslips or employer letters, receipts for medical bills, transport receipts, invoices for equipment or care services)
-5. Impact on daily life (contemporaneous diary or notes on pain, emotional effects, limits on hobbies and household tasks)
-6. Future losses (medical or expert reports on recovery and permanent disability, estimates of future medical costs, loss of future earnings)
-In "What you have" put only what the claimant actually told you, or "None yet". In "Still missing / next step" name the specific missing item and the practical step to get it, e.g. "Request medical records from the hospital", "Obtain witness statement", "Ask the authorities for CCTV footage". Keep each cell short. After the table add a short "Priority gaps" list of the 3 most important missing items.)
+Use these seven categories, in this order, and include all the examples listed under each one in the "Examples" column:
+A. Evidence of how the accident happened — photos of the accident scene; photos/videos showing the hazard or unsafe condition; photos of damaged property/equipment; CCTV footage; accident or incident report; police report; traffic accident report; witness statements or witness contact details; any correspondence with the person/company responsible for the accident
+B. Evidence that the other party was responsible — safety rules or relevant policies; cleaning/maintenance records; inspection records; records showing who was responsible for maintaining the premises/equipment; witness evidence identifying the responsible party; any admission or acknowledgement of responsibility by the other party
+C. Evidence of your injury and treatment — medical reports; hospital records; doctor's letters; test/imaging results; photographs of injuries; medical certificates / hospitalisation leave documents; medication prescriptions; physiotherapy records/schedules; specialist or expert reports
+D. Evidence of financial losses — medical and hospital bills; receipts for medication; receipts for medical equipment; receipts for transport to/from medical appointments; invoices for care services; payslips; employer's letter confirming absence from work; employer's letter confirming any loss or reduction of salary; other documents showing income lost because of the injury
+E. Evidence of how the injury affected daily life — diary or notes recording pain and symptoms; notes of activities you could no longer do or had difficulty doing; evidence of limitations on hobbies or exercise; evidence of difficulties with household tasks; evidence of difficulties caring for family members; statements from family members or others who observed the impact
+F. Evidence of future losses — medical/specialist reports on expected recovery; reports on any permanent disability or impairment; medical evidence of future treatment required; estimates of future medical expenses; evidence of likely future loss of earnings; expert evidence supporting future financial or personal losses
+G. Correspondence and other relevant evidence — letters/emails/WhatsApp messages with the other party or insurer; letters from the other party's insurer; settlement offers or responses; any other documents relating to the accident, injury or losses
+In "What you have" put only what the claimant actually told you, grouped under the relevant category, or "None yet". In "Still missing / next step" name the specific missing item(s) and the practical step to get them, e.g. "Request medical records from the hospital", "Obtain witness statement", "Ask the authorities for CCTV footage", "Ask employer for letter confirming lost salary". Keep each cell concise. After the table add a short "Priority gaps" list of the 3 most important missing items.)
 
 ===DOC: Summary Sheet for Your Lawyer===
 (a one-page consultation sheet: claimant's details, summary of the incident in a few lines, injuries and treatment, losses claimed so far, evidence held, evidence still missing, key questions to ask the lawyer, and a line noting no legal advice has been given.)
