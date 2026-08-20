@@ -115,9 +115,11 @@ export function ClaimTimeline() {
 
   const toggle = (index: number) => {
     const next = done.map((v, i) => (i === index ? !v : v));
-    // If Stage 4 is being unchecked, Stage 5 must also be unchecked.
-    if (index === 3 && done[3] && next[4]) {
+    // If Stage 4 is being unchecked, Stage 5 must also be unchecked and the payment answer reset.
+    if (index === 3 && done[3]) {
       next[4] = false;
+      persist(next, null);
+      return;
     }
     persist(next);
   };
