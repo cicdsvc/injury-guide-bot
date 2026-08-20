@@ -195,6 +195,19 @@ export type SettlementAgreementData = {
   witnessB: string;
 };
 
+const idLabel = (type: string | undefined) =>
+  (type ?? "").toLowerCase().includes("uen") ? "UEN:" : "NRIC No.";
+
+/** Recital A of the Settlement Agreement, exactly as it will appear. */
+export function settlementRecitalA(d: {
+  incidentDate?: string;
+  incidentLocation?: string;
+  incidentFacts?: string;
+}): string {
+  const facts = ph(d.incidentFacts, "[brief facts of what happened]").replace(/[.\s]+$/, "");
+  return `On ${ph(d.incidentDate, "[Date]")}, an incident occurred at ${ph(d.incidentLocation, "[Location]")} where ${facts}. This incident (the "Accident") was caused by Party B's actions or negligence and resulted in injuries and/or damages to Party A.`;
+}
+
 export function buildSettlementAgreement(d: SettlementAgreementData): Block[] {
   const b: Block[] = [];
   const instalment = d.paymentType === "Instalments";
