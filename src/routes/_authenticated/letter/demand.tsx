@@ -149,6 +149,7 @@ function LetterOfDemandPage() {
       image={demandImg}
       imageAlt="Illustration of a formal demand letter"
       fields={fields}
+      requireTerms
       buildPreview={(d) => blocksToText(buildLetterOfDemand(toData(d)))}
       onGenerate={async (d, format) => {
         if (format === "pdf") await generateLetterOfDemandPdf(toData(d));

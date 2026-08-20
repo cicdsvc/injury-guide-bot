@@ -132,6 +132,7 @@ function SettlementAgreementPage() {
       image={settlementImg}
       imageAlt="Illustration of two parties signing a settlement agreement"
       fields={fields}
+      requireTerms
       buildPreview={(d) => blocksToText(buildSettlementAgreement(toData(d)))}
       onGenerate={async (d, format) => {
         if (format === "pdf") await generateSettlementAgreementPdf(toData(d));
