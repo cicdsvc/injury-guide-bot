@@ -331,6 +331,11 @@ export function ClaimTimeline() {
                       </>
                     ) : i === 4 ? (
                       <>
+                        {optionalPending && (
+                          <span className="mr-2 inline-block rounded-full bg-muted px-2 py-0.5 align-middle text-[11px] font-medium text-muted-foreground">
+                            Only if needed
+                          </span>
+                        )}
                         The agreed compensation is not received by the deadline.{" "}
                         <Link
                           to="/letter/demand"
@@ -340,6 +345,11 @@ export function ClaimTimeline() {
                           Draft a Letter of Demand
                         </Link>
                         {" and send to the other party."}
+                        {optionalPending && (
+                          <span className="mt-1 block text-xs text-muted-foreground">
+                            You only need this if payment is not received by the deadline.
+                          </span>
+                        )}
                         {hasDemand && (
                           <>
                             {" "}
@@ -357,7 +367,50 @@ export function ClaimTimeline() {
                       stage
                     )}
                   </span>
+                  </div>
+
+                  {i === 3 && done[3] && (
+                    <div
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                      className="rounded-lg border border-border/60 bg-background/70 p-3"
+                    >
+                      <p className="text-xs font-medium text-foreground">
+                        Has the agreed compensation been received?
+                      </p>
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant={paymentReceived === true ? "default" : "outline"}
+                          className={
+                            paymentReceived === true
+                              ? "h-7 bg-success text-success-foreground hover:bg-success/90"
+                              : "h-7"
+                          }
+                          onClick={() => answerPayment(true)}
+                        >
+                          Yes, received
+                        </Button>
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant={paymentReceived === false ? "default" : "outline"}
+                          className="h-7"
+                          onClick={() => answerPayment(false)}
+                        >
+                          Not yet
+                        </Button>
+                      </div>
+                      <p className="mt-2 text-xs text-muted-foreground">
+                        If payment is received, you can skip the final stage.
+                      </p>
+                    </div>
+                  )}
                 </label>
+
               </li>
             );
           })}
