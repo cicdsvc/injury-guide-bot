@@ -13,9 +13,16 @@ export type Block =
       tight?: boolean;
     }
   | { t: "twoCol"; left: string; right: string; bold?: boolean }
-  | { t: "num"; n: string; text: string; indent?: number }
+  | { t: "num"; n: string; text: string; indent?: number; tight?: boolean }
   | { t: "spacer" }
-  | { t: "table"; header: [string, string]; rows: [string, string][] }
+  | {
+      t: "table";
+      header: [string, string];
+      rows: [string, string][];
+      bordered?: boolean;
+      alignRight?: boolean;
+      indent?: number;
+    }
   | { t: "sig"; left: string; right: string };
 
 const lines = (v: string | undefined) =>
