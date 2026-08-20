@@ -83,13 +83,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "An interactive app to help you understand more about your Personal Injury claims.",
+          "An interactive guide to help you understand more about your Personal Injury claims.",
       },
       { property: "og:title", content: "Personal Injury Claim Helper" },
       {
         property: "og:description",
         content:
-          "An interactive app to help you understand more about your Personal Injury claims.",
+          "An interactive guide to help you understand more about your Personal Injury claims.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
