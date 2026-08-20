@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedDocumentsRouteImport } from './routes/_authenticated/documents'
 import { Route as AuthenticatedFaqRouteImport } from './routes/_authenticated/faq'
 import { Route as AuthenticatedGuideRouteImport } from './routes/_authenticated/guide'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
@@ -32,6 +33,11 @@ const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDocumentsRoute = AuthenticatedDocumentsRouteImport.update({
+  id: '/documents',
+  path: '/documents',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedFaqRoute = AuthenticatedFaqRouteImport.update({
   id: '/faq',
@@ -70,6 +76,7 @@ const AuthenticatedLetterSettlementRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/documents': typeof AuthenticatedDocumentsRoute
   '/faq': typeof AuthenticatedFaqRoute
   '/guide': typeof AuthenticatedGuideRoute
   '/api/chat': typeof ApiChatRoute
@@ -80,6 +87,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/documents': typeof AuthenticatedDocumentsRoute
   '/faq': typeof AuthenticatedFaqRoute
   '/guide': typeof AuthenticatedGuideRoute
   '/api/chat': typeof ApiChatRoute
@@ -92,6 +100,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/_authenticated/documents': typeof AuthenticatedDocumentsRoute
   '/_authenticated/faq': typeof AuthenticatedFaqRoute
   '/_authenticated/guide': typeof AuthenticatedGuideRoute
   '/api/chat': typeof ApiChatRoute
@@ -104,6 +113,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/documents'
     | '/faq'
     | '/guide'
     | '/api/chat'
@@ -114,6 +124,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/documents'
     | '/faq'
     | '/guide'
     | '/api/chat'
@@ -125,6 +136,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/_authenticated/documents'
     | '/_authenticated/faq'
     | '/_authenticated/guide'
     | '/api/chat'
@@ -162,6 +174,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/documents': {
+      id: '/_authenticated/documents'
+      path: '/documents'
+      fullPath: '/documents'
+      preLoaderRoute: typeof AuthenticatedDocumentsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/faq': {
       id: '/_authenticated/faq'
@@ -209,6 +228,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDocumentsRoute: typeof AuthenticatedDocumentsRoute
   AuthenticatedFaqRoute: typeof AuthenticatedFaqRoute
   AuthenticatedGuideRoute: typeof AuthenticatedGuideRoute
   AuthenticatedLetterClaimRoute: typeof AuthenticatedLetterClaimRoute
@@ -217,6 +237,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDocumentsRoute: AuthenticatedDocumentsRoute,
   AuthenticatedFaqRoute: AuthenticatedFaqRoute,
   AuthenticatedGuideRoute: AuthenticatedGuideRoute,
   AuthenticatedLetterClaimRoute: AuthenticatedLetterClaimRoute,

@@ -26,6 +26,7 @@ import {
 import { Button } from "@/components/ui/button";
 import faqImg from "@/assets/faq-questions.png";
 import { Download } from "lucide-react";
+import { downloadAllDocuments } from "@/lib/claim-documents";
 import { downloadTextAsDocx, downloadTextAsPdf } from "@/lib/text-export";
 
 function looksLikeLetter(text: string) {
@@ -58,21 +59,6 @@ function splitDocuments(text: string): DocSection[] {
   });
   return sections;
 }
-
-export function combineDocuments(docs: DocSection[]) {
-  return docs
-    .map((doc) => `${doc.title}\n\n${doc.body}`)
-    .join("\n\n\n----------------------------------------\n\n\n");
-}
-
-async function downloadAll(docs: DocSection[]) {
-  const combined = combineDocuments(docs);
-  await downloadTextAsDocx(combined, "Personal_Injury_Claim_Documents");
-  await downloadTextAsPdf(combined, "Personal_Injury_Claim_Documents");
-}
-
-
-
 
 export const Route = createFileRoute("/_authenticated/faq")({
   validateSearch: (
@@ -227,7 +213,7 @@ function FaqPage() {
                           <Button
                             type="button"
                             className="gap-2"
-                            onClick={() => downloadAll(docs)}
+                            onClick={() => downloadAllDocuments(docs)}
                           >
                             <Download className="h-4 w-4" />
                             Download all documents (Word + PDF)
