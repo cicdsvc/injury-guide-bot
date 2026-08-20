@@ -36,14 +36,18 @@ export const Route = createFileRoute("/_authenticated/documents")({
 });
 
 function DocumentsPage() {
-  const [saved, setSaved] = useState<SavedDocuments | null>(null);
+  const [docs, setDocs] = useState<SavedDocuments["docs"]>([]);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     let active = true;
-    loadProgress<SavedDocuments>("documents").then((data) => {
+    void Promise.all([
+      loadProgress<SavedDocuments>("documents"),
+      loadProgress<SavedDocuments>("documents:settlement"),
+      loadProgress<SavedDocuments>("documents:demand"),
+    ]).then((results) => {
       if (!active) return;
-      setSaved(data);
+      setDocs(results.flatMap((r) => r?.docs ?? []));
       setReady(true);
     });
     return () => {
@@ -51,7 +55,6 @@ function DocumentsPage() {
     };
   }, []);
 
-  const docs = saved?.docs ?? [];
 
   return (
     <main className="min-h-screen bg-cream">
