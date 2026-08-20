@@ -52,20 +52,62 @@ const fields: FieldDef[] = [
   { name: "month", label: "Month", type: "text", required: true, placeholder: "e.g. February" },
   { name: "year", label: "Year", type: "text", required: true, placeholder: "e.g. 2025" },
   { name: "partyAName", label: "Party A — name (the person claiming)", type: "text", required: true },
-  { name: "partyAId", label: "Party A — NRIC / UEN", type: "text", required: true },
+  {
+    name: "partyAIdType",
+    label: "Party A — is this a person or a company?",
+    type: "select",
+    required: true,
+    options: ["Individual (NRIC)", "Company (UEN)"],
+  },
+  { name: "partyAId", label: "Party A — NRIC / UEN number", type: "text", required: true, placeholder: "e.g. S1234567A" },
   { name: "partyAAddress", label: "Party A — registered address", type: "textarea", required: true, rows: 3 },
   { name: "partyBName", label: "Party B — name (the person paying)", type: "text", required: true },
-  { name: "partyBId", label: "Party B — NRIC / UEN", type: "text", required: true },
+  {
+    name: "partyBIdType",
+    label: "Party B — is this a person or a company?",
+    type: "select",
+    required: true,
+    options: ["Individual (NRIC)", "Company (UEN)"],
+  },
+  { name: "partyBId", label: "Party B — NRIC / UEN number", type: "text", required: true, placeholder: "e.g. 202412345B" },
   { name: "partyBAddress", label: "Party B — registered address", type: "textarea", required: true, rows: 3 },
   { name: "incidentDate", label: "Date of the accident", type: "text", required: true, placeholder: "e.g. 1 November 2024" },
-  { name: "incidentLocation", label: "Location of the accident", type: "text", required: true },
+  {
+    name: "incidentLocation",
+    label: "Location of the accident",
+    type: "text",
+    required: true,
+    placeholder: "e.g. Green Acre Shopping Centre at 100 Greenacre Road, Singapore 456789",
+  },
   {
     name: "incidentFacts",
-    label: "Brief facts of what happened",
+    label: "In one sentence, what happened?",
     type: "textarea",
     required: true,
-    rows: 4,
-    help: 'Completes: "an incident occurred at [Location] where ..."',
+    rows: 3,
+    placeholder: "Party A tripped over a 5cm-high unmarked step at the main entrance and fell",
+    help: 'This completes the sentence "On [date], an incident occurred at [location] where ___". Start with "Party A ...", keep it to one short factual sentence, and leave out your injuries, blame and amounts — those are covered elsewhere in the agreement.',
+    hint: (d) => {
+      const v = (d["incidentFacts"] ?? "").trim();
+      if (!v) return null;
+      return (
+        <div className="space-y-1">
+          <p className="rounded-md bg-muted/60 p-3 text-xs leading-relaxed text-muted-foreground">
+            <span className="font-medium text-foreground">Recital A will read: </span>
+            {settlementRecitalA({
+              incidentDate: d["incidentDate"],
+              incidentLocation: d["incidentLocation"],
+              incidentFacts: v,
+            })}
+          </p>
+          {v.length > 300 && (
+            <p className="text-xs text-amber-600">
+              That is quite long — try to shorten it to one brief sentence, like the example.
+            </p>
+          )}
+        </div>
+      );
+    },
   },
   { name: "settlementSum", label: "Settlement Sum", type: "text", required: true, placeholder: "e.g. $12,000" },
   {
