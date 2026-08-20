@@ -2,9 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { HomeButton } from "@/components/app/HomeButton";
+import { TermsOfUse } from "@/components/app/TermsOfUse";
 import { FileText, ListChecks, Scale, ClipboardList, ArrowRight, AlertTriangle } from "lucide-react";
 import faqImg from "@/assets/faq-questions.png";
 
@@ -139,23 +138,11 @@ function GuideLandingPage() {
               </p>
             </div>
 
-            <div className="flex items-start gap-3 rounded-lg border border-purple/30 bg-purple/15 p-4">
-              <Checkbox
-                id="legal-advice-declaration"
-                checked={accepted}
-                onCheckedChange={(checked) => setAccepted(checked === true)}
-                className="mt-0.5 border-purple-foreground/30 data-[state=checked]:bg-purple data-[state=checked]:text-purple-foreground"
-              />
-              <div className="grid gap-1.5 leading-none">
-                <Label htmlFor="legal-advice-declaration" className="text-sm font-medium text-purple-foreground">
-                  I understand and agree
-                </Label>
-                <p className="text-sm text-purple-foreground/80">
-                  By checking this box, I understand that this guide does not constitute legal
-                  advice and that I should seek advice from a qualified lawyer for my situation.
-                </p>
-              </div>
-            </div>
+            <TermsOfUse
+              accepted={accepted}
+              onAcceptedChange={setAccepted}
+              variant="purple"
+            />
 
             <div className="flex justify-end">
               <Button asChild disabled={!accepted} className="gap-2">

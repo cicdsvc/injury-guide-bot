@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { HomeButton } from "@/components/app/HomeButton";
 import { Disclaimer } from "@/components/app/Disclaimer";
+import { TermsOfUse } from "@/components/app/TermsOfUse";
 import { ArrowLeft, Download, FileText, Loader2, RefreshCcw } from "lucide-react";
 import { ResumePrompt } from "@/components/app/ResumePrompt";
 import {
@@ -36,6 +37,7 @@ export type LetterWizardProps = {
   buildPreview: (data: Record<string, string>) => string;
   onGenerate: (data: Record<string, string>, format: "docx" | "pdf") => Promise<void>;
   progressKey: ProgressKey;
+  requireTerms?: boolean;
 };
 
 type SavedLetter = {
@@ -53,6 +55,7 @@ export function LetterWizard({
   buildPreview,
   onGenerate,
   progressKey,
+  requireTerms = false,
 }: LetterWizardProps) {
   const [step, setStep] = useState<"intro" | "form" | "preview" | "done">("intro");
   const [formData, setFormData] = useState<Record<string, string>>({});
@@ -60,6 +63,7 @@ export function LetterWizard({
   const [error, setError] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
   const [savedDraft, setSavedDraft] = useState<SavedLetter | null>(null);
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -172,7 +176,14 @@ export function LetterWizard({
             </div>
             <CardContent className="space-y-6 p-6">
               <div className="space-y-4 text-foreground/90 leading-relaxed">{description}</div>
-              <Button onClick={() => setStep("form")} className="gap-2">
+              {requireTerms && (
+                <TermsOfUse
+                  accepted={termsAccepted}
+                  onAcceptedChange={setTermsAccepted}
+                  variant="purple"
+                />
+              )}
+              <Button onClick={() => setStep("form")} disabled={requireTerms && !termsAccepted} className="gap-2">
                 <FileText className="h-4 w-4" />
                 Start drafting
               </Button>
