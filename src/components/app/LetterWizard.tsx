@@ -55,6 +55,7 @@ export function LetterWizard({
   buildPreview,
   onGenerate,
   progressKey,
+  requireTerms = false,
 }: LetterWizardProps) {
   const [step, setStep] = useState<"intro" | "form" | "preview" | "done">("intro");
   const [formData, setFormData] = useState<Record<string, string>>({});
@@ -62,6 +63,7 @@ export function LetterWizard({
   const [error, setError] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
   const [savedDraft, setSavedDraft] = useState<SavedLetter | null>(null);
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   useEffect(() => {
     let active = true;
