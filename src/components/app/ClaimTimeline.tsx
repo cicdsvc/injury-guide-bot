@@ -30,13 +30,14 @@ const STAGES = [
 const STAGE_ICONS = [FileText, UserCheck, Handshake, FileSignature, Mail];
 const STAGE_LABELS = ["Draft", "Consult", "Negotiate", "Settle", "Demand"];
 
-type TimelineState = { done: boolean[] };
+type TimelineState = { done: boolean[]; paymentReceived?: boolean | null };
 
 const EMPTY: boolean[] = STAGES.map(() => false);
 
 export function ClaimTimeline() {
   const { user, loading } = useAuthUser();
   const [done, setDone] = useState<boolean[]>(EMPTY);
+  const [paymentReceived, setPaymentReceived] = useState<boolean | null>(null);
   const [ready, setReady] = useState(false);
   const [hasDocs, setHasDocs] = useState(false);
   const [hasSettlement, setHasSettlement] = useState(false);
@@ -47,6 +48,7 @@ export function ClaimTimeline() {
     if (loading) return;
     if (!user) {
       setDone(EMPTY);
+      setPaymentReceived(null);
       setReady(true);
       return;
     }
@@ -60,13 +62,15 @@ export function ClaimTimeline() {
       let next = saved?.done && Array.isArray(saved.done)
         ? STAGES.map((_, i) => Boolean(saved.done[i]))
         : [...EMPTY];
+      const payment = saved?.paymentReceived ?? null;
+      setPaymentReceived(payment);
       const docs = savedDocs?.docs ?? [];
       setHasDocs(docs.length > 0);
       setHasSettlement((savedSettlement?.docs ?? []).length > 0);
       setHasDemand((savedDemand?.docs ?? []).length > 0);
       if (docs.length > 0 && !next[0]) {
         next = next.map((v, i) => (i === 0 ? true : v));
-        void saveProgress("timeline", { done: next });
+        void saveProgress("timeline", { done: next, paymentReceived: payment });
       }
       setDone(next);
       setReady(true);
@@ -76,13 +80,21 @@ export function ClaimTimeline() {
     };
   }, [user, loading]);
 
-  const persist = (next: boolean[]) => {
+  const persist = (next: boolean[], payment: boolean | null = paymentReceived) => {
     setDone(next);
-    if (user) void saveProgress("timeline", { done: next });
+    setPaymentReceived(payment);
+    if (user) void saveProgress("timeline", { done: next, paymentReceived: payment });
+  };
+
+  const answerPayment = (value: boolean | null) => {
+    // Clearing stage 5 when payment is received keeps the journey honest.
+    const next = value === true ? done.map((v, i) => (i === 4 ? false : v)) : done;
+    persist(next, value);
   };
 
   const startNewProcess = () => {
     setDone(EMPTY);
+    setPaymentReceived(null);
     setHasDocs(false);
     setHasSettlement(false);
     setHasDemand(false);
@@ -105,9 +117,12 @@ export function ClaimTimeline() {
     persist(done.map((v, i) => (i === index ? !v : v)));
   };
 
-  const completed = done.filter(Boolean).length;
-  const progressPercent = Math.round((completed / STAGES.length) * 100);
-  const allDone = completed === STAGES.length;
+  const settledPath = paymentReceived === true && !hasDemand;
+  const totalStages = settledPath ? 4 : STAGES.length;
+  const completed = done.slice(0, totalStages).filter(Boolean).length;
+  const progressPercent = Math.round((completed / totalStages) * 100);
+  const allDone = completed === totalStages;
+
 
   return (
     <Card className="border-border/60 bg-card overflow-hidden">
