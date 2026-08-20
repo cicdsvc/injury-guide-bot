@@ -237,63 +237,81 @@ export function buildSettlementAgreement(d: SettlementAgreementData): Block[] {
   b.push({
     t: "num",
     n: "B.",
+    indent: 1,
     text: "Both Parties understand and accept that this is a legal agreement that both Parties must follow, and it can be enforced in court.",
   });
   b.push({
     t: "num",
     n: "C.",
+    indent: 1,
     text: "Subject to the terms of this Agreement, both Parties agree that this Agreement settles everything between them related to the Accident, and that they will not make any further claims against each other for any losses that may have been caused by it.",
   });
+  b.push({ t: "spacer" });
 
   b.push({ t: "line", text: "IT IS HEREBY AGREED THAT:", bold: true });
   b.push({
     t: "num",
     n: "1.",
+    indent: 1,
     text: `To fully and finally settle any claims Party A may have against Party B because of the Accident, Party B agrees to pay Party A ${ph(d.settlementSum, "$[amount]")} (the "Settlement Sum").`,
   });
 
-  b.push({ t: "line", text: "Payment Plan", bold: true, indent: 1 });
+  b.push({ t: "line", text: "Payment Plan", bold: true, indent: 2, tight: true });
   if (instalment) {
     b.push({
       t: "num",
       n: "2.",
+      indent: 1,
       text: `Party B will pay the Settlement Sum by way of bank transfer to Party A's bank account ${ph(`${d.bankName} ${d.bankAccount}`.trim(), "[name of bank and bank account number]")} in the following instalments:`,
     });
-    b.push({ t: "table", header: ["DUE DATE", "AMOUNT (S$)"], rows: parseRows(d.instalments) });
+    b.push({
+      t: "table",
+      header: ["DUE DATE", "AMOUNT (S$)"],
+      rows: parseRows(d.instalments),
+      bordered: true,
+      alignRight: true,
+      indent: 2,
+    });
     b.push({
       t: "num",
       n: "3.",
+      indent: 1,
       text: "If Party B misses any instalment payment, the full remaining amount will be due right away, and Party A can go ahead to take legal action to collect that full amount.",
     });
   } else {
     b.push({
       t: "num",
       n: "2.",
+      indent: 1,
       text: `Party B will pay the Settlement Sum by ${ph(d.lumpSumDueDate, "[date]")} through a bank transfer to Party A's account at ${ph(d.bankName, "[name of bank]")}, account number ${ph(d.bankAccount, "[bank account number]")}.`,
     });
     b.push({
       t: "num",
       n: "3.",
+      indent: 1,
       text: "If Party B does not pay the full amount by the due date, the full remaining amount will be due right away, and Party A can go ahead to take legal action to collect that full amount.",
     });
   }
 
-  b.push({ t: "line", text: "Entire Agreement", bold: true, indent: 1 });
+  b.push({ t: "line", text: "Entire Agreement", bold: true, indent: 2, tight: true });
   b.push({
     t: "num",
     n: "4.",
+    indent: 1,
     text: "This Agreement replaces all previous statements, promises, agreements, or understandings — whether made in writing or spoken — made by the Parties or their representatives. The rights and responsibilities of the Parties in relation to the Accident are governed by the terms in this Agreement only – meaning that the Parties can only refer to the contents of this Agreement in relation to the Accident, and not any other document, text, recording or communication.",
   });
-  b.push({ t: "line", text: "Jurisdiction & Governing Law", bold: true, indent: 1 });
+  b.push({ t: "line", text: "Jurisdiction & Governing Law", bold: true, indent: 2, tight: true });
   b.push({
     t: "num",
     n: "5.",
+    indent: 1,
     text: "This Agreement is governed by Singapore law. If there is any legal dispute or action related to this Agreement, it will be handled under Singapore law in the courts of Singapore.",
   });
-  b.push({ t: "line", text: "Legal Advice", bold: true, indent: 1 });
+  b.push({ t: "line", text: "Legal Advice", bold: true, indent: 2, tight: true });
   b.push({
     t: "num",
     n: "6.",
+    indent: 1,
     text: "Each Party confirms that they have read and understand this Agreement and its consequences. Each Party also confirms that they have had the chance to get legal advice.",
   });
 
