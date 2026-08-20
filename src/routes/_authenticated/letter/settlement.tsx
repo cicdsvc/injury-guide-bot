@@ -96,8 +96,8 @@ const fields: FieldDef[] = [
           <p className="rounded-md bg-muted/60 p-3 text-xs leading-relaxed text-muted-foreground">
             <span className="font-medium text-foreground">Recital A will read: </span>
             {settlementRecitalA({
-              incidentDate: d["incidentDate"],
-              incidentLocation: d["incidentLocation"],
+              incidentDate: d["incidentDate"] ?? "",
+              incidentLocation: d["incidentLocation"] ?? "",
               incidentFacts: v,
             })}
           </p>
