@@ -223,7 +223,22 @@ export const Route = createFileRoute("/api/chat")({
           return new Response("Missing LOVABLE_API_KEY", { status: 500 });
         }
 
-        const system = mode === "qa" ? QA_SYSTEM_PROMPT : SYSTEM_PROMPT;
+        const today = new Intl.DateTimeFormat("en-SG", {
+          timeZone: "Asia/Singapore",
+          dateStyle: "full",
+        }).format(new Date());
+
+        const dateContext = `CURRENT DATE
+Today's date is ${today} (Singapore time). Use this as the current date for ALL date reasoning.
+- Before saying a date is in the past or the future, compare it against today's date above. Never rely on any other assumption about what year it is.
+- Only query a date as being "in the future" if it is genuinely later than today's date above.
+- If the claimant gives a day and month with no year, assume the most recent occurrence of that day and month on or before today, and confirm the year with them if it matters.
+- Work out the 3-year limitation period by counting back from today's date above.
+
+`;
+
+        const system =
+          dateContext + (mode === "qa" ? QA_SYSTEM_PROMPT : SYSTEM_PROMPT);
 
         const gateway = createLovableAiGatewayProvider(key);
         const model = gateway.languageModel("google/gemini-3.6-flash");
