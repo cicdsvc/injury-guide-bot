@@ -13,7 +13,7 @@ import settlementImg from "@/assets/settlement-agreement.png";
 export const Route = createFileRoute("/_authenticated/letter/settlement")({
   head: () => ({
     meta: [
-      { title: "Settlement Agreement — Personal Injury Claim Helper" },
+      { title: "Settlement Agreement — PIoneer" },
       {
         name: "description",
         content:
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/_authenticated/letter/settlement")({
       },
       {
         property: "og:title",
-        content: "Settlement Agreement — Personal Injury Claim Helper",
+        content: "Settlement Agreement — PIoneer",
       },
       {
         property: "og:description",

@@ -13,13 +13,13 @@ import { ArrowRight, HelpCircle, Scale, ShieldCheck } from "lucide-react";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Personal Injury Claim Helper" },
+      { title: "PIoneer" },
       {
         name: "description",
         content:
           "An interactive bot to facilitate out of court settlements for minor Personal Injury claims.",
       },
-      { property: "og:title", content: "Personal Injury Claim Helper" },
+      { property: "og:title", content: "PIoneer" },
       {
         property: "og:description",
         content:
@@ -77,7 +77,7 @@ function HomePage() {
           <div className="grid items-center gap-10 lg:grid-cols-2">
             <div className="space-y-6">
               <h1 className="text-balance text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-                Personal Injury Claim Helper
+                PIoneer
               </h1>
               <p className="text-lg/relaxed text-navy-foreground/80 sm:text-xl/relaxed">
                 An interactive bot to facilitate out of court settlements for

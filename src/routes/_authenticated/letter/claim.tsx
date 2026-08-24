@@ -8,7 +8,7 @@ import claimImg from "@/assets/letter-of-claim.png";
 export const Route = createFileRoute("/_authenticated/letter/claim")({
   head: () => ({
     meta: [
-      { title: "Letter of Claim — Personal Injury Claim Helper" },
+      { title: "Letter of Claim — PIoneer" },
       {
         name: "description",
         content:
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/_authenticated/letter/claim")({
       },
       {
         property: "og:title",
-        content: "Letter of Claim — Personal Injury Claim Helper",
+        content: "Letter of Claim — PIoneer",
       },
       {
         property: "og:description",

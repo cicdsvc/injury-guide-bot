@@ -13,7 +13,7 @@ import {
 export const Route = createFileRoute("/_authenticated/documents")({
   head: () => ({
     meta: [
-      { title: "Your claim documents — Personal Injury Claim Helper" },
+      { title: "Your claim documents — PIoneer" },
       {
         name: "description",
         content:
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/_authenticated/documents")({
       },
       {
         property: "og:title",
-        content: "Your claim documents — Personal Injury Claim Helper",
+        content: "Your claim documents — PIoneer",
       },
       {
         property: "og:description",

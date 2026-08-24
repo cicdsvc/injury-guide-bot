@@ -10,7 +10,7 @@ import faqImg from "@/assets/faq-questions.png";
 export const Route = createFileRoute("/_authenticated/guide")({
   head: () => ({
     meta: [
-      { title: "Step-by-Step Guide — Personal Injury Claim Helper" },
+      { title: "Step-by-Step Guide — PIoneer" },
       {
         name: "description",
         content:
@@ -18,7 +18,7 @@ export const Route = createFileRoute("/_authenticated/guide")({
       },
       {
         property: "og:title",
-        content: "Step-by-Step Guide — Personal Injury Claim Helper",
+        content: "Step-by-Step Guide — PIoneer",
       },
       {
         property: "og:description",
