@@ -13,13 +13,13 @@ import heroImg from "@/assets/hero-person-with-injury.png.asset.json";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — Personal Injury Claim Helper" },
+      { title: "Sign in — PIoneer" },
       {
         name: "description",
         content:
           "Sign in to save your progress and pick up your personal injury claim preparation where you left off.",
       },
-      { property: "og:title", content: "Sign in — Personal Injury Claim Helper" },
+      { property: "og:title", content: "Sign in — PIoneer" },
       {
         property: "og:description",
         content:

@@ -79,13 +79,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Personal Injury Claim Helper" },
+      { title: "PIoneer" },
       {
         name: "description",
         content:
           "An interactive bot to help you understand more about your Personal Injury claims.",
       },
-      { property: "og:title", content: "Personal Injury Claim Helper" },
+      { property: "og:title", content: "PIoneer" },
       {
         property: "og:description",
         content:

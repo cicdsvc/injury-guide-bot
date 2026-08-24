@@ -12,7 +12,7 @@ import demandImg from "@/assets/letter-of-demand.png";
 export const Route = createFileRoute("/_authenticated/letter/demand")({
   head: () => ({
     meta: [
-      { title: "Letter of Demand — Personal Injury Claim Helper" },
+      { title: "Letter of Demand — PIoneer" },
       {
         name: "description",
         content:
@@ -20,7 +20,7 @@ export const Route = createFileRoute("/_authenticated/letter/demand")({
       },
       {
         property: "og:title",
-        content: "Letter of Demand — Personal Injury Claim Helper",
+        content: "Letter of Demand — PIoneer",
       },
       {
         property: "og:description",

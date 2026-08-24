@@ -73,7 +73,7 @@ export const Route = createFileRoute("/_authenticated/faq")({
   },
   head: () => ({
     meta: [
-      { title: "Prepare for your lawyer — Personal Injury Claim Helper" },
+      { title: "Prepare for your lawyer — PIoneer" },
       {
         name: "description",
         content:
@@ -81,7 +81,7 @@ export const Route = createFileRoute("/_authenticated/faq")({
       },
       {
         property: "og:title",
-        content: "Prepare for your lawyer — Personal Injury Claim Helper",
+        content: "Prepare for your lawyer — PIoneer",
       },
       {
         property: "og:description",
