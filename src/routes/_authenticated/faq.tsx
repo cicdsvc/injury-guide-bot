@@ -230,17 +230,7 @@ function FaqPage() {
                           <p className="mt-1 text-sm text-muted-foreground">
                             Bring these documents to a lawyer and consult them
                             to get proper legal advice on your situation before
-                            you send anything or agree to any settlement. You
-                            can speak to a private lawyer or{" "}
-                            <a
-                              href="https://www.probono.sg"
-                              target="_blank"
-                              rel="noreferrer"
-                              className="underline underline-offset-2 hover:text-foreground"
-                            >
-                              Pro Bono SG
-                            </a>
-                            .
+                            you send anything or agree to any settlement.
                           </p>
                           <div className="mt-4 border-t border-border/60 pt-3">
                             <Button asChild variant="outline" size="sm" className="gap-2">
