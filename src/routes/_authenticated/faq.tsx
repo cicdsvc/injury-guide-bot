@@ -315,17 +315,8 @@ function FaqPage() {
             </PromptInputBody>
           </PromptInput>
           <p className="mt-3 text-xs text-muted-foreground">
-            When you are ready for advice, speak to a private lawyer or{" "}
-            <a
-              href="https://www.probono.sg"
-              target="_blank"
-              rel="noreferrer"
-              className="underline underline-offset-2 hover:text-foreground"
-            >
-              Pro Bono SG
-            </a>
-            . Get legal advice before settling anything or sending any formal
-            letter.
+            Speak to a lawyer and get legal advice before proceeding to send out
+            any letter or signing a settlement agreement.
           </p>
         </div>
 
