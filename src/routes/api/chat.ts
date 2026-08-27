@@ -217,7 +217,7 @@ Use only the information provided below as your source of substantive informatio
 GUIDE CONTENT:
 ${GUIDE_CONTENT}`;
 
-const QA_SYSTEM_PROMPT = `You are a helpful assistant for personal injury (PI) claimants in Singapore with lower-value claims.
+const QA_SYSTEM_PROMPT = `${GUARDRAILS}You are a helpful assistant for personal injury (PI) claimants in Singapore with lower-value claims.
 
 YOUR ROLE
 Answer the claimant's question directly, clearly and practically. You are NOT a lawyer and you do NOT give legal advice.
